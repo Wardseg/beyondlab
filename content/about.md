@@ -50,7 +50,7 @@ wants to build smarter. And anyone curious enough to ask "but how does it actual
 ## Get in touch
 
 Found something useful? Have a question or just want to talk IT?
-Reach out on [GitHub](https://github.com/yourusername) or drop a comment on any post.
+Reach out on [GitHub](https://github.com/wardseg) or drop a comment on any post.
 
 ---
 
