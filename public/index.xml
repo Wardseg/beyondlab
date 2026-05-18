@@ -6,8 +6,29 @@
     <description>Recent content on BeyondLab</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 17 May 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 18 May 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>About</title>
+      <link>http://localhost:1313/about/</link>
+      <pubDate>Mon, 18 May 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/about/</guid>
+      <description>&lt;h2 id=&#34;hey-im-ward-&#34;&gt;Hey, I&amp;rsquo;m Ward 👋&lt;/h2&gt;
+&lt;p&gt;I&amp;rsquo;m a Belgian IT support engineer with 5 to 10 years of experience working in the field —
+helping businesses keep their infrastructure running, troubleshooting the issues that
+make no sense on paper, and learning something new almost every day.&lt;/p&gt;
+&lt;p&gt;Outside of work, I run a homelab built around an HP DL380 G6 server, Proxmox,
+OPNsense, and a growing stack of self-hosted services. What started as curiosity
+quickly turned into a passion — a place where I can test, break, rebuild, and
+actually understand how things work under the hood.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Why I started BeyondLab</title>
+      <link>http://localhost:1313/posts/why-i-started-beyondlab/</link>
+      <pubDate>Mon, 18 May 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/why-i-started-beyondlab/</guid>
+      <description>Every blog has an origin story. Here&amp;#39;s mine — and why I think documenting your IT journey is one of the best things you can do.</description>
+    </item>
     <item>
       <title>Welcome to BeyondLab</title>
       <link>http://localhost:1313/posts/welcome-to-beyondlab/</link>
