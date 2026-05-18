@@ -16,11 +16,12 @@ params:
   ShowCodeCopyButtons: true
 
   homeInfoParams:
-    Title: "Hey, I'm Ward 👋"
+    Title: "IT kwnowledge that goes Beyond the Lab"
     Content: >
-      IT support engineer, homelabber, and lifelong tinkerer.
-      Writing about Proxmox, OPNsense, networking, and making IT skills work for you.
-
+      Real guides. Real mistakes. Real fixes.
+      I'm Ward 👋 , an IT support engineer and homelabber sharing everthing I learn - 
+      from setting up VLANs and self-hosted services to solving the weird issues
+      you'll never find in the official docs.
   socialIcons:
     - name: github
       url: "https://github.com/yourusername"

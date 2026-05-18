@@ -1,0 +1,50 @@
+{{- define "main" }}
+<div class="home-container">
+
+  {{- with site.Params.homeInfoParams }}
+  <div class="hero">
+    <h1>{{ .Title }}</h1>
+    <p>{{ .Content }}</p>
+    <div class="hero-links">
+      <a href="/posts" class="btn">Read the Blog →</a>
+      <a href="/about" class="btn btn-outline">About Me</a>
+    </div>
+  </div>
+  {{- end }}
+
+  <div class="topic-grid">
+    <div class="topic-card">
+      <span class="topic-icon">🖥️</span>
+      <h3>Homelab</h3>
+      <p>Proxmox, TrueNAS, self-hosted services and hardware builds.</p>
+    </div>
+    <div class="topic-card">
+      <span class="topic-icon">🔒</span>
+      <h3>Networking</h3>
+      <p>OPNsense, VLANs, DNS, Cloudflare Tunnel and UniFi.</p>
+    </div>
+    <div class="topic-card">
+      <span class="topic-icon">⚙️</span>
+      <h3>IT Support</h3>
+      <p>Real MSP cases, M365, Exchange and Windows troubleshooting.</p>
+    </div>
+    <div class="topic-card">
+      <span class="topic-icon">📖</span>
+      <h3>Guides</h3>
+      <p>Step-by-step walkthroughs you can actually follow.</p>
+    </div>
+  </div>
+
+  <div class="recent-posts">
+    <h2>Recent Posts</h2>
+    {{- range (where site.RegularPages "Type" "posts") | first 5 }}
+    <div class="post-entry">
+      <a href="{{ .Permalink }}">{{ .Title }}</a>
+      <span class="post-meta">{{ .Date.Format "Jan 2, 2006" }} · {{ .ReadingTime }} min read</span>
+    </div>
+    {{- end }}
+    <a href="/posts" class="all-posts">All posts →</a>
+  </div>
+
+</div>
+{{- end }}
