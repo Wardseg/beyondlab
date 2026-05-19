@@ -84,4 +84,4 @@ You don't need to wait until you have the perfect hardware or spare room for a r
 
 ---
 
-_Next up: My homelab hardware _
+_Next up: My homelab hardware_
