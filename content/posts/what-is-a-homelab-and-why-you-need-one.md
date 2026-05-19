@@ -1,0 +1,87 @@
+---
+title: "What is a homelab and why you need one"
+date: 2026-05-19
+draft: false
+tags: ["homelab", "proxmox", "opnsense", "networking", "beginner"]
+description: "A homelab is one of the best investments you can make as an IT professional"
+---
+
+If you've spent any time in IT circles online, you've probably heard the word "homelab" thrown around.
+But what actually is a homelab, and why do so many IT professionals swear by them?
+
+This post breaks down - and makes the case for why you should consider building one yourself.
+
+## What is a homelab?
+
+A homelab is a personal computing environment you run at home for learning, experimenting, and building skills.
+It can be as simple as an old PC running a couple of virtual machines, or as complex as a rack full of enterprise-grade servers with a fully segmented network.
+
+The key word is _yours_. No change management process. No ticket to raise. No risk of breaking something a client depends on.
+You can try things, break things, and learn from the fallout - all on your own term.
+
+## Why botter?
+
+Here's the honest answer: **your day job will only teach you so much.**
+
+In a support role, you're mostly reacting. Something breaks, you fix it.
+You get good at diagnosing known problems in familiar environments. But the deeper understanding - how things are actually built, why they behave the way they do, what happens when you push them - that comes from building things yourself.
+
+But if I'm being completely honest, my original motivation wasn't purely about learning. It was about subscriptions.
+
+We live in a world that has quickly shifted everything to a monthly fee. Cloud storage, password managers, media servers, note-taking apps, photo backups - every service you rely on now comes with a recurring cost. Individually the seem small. Together they add up fast, and at the end of the month you're paying for a dozen things you half-use and fully depend on.
+
+I wanted out of that cycle. Or at least, I wanted control over it.
+
+A homelab lets you self-host many of those services yourself - on hardware you own, with data you control, at a cost you pay once. Your own cloud storage instead of Google One. Your own password manager instead of a 4€/month subscription. Your own media server instead of juggling three streaming platforms.
+
+The learning came naturally alongside it. Once you start building, curiosity takes over - and suddenly you're deep in a rabbit hole of networking, virtualisation, and infrastructure that makes you genuinely better at your job.
+
+A homelab gives you that space.
+
+## What I learned from mine
+
+My first homelab was, and still is, an HP DL380 G6 - a second-hand enterprise server I picked up for free. Before that I'd run a few services locally, nut nothing structured.
+
+The DL380 changed that quickly.
+
+Setting it up forced me to learn things I'd never had a reason to touch before. Cloudflare tunnels, for example - exposing services to the internet without opening ports on your router. OPNsense gave me a proper firewall and taught me how to build a controlled, segmented network from scratch. And troubleshooting issues in that environment thaught me something no certification ever could: how to diagnose a problem when you have absolutely no idea where to start.
+
+One early example that comes to mind involved SMB protocol differences between Mac and Windows devices - a rabbit hole that took hours to untangle and taught me more about network file sharing than years of support tickets ever had. (That one deserves its own post.)
+
+The homelab didn't just teach me new tools. It taught me how to think through problems methodically, even when I was completely lost.
+
+## What do you actually need to start?
+
+Less than you think.
+
+You don't need a rack server or enterprise hardware to get started. A spare PC, an old laptop, or even a Raspberry Pi is enough to run your first virtual machines and start experimenting. The goal isn't the hardware - it's the learning.
+
+That said, if you want to go deeper, second-hand enterprise hardware is surprisingly affordable. Servers like the HP DL380 regularly show up on eBay and local marketplaces for €100-€300. They're loud and power-hungry, but they're built to run 24/7 and give you a proper platform to work with.
+
+## What should you run?
+
+A good starting point for most IT professionals:
+
+- **Proxmox** — a free, open-source hypervisor that lets you run multiple virtual machines and containers on a single machine. This is your foundation.
+- **OPNsense** — a powerful open-source firewall you can run as a VM. Teaches you networking concepts that are directly applicable to real-world environments.
+- **A self-hosted service** — something useful like a password manager, a documentation tool, or a media server. Having something you actually use keeps
+  you motivated to maintain and improve the setup.
+- **Self-hosted alternatives to paid services** — Vaultwarden instead of 1Password, Nextcloud instead of Google Drive, Immich instead of Google Photos.
+
+Own your data and cut the subscriptions.
+
+## The real benefit
+
+The homelab community often talks about the technical skills you gain - and those are real. But the deeper benefit is confidence.
+
+When you've built something from scratch, broken it, and fixed it yourself, you approach problems differently. You're less intimidated by unfamiliar systems. You have a mental model for how things fit together. And you have a place to test your ideas before you try them anywhere else.
+
+That confidence is hard to put on a CV - but anyone who's hired in IT can spot it immediately.
+
+## Start small, start today
+
+You don't need to wait until you have the perfect hardware or spare room for a rack. Start with what you have. Install Proxmox on an old machine, spin up a VM and break something.
+
+---
+
+_Next up: My homelab hardware _
