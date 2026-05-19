@@ -15,7 +15,7 @@ In that time I've helped businesses of all sizes keep their infrastructure runni
 
 It's a job that teaches you a lot. But it also teaches you how much you _don't_ know.
 
-## The homelad rabbit hole
+## The homelab rabbit hole
 
 Sometime ago, curiosity go the better of me. I wanted to understand things more deeply - not just fix them, but actually know _why_ they work and what happens when they don't. I got an opportunity and receive a HP DL380 G6 for free, well officially I'm still borrowing it. Installed Proxmox and started experimenting.
 
@@ -33,7 +33,7 @@ When you're troubleshooting a weird Proxmox networking issue at 11pm, the last t
 
 BeyonLab exists to fill that gap - at least a little bit.
 
-Every post here documents someting I've actually built, broken, or fixed. The mistakes are included. The "why" is always explained. And nothing is written from theory alone.
+Every post here documents something I've actually built, broken, or fixed. The mistakes are included. The "why" is always explained. And nothing is written from theory alone.
 
 ## Who this is for
 

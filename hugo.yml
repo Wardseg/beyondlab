@@ -17,7 +17,7 @@ params:
   comments: true
 
   homeInfoParams:
-    Title: "IT kwnowledge that goes Beyond the Lab"
+    Title: "IT kwowledge that goes Beyond the Lab"
     Content: >
       Real guides. Real mistakes. Real fixes.
       I'm Ward 👋 , an IT support engineer and homelabber sharing everthing I learn - 
