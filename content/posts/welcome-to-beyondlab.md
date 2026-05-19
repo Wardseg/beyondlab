@@ -2,6 +2,7 @@
 title: "Welcome to BeyondLab"
 date: 2026-05-17
 draft: false
+disableToc: true
 tags: ["homelab", "proxmox", "opnsense", "networking"]
 description: "Why I started BeyondLab — documenting my journey from IT support engineer to homelabber."
 ---
