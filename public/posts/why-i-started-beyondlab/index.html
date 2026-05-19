@@ -10,7 +10,7 @@
 <meta name="description" content="Every blog has an origin story. Here&#39;s mine — and why I think documenting your IT journey is one of the best things you can do.">
 <meta name="author" content="Ward">
 <link rel="canonical" href="http://localhost:1313/posts/why-i-started-beyondlab/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.c957795246a172e5ac3e4df457ca33c544d27d863b8466b874bcbdde00d4d022.css" integrity="sha256-yVd5UkahcuWsPk30V8ozxUTSfYY7hGa4dLy93gDU0CI=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.0d7de496fbfa38898e625c918a53ba9744a10c1a18987bf0327bf3db55c9ae29.css" integrity="sha256-DX3klvv6OImOYlyRilO6l0ShDBoYmHvwMnvz21XJrik=" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://localhost:1313/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
@@ -259,7 +259,66 @@ In that time I&rsquo;ve helped businesses of all sizes keep their infrastructure
     </li>
 </ul>
 
-  </footer>
+  </footer><div class="giscus-container">
+  <script
+    src="https://giscus.app/client.js"
+    data-repo="wardseg/beyondlab"
+    data-repo-id="R_kgDOSfzEHQ"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOSfzEHc4C9Z8n"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="1"
+    data-input-position="bottom"
+    data-theme="transparent_dark"
+    data-lang="en"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+<script>
+  function setGiscusTheme(theme) {
+    const iframe = document.querySelector("iframe.giscus-frame");
+    if (!iframe) return;
+    iframe.contentWindow.postMessage(
+      { giscus: { setConfig: { theme: theme } } },
+      "https://giscus.app",
+    );
+  }
+
+  function getPreferredTheme() {
+    const stored = localStorage.getItem("pref-theme");
+    if (stored === "light") return "light";
+    if (stored === "dark") return "transparent_dark";
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "transparent_dark"
+      : "light";
+  }
+
+  window.addEventListener(
+    "message",
+    function (e) {
+      if (e.origin !== "https://giscus.app") return;
+      if (
+        e.data?.giscus?.discussion !== undefined ||
+        e.data?.giscus?.error !== undefined
+      )
+        return;
+      setGiscusTheme(getPreferredTheme());
+    },
+    { once: true },
+  );
+
+  const themeToggle = document.getElementById("theme-toggle");
+  if (themeToggle) {
+    themeToggle.addEventListener("click", function () {
+      setTimeout(() => setGiscusTheme(getPreferredTheme()), 100);
+    });
+  }
+</script>
+
 </article>
     </main>
     

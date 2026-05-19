@@ -6,8 +6,15 @@
     <description>Recent content in Homelab on BeyondLab</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 17 May 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 18 May 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/homelab/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Why I started BeyondLab</title>
+      <link>http://localhost:1313/posts/why-i-started-beyondlab/</link>
+      <pubDate>Mon, 18 May 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/why-i-started-beyondlab/</guid>
+      <description>Every blog has an origin story. Here&amp;#39;s mine — and why I think documenting your IT journey is one of the best things you can do.</description>
+    </item>
     <item>
       <title>Welcome to BeyondLab</title>
       <link>http://localhost:1313/posts/welcome-to-beyondlab/</link>
