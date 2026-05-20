@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Dl380 on BeyondLab</title>
+    <link>http://localhost:1313/tags/dl380/</link>
+    <description>Recent content in Dl380 on BeyondLab</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 20 May 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/dl380/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>My homelab hardware: the HP DL380 G6 breakdown</title>
+      <link>http://localhost:1313/posts/my-homelab-hardware-breakdown/</link>
+      <pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/my-homelab-hardware-breakdown/</guid>
+      <description>A look at the hardware running my homelab — an HP DL380 G6 I got for free, its specs, its tradeoffs, and what I&amp;#39;d buy if I had to start over.</description>
+    </item>
+  </channel>
+</rss>
