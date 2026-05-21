@@ -5,3 +5,26 @@
   data-cf-beacon='{"token": "9388cd689b894f6b94e5ebfef3be7a1e"}'
 ></script>
 <!-- End Cloudflare Web Analytics -->
+
+{{ if .Params.math }}
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
+/>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"
+></script>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false },
+      ],
+    })
+  "
+></script>
+{{ end }}

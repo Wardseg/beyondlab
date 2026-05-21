@@ -65,6 +65,36 @@
     }
 
 </script>
+<script
+  defer
+  src="https://static.cloudflareinsights.com/beacon.min.js"
+  data-cf-beacon='{"token": "9388cd689b894f6b94e5ebfef3be7a1e"}'
+></script>
+
+
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
+/>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"
+></script>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false },
+      ],
+    })
+  "
+></script>
+
+
 </head>
 <body id="top">
     <header class="header">
@@ -135,7 +165,7 @@
       <div class="post-description">You don&#39;t need to spend a fortune to build a capable homelab. Here&#39;s how I research, evaluate, and source hardware — and where to find the best deals.</div>
       <div class="post-meta">
 
-<span title='2026-05-21 00:00:00 +0000 UTC'>May 21, 2026</span>&nbsp;·&nbsp;<span>6 min</span>&nbsp;·&nbsp;<span>Ward</span>
+<span title='2026-05-21 00:00:00 +0000 UTC'>May 21, 2026</span>&nbsp;·&nbsp;<span>5 min</span>&nbsp;·&nbsp;<span>Ward</span>
 
 </div>
     </header> 
@@ -237,7 +267,9 @@ at average European electricity prices. A mini PC drawing 15W costs
 <strong>€15-20 per year</strong>. Over three years that&rsquo;s a €400+ difference in running
 costs — easily more than the purchase price of the hardware itself.</p>
 <p>When evaluating any piece of hardware for a homelab, always factor in:</p>
-<p>$$Annual cost = Watts × 8760 hours × electricity price per kWh$$</p>
+<p>$$
+\text{Annual cost} = \text{Watts} \times 8760 \times \text{€/kWh}
+$$</p>
 <p>For most European countries, assume €0.25-0.35 per kWh. It changes the
 calculus on &ldquo;free&rdquo; or &ldquo;cheap&rdquo; hardware very quickly.</p>
 <h2 id="my-actual-process">My actual process<a hidden class="anchor" aria-hidden="true" href="#my-actual-process">#</a></h2>
@@ -265,9 +297,6 @@ rack full of gear you&rsquo;re still figuring out.</p>
 <p><em>This post contains affiliate links. If you purchase through them I may earn a
 small commission at no extra cost to you.</em></p>
 <p><em>Next up: Why I chose Proxmox over ESXi and Hyper-V.</em></p>
-<p>For most European countries, assume €0.25-0.35 per kWh. It changes the
-calculus on &ldquo;free&rdquo; or &ldquo;cheap&rdquo; hardware very quickly.</p>
-<p>Next up: Why I chose Proxmox over ESXi and Hyper-V.*</p>
 
 
     </div>

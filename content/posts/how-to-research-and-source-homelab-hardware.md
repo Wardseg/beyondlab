@@ -2,6 +2,7 @@
 title: "How to research and source homelab hardware without breaking the bank"
 date: 2026-05-21
 draft: false
+math: true
 tags: ["homelab", "hardware", "budget", "beginners", "mini-pc", "get started"]
 description: "You don't need to spend a fortune to build a capable homelab. Here's how I research, evaluate, and source hardware — and where to find the best deals."
 ---
@@ -124,7 +125,9 @@ costs — easily more than the purchase price of the hardware itself.
 
 When evaluating any piece of hardware for a homelab, always factor in:
 
-$$Annual cost = Watts × 8760 hours × electricity price per kWh$$
+$$
+\text{Annual cost} = \text{Watts} \times 8760 \times \text{€/kWh}
+$$
 
 For most European countries, assume €0.25-0.35 per kWh. It changes the
 calculus on "free" or "cheap" hardware very quickly.
@@ -161,8 +164,3 @@ _This post contains affiliate links. If you purchase through them I may earn a
 small commission at no extra cost to you._
 
 _Next up: Why I chose Proxmox over ESXi and Hyper-V._
-
-For most European countries, assume €0.25-0.35 per kWh. It changes the
-calculus on "free" or "cheap" hardware very quickly.
-
-Next up: Why I chose Proxmox over ESXi and Hyper-V.\*

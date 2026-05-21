@@ -6,8 +6,15 @@
     <description>Recent content in Hardware on BeyondLab</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 20 May 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 21 May 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/hardware/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to research and source homelab hardware without breaking the bank</title>
+      <link>http://localhost:1313/posts/how-to-research-and-source-homelab-hardware/</link>
+      <pubDate>Thu, 21 May 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/how-to-research-and-source-homelab-hardware/</guid>
+      <description>You don&amp;#39;t need to spend a fortune to build a capable homelab. Here&amp;#39;s how I research, evaluate, and source hardware — and where to find the best deals.</description>
+    </item>
     <item>
       <title>My homelab hardware: the HP DL380 G6 breakdown</title>
       <link>http://localhost:1313/posts/my-homelab-hardware-breakdown/</link>
