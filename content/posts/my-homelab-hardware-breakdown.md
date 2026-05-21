@@ -111,4 +111,4 @@ Mine haven't yet.
 _This post contains affiliate links. If you purchase through them I may earn a
 small commission at no extra cost to you._
 
-_Next up: Why I chose Proxmox over ESXi and Hyper-V._
+_Next up: how to research and source homelab hardware._

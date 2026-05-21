@@ -163,4 +163,5 @@ rack full of gear you're still figuring out.
 _This post contains affiliate links. If you purchase through them I may earn a
 small commission at no extra cost to you._
 
-_Next up: Why I chose Proxmox over ESXi and Hyper-V._
+_
+Next up: Why I chose Proxmox over ESXi and Hyper-V._
