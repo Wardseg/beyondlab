@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="noindex, nofollow">
-<title>My homelab hardware: the HP DL380 G6 breakdown | BeyondLab</title>
-<meta name="keywords" content="homelab, hardware, proxmox, dl380, server">
-<meta name="description" content="A look at the hardware running my homelab — an HP DL380 G6 I got for free, its specs, its tradeoffs, and what I&#39;d buy if I had to start over.">
+<title>How to research and source homelab hardware without breaking the bank | BeyondLab</title>
+<meta name="keywords" content="homelab, hardware, budget, beginners, mini-pc, get started">
+<meta name="description" content="You don&#39;t need to spend a fortune to build a capable homelab. Here&#39;s how I research, evaluate, and source hardware — and where to find the best deals.">
 <meta name="author" content="Ward">
-<link rel="canonical" href="http://localhost:1313/posts/my-homelab-hardware-breakdown/">
+<link rel="canonical" href="http://localhost:1313/posts/how-to-research-and-source-homelab-hardware/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.ab52b39f20557d68984d3d8aa6ebcd7860b24cfacbc0377abbca0e608cad38fa.css" integrity="sha256-q1KznyBVfWiYTT2KpuvNeGCyTPrLwDd6u8oOYIytOPo=" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://localhost:1313/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
@@ -18,7 +18,7 @@
 <link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/my-homelab-hardware-breakdown/">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/how-to-research-and-source-homelab-hardware/">
 <noscript>
     <style>
         #theme-toggle,
@@ -130,118 +130,144 @@
     </svg>
 </nav>
       <h1 class="post-title entry-hint-parent">
-        My homelab hardware: the HP DL380 G6 breakdown
+        How to research and source homelab hardware without breaking the bank
       </h1>
-      <div class="post-description">A look at the hardware running my homelab — an HP DL380 G6 I got for free, its specs, its tradeoffs, and what I&#39;d buy if I had to start over.</div>
+      <div class="post-description">You don&#39;t need to spend a fortune to build a capable homelab. Here&#39;s how I research, evaluate, and source hardware — and where to find the best deals.</div>
       <div class="post-meta">
 
-<span title='2026-05-20 00:00:00 +0000 UTC'>May 20, 2026</span>&nbsp;·&nbsp;<span>4 min</span>&nbsp;·&nbsp;<span>Ward</span>
+<span title='2026-05-21 00:00:00 +0000 UTC'>May 21, 2026</span>&nbsp;·&nbsp;<span>6 min</span>&nbsp;·&nbsp;<span>Ward</span>
 
 </div>
     </header> 
-    <div class="post-content md-content"><p>Every homelab starts somewhere. Mine started with a conversation with a friend in bar who
-had a server sitting in his garage collecting dust and no interest in running it
-anymore.</p>
-<p>&ldquo;You want it?&rdquo;</p>
-<p>That&rsquo;s how I ended up with an HP DL380 G6 — and honestly, it&rsquo;s been both one of
-the best and most humbling pieces of kit I&rsquo;ve ever worked with.</p>
-<h2 id="the-specs">The specs<a hidden class="anchor" aria-hidden="true" href="#the-specs">#</a></h2>
-<p>This is what&rsquo;s running everything:</p>
-<table>
-  <thead>
-      <tr>
-          <th>Component</th>
-          <th>Spec</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>CPU</td>
-          <td>8 x Intel Xeon E5520 @ 2.27GHz (1 Socket)</td>
-      </tr>
-      <tr>
-          <td>RAM</td>
-          <td>36 GiB</td>
-      </tr>
-      <tr>
-          <td>Storage</td>
-          <td>1TB (internal) + 16TB Synology RS814 NAS</td>
-      </tr>
-      <tr>
-          <td>Hypervisor</td>
-          <td>Proxmox VE 9.1</td>
-      </tr>
-      <tr>
-          <td>Kernel</td>
-          <td>Linux 6.17.13-2-pve</td>
-      </tr>
-      <tr>
-          <td>Boot Mode</td>
-          <td>Legacy BIOS</td>
-      </tr>
-  </tbody>
-</table>
-<p>At idle it&rsquo;s only using about 3% CPU and 24% RAM — which tells you just how
-much headroom there is for running virtual machines and containers. For a homelab
-workload it&rsquo;s genuinely overkill, in the best possible way.</p>
-<p>The 1TB internal storage handles the Proxmox installation and VM disks. The 16TB
-comes from a Synology RS814 — a 1U rack-mount NAS that fits neatly alongside the
-DL380 and handles everything else: backups, media, documents, and anything that
-needs bulk storage. The RS814 runs Synology DSM and has been rock solid — quiet,
-efficient, and completely set-and-forget compared to the server itself.</p>
-<h2 id="what-its-actually-like-to-live-with">What it&rsquo;s actually like to live with<a hidden class="anchor" aria-hidden="true" href="#what-its-actually-like-to-live-with">#</a></h2>
-<p>Here&rsquo;s the honest part.</p>
-<p>The DL380 G6 is a <strong>2U rack server</strong> built for a data centre, not a spare room.
-It is large, heavy, and it will remind you of its presence constantly.</p>
-<p><strong>Noise</strong> — it is loud. Not &ldquo;bit of a hum&rdquo; loud. Jet engine on startup loud,
-settling to a persistent fan roar that you learn to tune out if it&rsquo;s in a
-separate room. In a living space it would be genuinely unpleasant.</p>
-<p><strong>Power draw</strong> — it is not efficient by modern standards. This is a machine from
-2009 designed when power consumption was less of a concern. Running it 24/7 has
-a real cost on your electricity bill that&rsquo;s worth factoring in before you commit.</p>
-<p><strong>Size and weight</strong> — it needs rack space or a very sturdy shelf. Moving it alone
-is a workout.</p>
-<p>None of this was a dealbreaker for me because I got it for free. But if I&rsquo;d had
-to pay for it and account for ongoing power costs, the calculus would look
-very different.</p>
-<h2 id="what-id-buy-if-i-were-starting-from-scratch">What I&rsquo;d buy if I were starting from scratch<a hidden class="anchor" aria-hidden="true" href="#what-id-buy-if-i-were-starting-from-scratch">#</a></h2>
-<p>This is the question I get asked most often when people see the setup.</p>
-<p>Honestly? I wouldn&rsquo;t buy a rack server at all.</p>
-<p>I&rsquo;d look seriously at <strong>mini PCs</strong> — something like the
-<a href="https://www.amazon.com/dp/B0BV5GKBK7/?tag=beyondlab-20">Beelink SER5</a>.
-Small, quiet, power efficient, and cheap enough that you can buy two or three
-and set them up as a <strong><a href="https://www.proxmox.com">Proxmox</a> cluster</strong>. You get
-high availability, redundancy, and a setup that won&rsquo;t overheat a small room or
-double your electricity bill.</p>
-<p>The tradeoffs are less raw RAM and fewer PCIe slots — but for most homelab
-workloads that doesn&rsquo;t matter. You&rsquo;re running services, not rendering video.</p>
-<p>If you want something in between — more power than a mini PC, less bulk than a
-rack server — small form factor machines like the
-<a href="https://www.amazon.com/s?k=hp+elitedesk+mini&amp;tag=beyondlab-20">HP EliteDesk</a> or
-<a href="https://www.amazon.com/s?k=dell+optiplex+micro&amp;tag=beyondlab-20">Dell OptiPlex</a>
-are worth looking at. Common, cheap second-hand, and very capable with a RAM upgrade.</p>
-<h2 id="what-actually-runs-on-it">What actually runs on it<a hidden class="anchor" aria-hidden="true" href="#what-actually-runs-on-it">#</a></h2>
-<p>Right now the DL380 is running <a href="https://www.proxmox.com">Proxmox VE</a> with a
-handful of VMs and LXC containers:</p>
+    <div class="post-content md-content"><p>One of the biggest myths about homelabs is that they&rsquo;re expensive. They don&rsquo;t
+have to be. With a bit of patience and the right approach, you can build a
+capable setup for a fraction of the cost of buying new.</p>
+<p>Here&rsquo;s how I do it.</p>
+<h2 id="start-with-what-you-actually-need">Start with what you actually need<a hidden class="anchor" aria-hidden="true" href="#start-with-what-you-actually-need">#</a></h2>
+<p>Before you buy anything, get clear on what you want to run. This sounds obvious
+but it&rsquo;s where most people go wrong — they buy hardware first and figure out the
+use case later.</p>
+<p>Ask yourself:</p>
 <ul>
-<li><strong>OPNsense</strong> — the firewall and network brain</li>
-<li><strong>MkDocs</strong> — internal documentation</li>
-<li>Various LXC containers for self-hosted services</li>
+<li>How many virtual machines or containers do I want to run simultaneously?</li>
+<li>Do I need ECC RAM? (Important for a NAS or anything storing critical data)</li>
+<li>How much does power consumption matter? (Running 24/7 adds up fast)</li>
+<li>Do I have space for a rack server, or do I need something small and quiet?</li>
 </ul>
-<p>Current load is minimal — 3% CPU, 24% RAM — which leaves plenty of room to keep
-adding services without worrying about resources.</p>
-<h2 id="the-verdict">The verdict<a hidden class="anchor" aria-hidden="true" href="#the-verdict">#</a></h2>
-<p>The HP DL380 G6 is a capable, reliable machine that taught me a lot. Getting it
-for free made every tradeoff worth it. If I had to pay market rate and cover
-ongoing power costs, I&rsquo;d make a different choice.</p>
-<p>But that&rsquo;s the thing about homelabs — the best hardware is the hardware you
-actually have access to. Start with what you&rsquo;ve got, learn from it, and upgrade
-when the limitations actually start to hurt.</p>
-<p>Mine haven&rsquo;t yet.</p>
+<p>Your answers will point you toward the right category of hardware before you
+spend a single euro.</p>
+<h2 id="the-second-hand-market-is-your-best-friend">The second-hand market is your best friend<a hidden class="anchor" aria-hidden="true" href="#the-second-hand-market-is-your-best-friend">#</a></h2>
+<p>Most homelab hardware doesn&rsquo;t need to be new. Enterprise gear in particular is
+built to last — servers and networking equipment that have been running in data
+centres for years often have plenty of life left in them.</p>
+<p>The best places to look:</p>
+<ul>
+<li><strong>eBay</strong> — the biggest second-hand market for IT hardware globally. Search
+specifically, compare sold listings to understand real market value, and factor
+in shipping costs.</li>
+<li><strong>Amazon</strong> — worth checking for refurbished listings, especially for
+<a href="https://www.amazon.com/s?k=mini+pc+refurbished&amp;tag=beyondlab-20">mini PCs</a>
+where certified refurbished options often come with a warranty.</li>
+<li><strong>Local marketplaces</strong> — Facebook Marketplace, Craigslist, and local
+classifieds are goldmines for people offloading old IT equipment cheaply.
+Collection in person means no shipping costs and you can inspect before you buy.</li>
+<li><strong>IT liquidators and auctions</strong> — businesses regularly offload entire server
+rooms when upgrading. The deals can be incredible but you need to know what
+you&rsquo;re looking at.</li>
+</ul>
+<p>I&rsquo;ve bought multiple items second-hand over the years and never had a bad
+experience — but that comes down to knowing what to check before committing.</p>
+<h2 id="what-to-look-for-in-used-hardware">What to look for in used hardware<a hidden class="anchor" aria-hidden="true" href="#what-to-look-for-in-used-hardware">#</a></h2>
+<p><strong>For servers and desktops:</strong></p>
+<ul>
+<li>Check the age of the hardware. Anything over 10 years old needs careful
+evaluation — not because it won&rsquo;t work, but because power consumption and
+performance per watt starts to look less attractive against modern alternatives.</li>
+<li>Look up the TDP (thermal design power) of the CPU. An old dual-socket Xeon
+server might have 16 cores but draw 300W at idle. A modern
+<a href="https://www.amazon.com/dp/B0BV5GKBK7/?tag=beyondlab-20">Beelink SER5 mini PC</a>
+draws 15-20W and handles most homelab workloads comfortably.</li>
+<li>Check RAM type and maximum supported. DDR3 servers are cheap but RAM
+upgrades are limited.</li>
+<li>Verify the seller has tested it recently and ideally can show it posting
+(booting to BIOS).</li>
+</ul>
+<p><strong>For storage:</strong></p>
+<p>This is the most critical check. Always verify drive health before trusting
+any used storage with your data.</p>
+<p>I use a USB dock that accepts both 2.5&quot; and 3.5&quot; drives — you can find
+reliable ones like the
+<a href="https://www.amazon.com/s?k=usb+hdd+dock+2.5+3.5&amp;tag=beyondlab-20">Inateck USB 3.0 HDD Dock</a>
+for under $30. Plug the drive in and run
+<a href="https://crystalmark.info/en/software/crystaldiskinfo/">CrystalDiskInfo</a>
+(Windows) or <code>smartctl</code> (Linux) to check the SMART data.</p>
+<p>Key things to look for in SMART data:</p>
+<ul>
+<li><strong>Reallocated Sectors Count</strong> — should be 0. Any value above 0 means the
+drive has bad sectors that have been remapped.</li>
+<li><strong>Pending Sectors</strong> — sectors waiting to be remapped. A red flag.</li>
+<li><strong>Power On Hours</strong> — tells you how long the drive has been running.
+Enterprise drives regularly exceed 50,000 hours, but it&rsquo;s useful context.</li>
+<li><strong>Spin Retry Count</strong> — for spinning drives, any non-zero value warrants caution.</li>
+</ul>
+<p>If the SMART data looks clean, the drive is almost certainly fine. If it shows
+reallocated sectors or pending sectors, walk away regardless of the price.</p>
+<h2 id="new-budget-options-worth-considering">New budget options worth considering<a hidden class="anchor" aria-hidden="true" href="#new-budget-options-worth-considering">#</a></h2>
+<p>Sometimes second-hand isn&rsquo;t the right call — especially if you want a warranty,
+lower power consumption, or something quiet enough to run in a living space.</p>
+<p><strong>Mini PCs</strong> have become the go-to recommendation for new homelabbers on a budget:</p>
+<ul>
+<li><a href="https://www.amazon.com/dp/B0BV5GKBK7/?tag=beyondlab-20">Beelink SER5</a> —
+AMD Ryzen 5, 16-32GB RAM, NVMe SSD, fanless-quiet, around $200-300.
+Runs Proxmox beautifully.</li>
+<li><a href="https://www.amazon.com/dp/B0C77CWN2P/?tag=beyondlab-20">Beelink SER5 MAX</a> —
+step up to Ryzen 7 if you want more headroom for VMs.</li>
+<li><a href="https://www.amazon.com/s?k=hp+elitedesk+800+g4+mini&amp;tag=beyondlab-20">HP EliteDesk Mini</a> —
+slightly older but incredibly cheap second-hand, well supported, easy to
+upgrade RAM and storage.</li>
+<li><a href="https://www.amazon.com/s?k=dell+optiplex+micro+7060&amp;tag=beyondlab-20">Dell OptiPlex Micro</a> —
+same category as EliteDesk, very common in the enterprise refurb market.</li>
+</ul>
+<p>Buy two of any of these and you have the foundation for a proper
+<a href="https://www.proxmox.com">Proxmox cluster</a> with high availability.</p>
+<h2 id="the-cost-per-watt-calculation">The cost per watt calculation<a hidden class="anchor" aria-hidden="true" href="#the-cost-per-watt-calculation">#</a></h2>
+<p>This is the mental model that changed how I think about hardware purchases.</p>
+<p>A server that draws 150W costs roughly <strong>€150-200 per year</strong> to run 24/7
+at average European electricity prices. A mini PC drawing 15W costs
+<strong>€15-20 per year</strong>. Over three years that&rsquo;s a €400+ difference in running
+costs — easily more than the purchase price of the hardware itself.</p>
+<p>When evaluating any piece of hardware for a homelab, always factor in:</p>
+<p>$$Annual cost = Watts × 8760 hours × electricity price per kWh$$</p>
+<p>For most European countries, assume €0.25-0.35 per kWh. It changes the
+calculus on &ldquo;free&rdquo; or &ldquo;cheap&rdquo; hardware very quickly.</p>
+<h2 id="my-actual-process">My actual process<a hidden class="anchor" aria-hidden="true" href="#my-actual-process">#</a></h2>
+<p>When I&rsquo;m evaluating a potential purchase:</p>
+<ol>
+<li><strong>Define the use case</strong> — what will this actually run?</li>
+<li><strong>Check eBay sold listings</strong> — what has this actually sold for recently?</li>
+<li><strong>Look up power consumption</strong> — what will it cost to run per year?</li>
+<li><strong>Check reviews and forums</strong> — has anyone run Proxmox or Linux on this
+specific model? Any known issues?</li>
+<li><strong>Verify drive health</strong> — for anything with storage included</li>
+<li><strong>Factor in total cost of ownership</strong> — purchase price + running costs
+over 3 years</li>
+</ol>
+<p>Most of my gear came to me for free. But even free hardware isn&rsquo;t free if it
+costs you €200/year in electricity to run.</p>
+<h2 id="the-bottom-line">The bottom line<a hidden class="anchor" aria-hidden="true" href="#the-bottom-line">#</a></h2>
+<p>The best homelab hardware is the hardware that fits your use case, your space,
+your noise tolerance, and your electricity bill — not necessarily the most
+powerful thing you can find for cheap.</p>
+<p>Start small, buy smart, and upgrade when you actually hit a limitation.
+You&rsquo;ll learn more from a humble setup you understand completely than from a
+rack full of gear you&rsquo;re still figuring out.</p>
 <hr>
 <p><em>This post contains affiliate links. If you purchase through them I may earn a
 small commission at no extra cost to you.</em></p>
 <p><em>Next up: Why I chose Proxmox over ESXi and Hyper-V.</em></p>
+<p>For most European countries, assume €0.25-0.35 per kWh. It changes the
+calculus on &ldquo;free&rdquo; or &ldquo;cheap&rdquo; hardware very quickly.</p>
+<p>Next up: Why I chose Proxmox over ESXi and Hyper-V.*</p>
 
 
     </div>
@@ -250,18 +276,15 @@ small commission at no extra cost to you.</em></p>
       <ul class="post-tags">
         <li><a href="http://localhost:1313/tags/homelab/">Homelab</a></li>
         <li><a href="http://localhost:1313/tags/hardware/">Hardware</a></li>
-        <li><a href="http://localhost:1313/tags/proxmox/">Proxmox</a></li>
-        <li><a href="http://localhost:1313/tags/dl380/">Dl380</a></li>
-        <li><a href="http://localhost:1313/tags/server/">Server</a></li>
+        <li><a href="http://localhost:1313/tags/budget/">Budget</a></li>
+        <li><a href="http://localhost:1313/tags/beginners/">Beginners</a></li>
+        <li><a href="http://localhost:1313/tags/mini-pc/">Mini-Pc</a></li>
+        <li><a href="http://localhost:1313/tags/get-started/">Get Started</a></li>
       </ul>
 <nav class="paginav">
-  <a class="prev" href="http://localhost:1313/posts/how-to-research-and-source-homelab-hardware/">
-    <span class="title">« Prev</span>
-    <span>How to research and source homelab hardware without breaking the bank</span>
-  </a>
-  <a class="next" href="http://localhost:1313/posts/what-is-a-homelab-and-why-you-need-one/">
+  <a class="next" href="http://localhost:1313/posts/my-homelab-hardware-breakdown/">
     <span class="title">Next »</span>
-    <span>What is a homelab and why you need one</span>
+    <span>My homelab hardware: the HP DL380 G6 breakdown</span>
   </a>
 </nav>
 
@@ -330,11 +353,13 @@ small commission at no extra cost to you.</em></p>
     <div class="toc-sticky">
       <p class="toc-title">On this page</p><nav id="TableOfContents">
   <ul>
-    <li><a href="#the-specs">The specs</a></li>
-    <li><a href="#what-its-actually-like-to-live-with">What it&rsquo;s actually like to live with</a></li>
-    <li><a href="#what-id-buy-if-i-were-starting-from-scratch">What I&rsquo;d buy if I were starting from scratch</a></li>
-    <li><a href="#what-actually-runs-on-it">What actually runs on it</a></li>
-    <li><a href="#the-verdict">The verdict</a></li>
+    <li><a href="#start-with-what-you-actually-need">Start with what you actually need</a></li>
+    <li><a href="#the-second-hand-market-is-your-best-friend">The second-hand market is your best friend</a></li>
+    <li><a href="#what-to-look-for-in-used-hardware">What to look for in used hardware</a></li>
+    <li><a href="#new-budget-options-worth-considering">New budget options worth considering</a></li>
+    <li><a href="#the-cost-per-watt-calculation">The cost per watt calculation</a></li>
+    <li><a href="#my-actual-process">My actual process</a></li>
+    <li><a href="#the-bottom-line">The bottom line</a></li>
   </ul>
 </nav>
     </div>
