@@ -6,14 +6,49 @@
     <description>Recent content on BeyondLab</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 21 May 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 25 May 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>What is a firewall and why your home network needs one</title>
+      <link>http://localhost:1313/posts/what-is-a-firewall/</link>
+      <pubDate>Mon, 25 May 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/what-is-a-firewall/</guid>
+      <description>Most home networks rely on a basic router with no real firewall. Here&amp;#39;s what a firewall actually does, why it matters, and why I run OPNsense.</description>
+    </item>
+    <item>
+      <title>How I sourced enterprise hardware for cheap</title>
+      <link>http://localhost:1313/posts/sourcing-enterprise-hardware-cheap/</link>
+      <pubDate>Sun, 24 May 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/sourcing-enterprise-hardware-cheap/</guid>
+      <description>Enterprise hardware is surprisingly affordable if you know where to look and what to check. Here&amp;#39;s how to find great deals without getting burned.</description>
+    </item>
+    <item>
+      <title>Installing Proxmox from scratch — step by step</title>
+      <link>http://localhost:1313/posts/installing-proxmox-from-scratch/</link>
+      <pubDate>Sat, 23 May 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/installing-proxmox-from-scratch/</guid>
+      <description>A complete walkthrough for installing Proxmox VE on bare metal — from downloading the ISO to logging into the web interface for the first time.</description>
+    </item>
+    <item>
+      <title>Why I chose Proxmox over ESXi and Hyper-V</title>
+      <link>http://localhost:1313/posts/why-i-chose-proxmox/</link>
+      <pubDate>Fri, 22 May 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/why-i-chose-proxmox/</guid>
+      <description>There are several hypervisors to choose from when building a homelab. Here&amp;#39;s why I landed on Proxmox — and why I haven&amp;#39;t looked back.</description>
+    </item>
     <item>
       <title>How to research and source homelab hardware without breaking the bank</title>
       <link>http://localhost:1313/posts/how-to-research-and-source-homelab-hardware/</link>
       <pubDate>Thu, 21 May 2026 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/posts/how-to-research-and-source-homelab-hardware/</guid>
       <description>You don&amp;#39;t need to spend a fortune to build a capable homelab. Here&amp;#39;s how I research, evaluate, and source hardware — and where to find the best deals.</description>
+    </item>
+    <item>
+      <title>Planning your self-hosted services — what to run and why</title>
+      <link>http://localhost:1313/posts/planning-your-self-hosted-services/</link>
+      <pubDate>Thu, 21 May 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/planning-your-self-hosted-services/</guid>
+      <description>Before you start spinning up containers, it helps to know what you actually want to run. Here&amp;#39;s how to think about planning your self-hosted stack — and the resource that changed how I approach it.</description>
     </item>
     <item>
       <title>My homelab hardware: the HP DL380 G6 breakdown</title>

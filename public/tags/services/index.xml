@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Services on BeyondLab</title>
+    <link>http://localhost:1313/tags/services/</link>
+    <description>Recent content in Services on BeyondLab</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 21 May 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/services/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Planning your self-hosted services — what to run and why</title>
+      <link>http://localhost:1313/posts/planning-your-self-hosted-services/</link>
+      <pubDate>Thu, 21 May 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/planning-your-self-hosted-services/</guid>
+      <description>Before you start spinning up containers, it helps to know what you actually want to run. Here&amp;#39;s how to think about planning your self-hosted stack — and the resource that changed how I approach it.</description>
+    </item>
+  </channel>
+</rss>

@@ -16,6 +16,13 @@
       <description>You don&amp;#39;t need to spend a fortune to build a capable homelab. Here&amp;#39;s how I research, evaluate, and source hardware — and where to find the best deals.</description>
     </item>
     <item>
+      <title>Planning your self-hosted services — what to run and why</title>
+      <link>http://localhost:1313/posts/planning-your-self-hosted-services/</link>
+      <pubDate>Thu, 21 May 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/planning-your-self-hosted-services/</guid>
+      <description>Before you start spinning up containers, it helps to know what you actually want to run. Here&amp;#39;s how to think about planning your self-hosted stack — and the resource that changed how I approach it.</description>
+    </item>
+    <item>
       <title>My homelab hardware: the HP DL380 G6 breakdown</title>
       <link>http://localhost:1313/posts/my-homelab-hardware-breakdown/</link>
       <pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate>

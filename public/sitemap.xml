@@ -2,6 +2,9 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>http://localhost:1313/tags/beginner/</loc>
+    <lastmod>2026-05-21T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/tags/beginners/</loc>
     <lastmod>2026-05-21T00:00:00+00:00</lastmod>
   </url><url>
@@ -26,7 +29,19 @@
     <loc>http://localhost:1313/tags/mini-pc/</loc>
     <lastmod>2026-05-21T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>http://localhost:1313/posts/planning-your-self-hosted-services/</loc>
+    <lastmod>2026-05-21T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/posts/</loc>
+    <lastmod>2026-05-21T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/self-hosted/</loc>
+    <lastmod>2026-05-21T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/services/</loc>
+    <lastmod>2026-05-21T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/subscriptions/</loc>
     <lastmod>2026-05-21T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/</loc>
@@ -43,9 +58,6 @@
   </url><url>
     <loc>http://localhost:1313/tags/server/</loc>
     <lastmod>2026-05-20T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/beginner/</loc>
-    <lastmod>2026-05-19T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/networking/</loc>
     <lastmod>2026-05-19T00:00:00+00:00</lastmod>

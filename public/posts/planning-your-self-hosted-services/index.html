@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Planning your self-hosted services — what to run and why | BeyondLab</title>
+<meta name="keywords" content="homelab, self-hosted, services, beginner, subscriptions">
+<meta name="description" content="Before you start spinning up containers, it helps to know what you actually want to run. Here&#39;s how to think about planning your self-hosted stack — and the resource that changed how I approach it.">
+<meta name="author" content="Ward">
+<link rel="canonical" href="http://localhost:1313/posts/planning-your-self-hosted-services/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.ab52b39f20557d68984d3d8aa6ebcd7860b24cfacbc0377abbca0e608cad38fa.css" integrity="sha256-q1KznyBVfWiYTT2KpuvNeGCyTPrLwDd6u8oOYIytOPo=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/planning-your-self-hosted-services/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<script
+  defer
+  src="https://static.cloudflareinsights.com/beacon.min.js"
+  data-cf-beacon='{"token": "9388cd689b894f6b94e5ebfef3be7a1e"}'
+></script>
+
+
+
+
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="BeyondLab (Alt + H)">BeyondLab</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="http://localhost:1313/posts" title="Blog">
+                    <span>Blog</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+<div class="post-with-toc">
+  <article class="post-single">
+    <header class="post-header">
+      <nav class="breadcrumbs" role="navigation" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+            <a href="/posts/">Posts</a>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+        <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+</nav>
+      <h1 class="post-title entry-hint-parent">
+        Planning your self-hosted services — what to run and why
+      </h1>
+      <div class="post-description">Before you start spinning up containers, it helps to know what you actually want to run. Here&#39;s how to think about planning your self-hosted stack — and the resource that changed how I approach it.</div>
+      <div class="post-meta">
+
+<span title='2026-05-21 00:00:00 +0000 UTC'>May 21, 2026</span>&nbsp;·&nbsp;<span>4 min</span>&nbsp;·&nbsp;<span>Ward</span>
+
+</div>
+    </header> 
+    <div class="post-content md-content"><p>I&rsquo;ll be honest — I didn&rsquo;t plan my self-hosted stack.</p>
+<p>I started with one service, liked the feeling of owning my own data, and just kept
+adding things. Vaultwarden, then MkDocs, then more. Recently I added Karakeep.
+Before that something else. Each one solving a problem, replacing a subscription,
+or just satisfying curiosity.</p>
+<p>It works — but looking back, a bit of upfront planning would have saved me time,
+avoided some redundancy, and helped me think more clearly about what I actually
+needed versus what just seemed interesting at the time.</p>
+<p>If you&rsquo;re starting out, this post is the planning guide I wish I&rsquo;d had.</p>
+<h2 id="start-with-the-why">Start with the why<a hidden class="anchor" aria-hidden="true" href="#start-with-the-why">#</a></h2>
+<p>Before you look at any software, ask yourself why you want to self-host.</p>
+<p>The reasons matter because they point you toward different categories of services:</p>
+<p><strong>Cutting subscriptions</strong> — If your motivation is getting off the subscription
+treadmill, focus on direct replacements for things you&rsquo;re already paying for.
+Cloud storage, password managers, photo backups, media streaming. Every service
+you replace is money back in your pocket every month.</p>
+<p><strong>Privacy and data ownership</strong> — If you don&rsquo;t like your data sitting on someone
+else&rsquo;s servers, focus on services that handle sensitive information. Notes,
+documents, calendars, contacts, passwords.</p>
+<p><strong>Learning</strong> — If you want to build skills, pick services that challenge you
+technically. A reverse proxy, a monitoring stack, a Git server. The complexity
+is the point.</p>
+<p><strong>All of the above</strong> — which is where most people end up, honestly.</p>
+<p>My starting point was subscriptions. But curiosity took over quickly and the
+learning became just as motivating.</p>
+<h2 id="the-resource-you-need-to-bookmark">The resource you need to bookmark<a hidden class="anchor" aria-hidden="true" href="#the-resource-you-need-to-bookmark">#</a></h2>
+<p>Before you decide what to run, spend some time with
+<a href="https://github.com/awesome-selfhosted/awesome-selfhosted">Awesome Self-Hosted</a>.</p>
+<p>It&rsquo;s a curated list of hundreds of self-hosted applications, organised by
+category — everything from password managers and photo galleries to media
+servers, note-taking apps, and monitoring tools. It&rsquo;s the most comprehensive
+overview of what&rsquo;s possible and it&rsquo;s kept up to date by the community.</p>
+<p>Don&rsquo;t try to read it all at once. Use it as a reference. When you have a
+specific need — &ldquo;I want to replace Google Photos&rdquo; — go to the Photo Galleries
+section and compare your options.</p>
+<h2 id="think-in-categories-not-individual-apps">Think in categories, not individual apps<a hidden class="anchor" aria-hidden="true" href="#think-in-categories-not-individual-apps">#</a></h2>
+<p>A useful way to approach your stack is to think in categories rather than
+jumping straight to specific apps:</p>
+<p><strong>Replace your cloud storage</strong></p>
+<ul>
+<li><a href="https://nextcloud.com">Nextcloud</a> — the most feature-complete option.
+Files, calendar, contacts, notes, and more in one platform.</li>
+<li><a href="https://www.seafile.com">Seafile</a> — faster and simpler if you just need
+file sync.</li>
+</ul>
+<p><strong>Replace your password manager</strong></p>
+<ul>
+<li><a href="https://github.com/dani-garcia/vaultwarden">Vaultwarden</a> — a lightweight,
+self-hosted implementation of the Bitwarden API. This is what I run.
+Compatible with all official Bitwarden clients.</li>
+</ul>
+<p><strong>Replace Google Photos</strong></p>
+<ul>
+<li><a href="https://immich.app">Immich</a> — the best self-hosted photo and video backup
+solution right now. Fast, beautiful, and actively developed.</li>
+</ul>
+<p><strong>Replace your media subscriptions</strong></p>
+<ul>
+<li><a href="https://jellyfin.org">Jellyfin</a> — free, open source media server.
+Stream your own movies, TV shows, and music anywhere.</li>
+</ul>
+<p><strong>Bookmark and read-later</strong></p>
+<ul>
+<li><a href="https://karakeep.app">Karakeep</a> — bookmark everything with a touch of AI.
+This is what I&rsquo;m currently running and genuinely enjoying.</li>
+<li><a href="https://wallabag.org">Wallabag</a> — save articles to read later, without
+the tracking.</li>
+</ul>
+<p><strong>Notes and knowledge base</strong></p>
+<ul>
+<li><a href="https://obsidian.md">Obsidian</a> — not self-hosted itself, but pairs well
+with a self-hosted sync backend.</li>
+<li><a href="https://joplinapp.org">Joplin</a> — open source note-taking with
+self-hosted sync support.</li>
+<li><a href="https://silverbullet.md">Silverbullet</a> — a newer option worth watching.</li>
+</ul>
+<p><strong>Monitoring your stack</strong></p>
+<ul>
+<li><a href="https://github.com/louislam/uptime-kuma">Uptime Kuma</a> — simple, beautiful
+uptime monitoring for your services.</li>
+<li><a href="https://grafana.com">Grafana</a> + <a href="https://prometheus.io">Prometheus</a> —
+more powerful monitoring if you want metrics and dashboards.</li>
+</ul>
+<h2 id="what-im-building-next">What I&rsquo;m building next<a hidden class="anchor" aria-hidden="true" href="#what-im-building-next">#</a></h2>
+<p>My stack is still growing. I&rsquo;m currently working on two projects that aren&rsquo;t
+quite ready to talk about yet — a note-taking app with AI integration, and a
+custom dashboard to monitor all my services. Both born from the same itch:
+the existing tools are good, but I wanted something that fits exactly how I
+work.</p>
+<p>That&rsquo;s the thing about self-hosting. It doesn&rsquo;t stop at running other people&rsquo;s
+software. Eventually you start building your own.</p>
+<h2 id="practical-advice-before-you-start">Practical advice before you start<a hidden class="anchor" aria-hidden="true" href="#practical-advice-before-you-start">#</a></h2>
+<p><strong>Don&rsquo;t run everything at once.</strong> Pick two or three services that solve a real
+problem for you. Get them stable, understand how they work, then add more.</p>
+<p><strong>Think about maintenance.</strong> Every service you run needs occasional updates,
+backups, and troubleshooting. A leaner stack is easier to maintain than a
+sprawling one.</p>
+<p><strong>Check resource requirements.</strong> Some services are lightweight (Vaultwarden
+uses almost no RAM). Others are hungry (Nextcloud, Immich). Know what your
+hardware can handle.</p>
+<p><strong>Have a backup strategy from day one.</strong> If you&rsquo;re replacing Google Drive with
+Nextcloud, your data is only as safe as your backup setup. Don&rsquo;t skip this step.</p>
+<h2 id="the-honest-summary">The honest summary<a hidden class="anchor" aria-hidden="true" href="#the-honest-summary">#</a></h2>
+<p>Self-hosting is one of the most satisfying things you can do as someone who
+cares about technology. Owning your stack, controlling your data, and replacing
+subscriptions one by one — it compounds over time in ways that are hard to
+explain until you&rsquo;ve done it.</p>
+<p>But it starts with knowing what you want to build. Take twenty minutes with
+<a href="https://github.com/awesome-selfhosted/awesome-selfhosted">Awesome Self-Hosted</a>,
+think about the subscriptions you resent most, and start there.</p>
+<hr>
+<p><em>Next up: Why I chose Proxmox over ESXi and Hyper-V.</em></p>
+
+
+    </div>
+
+    <footer class="post-footer">
+      <ul class="post-tags">
+        <li><a href="http://localhost:1313/tags/homelab/">Homelab</a></li>
+        <li><a href="http://localhost:1313/tags/self-hosted/">Self-Hosted</a></li>
+        <li><a href="http://localhost:1313/tags/services/">Services</a></li>
+        <li><a href="http://localhost:1313/tags/beginner/">Beginner</a></li>
+        <li><a href="http://localhost:1313/tags/subscriptions/">Subscriptions</a></li>
+      </ul>
+<nav class="paginav">
+  <a class="prev" href="http://localhost:1313/posts/how-to-research-and-source-homelab-hardware/">
+    <span class="title">« Prev</span>
+    <span>How to research and source homelab hardware without breaking the bank</span>
+  </a>
+  <a class="next" href="http://localhost:1313/posts/my-homelab-hardware-breakdown/">
+    <span class="title">Next »</span>
+    <span>My homelab hardware: the HP DL380 G6 breakdown</span>
+  </a>
+</nav>
+
+    </footer><div class="giscus-container">
+  <script
+    src="https://giscus.app/client.js"
+    data-repo="wardseg/beyondlab"
+    data-repo-id="R_kgDOSfzEHQ"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOSfzEHc4C9Z8n"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="1"
+    data-input-position="bottom"
+    data-theme="transparent_dark"
+    data-lang="en"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+<script>
+  function setGiscusTheme(theme) {
+    const iframe = document.querySelector("iframe.giscus-frame");
+    if (!iframe) return;
+    iframe.contentWindow.postMessage(
+      { giscus: { setConfig: { theme: theme } } },
+      "https://giscus.app",
+    );
+  }
+
+  function getPreferredTheme() {
+    const stored = localStorage.getItem("pref-theme");
+    if (stored === "light") return "light";
+    if (stored === "dark") return "transparent_dark";
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "transparent_dark"
+      : "light";
+  }
+
+  window.addEventListener(
+    "message",
+    function (e) {
+      if (e.origin !== "https://giscus.app") return;
+      if (
+        e.data?.giscus?.discussion !== undefined ||
+        e.data?.giscus?.error !== undefined
+      )
+        return;
+      setGiscusTheme(getPreferredTheme());
+    },
+    { once: true },
+  );
+
+  const themeToggle = document.getElementById("theme-toggle");
+  if (themeToggle) {
+    themeToggle.addEventListener("click", function () {
+      setTimeout(() => setGiscusTheme(getPreferredTheme()), 100);
+    });
+  }
+</script>
+
+  </article>
+  <aside class="toc-sidebar">
+    <div class="toc-sticky">
+      <p class="toc-title">On this page</p><nav id="TableOfContents">
+  <ul>
+    <li><a href="#start-with-the-why">Start with the why</a></li>
+    <li><a href="#the-resource-you-need-to-bookmark">The resource you need to bookmark</a></li>
+    <li><a href="#think-in-categories-not-individual-apps">Think in categories, not individual apps</a></li>
+    <li><a href="#what-im-building-next">What I&rsquo;m building next</a></li>
+    <li><a href="#practical-advice-before-you-start">Practical advice before you start</a></li>
+    <li><a href="#the-honest-summary">The honest summary</a></li>
+  </ul>
+</nav>
+    </div>
+  </aside>
+</div>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">BeyondLab</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

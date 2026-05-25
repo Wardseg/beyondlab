@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Security on BeyondLab</title>
+    <link>http://localhost:1313/tags/security/</link>
+    <description>Recent content in Security on BeyondLab</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 25 May 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/security/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>What is a firewall and why your home network needs one</title>
+      <link>http://localhost:1313/posts/what-is-a-firewall/</link>
+      <pubDate>Mon, 25 May 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/what-is-a-firewall/</guid>
+      <description>Most home networks rely on a basic router with no real firewall. Here&amp;#39;s what a firewall actually does, why it matters, and why I run OPNsense.</description>
+    </item>
+  </channel>
+</rss>

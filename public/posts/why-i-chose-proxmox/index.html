@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Why I chose Proxmox over ESXi and Hyper-V | BeyondLab</title>
+<meta name="keywords" content="homelab, proxmox, virtualisation, esxi, hyper-v">
+<meta name="description" content="There are several hypervisors to choose from when building a homelab. Here&#39;s why I landed on Proxmox — and why I haven&#39;t looked back.">
+<meta name="author" content="Ward">
+<link rel="canonical" href="http://localhost:1313/posts/why-i-chose-proxmox/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.ab52b39f20557d68984d3d8aa6ebcd7860b24cfacbc0377abbca0e608cad38fa.css" integrity="sha256-q1KznyBVfWiYTT2KpuvNeGCyTPrLwDd6u8oOYIytOPo=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/why-i-chose-proxmox/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<script
+  defer
+  src="https://static.cloudflareinsights.com/beacon.min.js"
+  data-cf-beacon='{"token": "9388cd689b894f6b94e5ebfef3be7a1e"}'
+></script>
+
+
+
+
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="BeyondLab (Alt + H)">BeyondLab</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="http://localhost:1313/posts" title="Blog">
+                    <span>Blog</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+<div class="post-with-toc">
+  <article class="post-single">
+    <header class="post-header">
+      <nav class="breadcrumbs" role="navigation" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+            <a href="/posts/">Posts</a>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+        <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+</nav>
+      <h1 class="post-title entry-hint-parent">
+        Why I chose Proxmox over ESXi and Hyper-V
+      </h1>
+      <div class="post-description">There are several hypervisors to choose from when building a homelab. Here&#39;s why I landed on Proxmox — and why I haven&#39;t looked back.</div>
+      <div class="post-meta">
+
+<span title='2026-05-22 00:00:00 +0000 UTC'>May 22, 2026</span>&nbsp;·&nbsp;<span>4 min</span>&nbsp;·&nbsp;<span>Ward</span>
+
+</div>
+    </header> 
+    <div class="post-content md-content"><p>When you decide to build a homelab around virtualisation, the first real decision
+you face is which hypervisor to run. It sounds like a technical detail but it
+shapes everything that comes after — how you manage VMs, how you access the
+interface, what features you get for free, and how much you&rsquo;ll be fighting the
+platform instead of learning from it.</p>
+<p>I evaluated three options seriously: VMware ESXi, Microsoft Hyper-V, and Proxmox VE.</p>
+<p>I chose Proxmox. Here&rsquo;s why.</p>
+<h2 id="what-is-a-hypervisor">What is a hypervisor?<a hidden class="anchor" aria-hidden="true" href="#what-is-a-hypervisor">#</a></h2>
+<p>A hypervisor is the software layer that sits between your physical hardware and
+your virtual machines. It allocates CPU, RAM, storage and networking resources
+to each VM, keeps them isolated from each other, and lets you run multiple
+operating systems on a single physical machine simultaneously.</p>
+<p>There are two types:</p>
+<ul>
+<li><strong>Type 1 (bare metal)</strong> — runs directly on the hardware, no host OS underneath.
+ESXi, Proxmox, and Hyper-V (as a role on Windows Server) all fall here.</li>
+<li><strong>Type 2 (hosted)</strong> — runs on top of an existing OS. VirtualBox and VMware
+Workstation are examples. Fine for desktop use, not for a homelab server.</li>
+</ul>
+<p>For a homelab you want Type 1. The question is which one.</p>
+<h2 id="vmware-esxi">VMware ESXi<a hidden class="anchor" aria-hidden="true" href="#vmware-esxi">#</a></h2>
+<p>ESXi was for a long time the gold standard for homelab virtualisation. It&rsquo;s what
+runs in enterprise data centres, it has excellent documentation, and the community
+knowledge base is enormous.</p>
+<p>The problem is licensing.</p>
+<p>VMware was acquired by Broadcom in 2023, and the licensing model changed
+dramatically. The free ESXi tier — which homelabbers had relied on for years —
+was discontinued. What was once free now requires a subscription that makes no
+sense for a home environment.</p>
+<p>For professional development or a lab that mirrors a real enterprise environment,
+ESXi still makes sense. For a personal homelab where cost matters, it&rsquo;s hard to
+justify.</p>
+<h2 id="microsoft-hyper-v">Microsoft Hyper-V<a hidden class="anchor" aria-hidden="true" href="#microsoft-hyper-v">#</a></h2>
+<p>Hyper-V is Microsoft&rsquo;s hypervisor, built into Windows Server and available as a
+standalone role. If you&rsquo;re already running Windows Server for other reasons, it&rsquo;s
+a reasonable choice — it&rsquo;s well integrated, familiar to anyone with a Windows
+background, and the tooling is solid.</p>
+<p>The downsides for a homelab context:</p>
+<ul>
+<li>You need a Windows Server license, which isn&rsquo;t free</li>
+<li>The management interface (Hyper-V Manager or Windows Admin Center) is more
+complex than it needs to be for a simple setup</li>
+<li>Linux VM support has improved significantly but Windows-centric tooling still
+shows</li>
+</ul>
+<p>If your day job is heavily Microsoft-focused and you want to practice in a
+familiar environment, Hyper-V is worth considering. For a general purpose
+homelab, it adds unnecessary friction.</p>
+<h2 id="proxmox-ve">Proxmox VE<a hidden class="anchor" aria-hidden="true" href="#proxmox-ve">#</a></h2>
+<p>Proxmox Virtual Environment is a free, open-source hypervisor based on Debian
+Linux and KVM. It combines full VM support (via KVM) with lightweight container
+support (via LXC) in a single platform, managed through a clean web interface.</p>
+<p>It&rsquo;s what I run, and it&rsquo;s what most serious homelabbers run.</p>
+<p>Here&rsquo;s why it wins for a homelab context:</p>
+<p><strong>It&rsquo;s completely free.</strong> There&rsquo;s a paid subscription tier for enterprise support
+and access to the stable update repository, but everything works perfectly on
+the free tier. You can add the community repository and get updates without paying
+anything. For a homelab, the free tier is all you need.</p>
+<p><strong>The web interface is excellent.</strong> You get a full, capable management interface
+in your browser — create VMs, manage storage, monitor resources, configure
+networking, take snapshots. All without installing any additional management
+software.</p>
+<p><strong>LXC containers are a game changer.</strong> Unlike ESXi which only does full VMs,
+Proxmox lets you run LXC containers alongside VMs. Containers share the host
+kernel, use a fraction of the RAM a full VM would need, and start in seconds.
+For lightweight services like a DNS resolver, a documentation server, or a
+monitoring tool, an LXC container is far more efficient than a full VM.</p>
+<p><strong>The community is massive.</strong> Proxmox has one of the most active homelab
+communities around. Whatever you&rsquo;re trying to do, someone has done it and
+written about it. The official forums, Reddit, and YouTube are full of guides
+and walkthroughs.</p>
+<p><strong>It runs on almost anything.</strong> Old enterprise servers, mini PCs, repurposed
+desktops — Proxmox installs cleanly on almost any x86 hardware. My HP DL380 G6
+runs it without a single issue despite being a 2009 machine.</p>
+<h2 id="the-one-downside-worth-mentioning">The one downside worth mentioning<a hidden class="anchor" aria-hidden="true" href="#the-one-downside-worth-mentioning">#</a></h2>
+<p>Proxmox has a subscription nag — a popup in the web interface reminding you to
+subscribe. It&rsquo;s cosmetic and doesn&rsquo;t limit functionality, but it exists. You can
+remove it with a one-line script that&rsquo;s widely documented in the community.</p>
+<p>It&rsquo;s a minor annoyance, not a dealbreaker.</p>
+<h2 id="my-verdict">My verdict<a hidden class="anchor" aria-hidden="true" href="#my-verdict">#</a></h2>
+<p>For a homelab in 2026, Proxmox is the clear choice:</p>
+<ul>
+<li>Free and fully featured</li>
+<li>Excellent web interface</li>
+<li>VMs and containers in one platform</li>
+<li>Huge community</li>
+<li>Runs on virtually any hardware</li>
+</ul>
+<p>ESXi made sense when it was free. Hyper-V makes sense in a Windows-heavy
+environment. For everything else — Proxmox.</p>
+<hr>
+<p><em>Next up: Installing Proxmox from scratch — a step by step guide.</em></p>
+
+
+    </div>
+
+    <footer class="post-footer">
+      <ul class="post-tags">
+        <li><a href="http://localhost:1313/tags/homelab/">Homelab</a></li>
+        <li><a href="http://localhost:1313/tags/proxmox/">Proxmox</a></li>
+        <li><a href="http://localhost:1313/tags/virtualisation/">Virtualisation</a></li>
+        <li><a href="http://localhost:1313/tags/esxi/">Esxi</a></li>
+        <li><a href="http://localhost:1313/tags/hyper-v/">Hyper-V</a></li>
+      </ul>
+<nav class="paginav">
+  <a class="prev" href="http://localhost:1313/posts/installing-proxmox-from-scratch/">
+    <span class="title">« Prev</span>
+    <span>Installing Proxmox from scratch — step by step</span>
+  </a>
+  <a class="next" href="http://localhost:1313/posts/how-to-research-and-source-homelab-hardware/">
+    <span class="title">Next »</span>
+    <span>How to research and source homelab hardware without breaking the bank</span>
+  </a>
+</nav>
+
+    </footer><div class="giscus-container">
+  <script
+    src="https://giscus.app/client.js"
+    data-repo="wardseg/beyondlab"
+    data-repo-id="R_kgDOSfzEHQ"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOSfzEHc4C9Z8n"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="1"
+    data-input-position="bottom"
+    data-theme="transparent_dark"
+    data-lang="en"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+<script>
+  function setGiscusTheme(theme) {
+    const iframe = document.querySelector("iframe.giscus-frame");
+    if (!iframe) return;
+    iframe.contentWindow.postMessage(
+      { giscus: { setConfig: { theme: theme } } },
+      "https://giscus.app",
+    );
+  }
+
+  function getPreferredTheme() {
+    const stored = localStorage.getItem("pref-theme");
+    if (stored === "light") return "light";
+    if (stored === "dark") return "transparent_dark";
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "transparent_dark"
+      : "light";
+  }
+
+  window.addEventListener(
+    "message",
+    function (e) {
+      if (e.origin !== "https://giscus.app") return;
+      if (
+        e.data?.giscus?.discussion !== undefined ||
+        e.data?.giscus?.error !== undefined
+      )
+        return;
+      setGiscusTheme(getPreferredTheme());
+    },
+    { once: true },
+  );
+
+  const themeToggle = document.getElementById("theme-toggle");
+  if (themeToggle) {
+    themeToggle.addEventListener("click", function () {
+      setTimeout(() => setGiscusTheme(getPreferredTheme()), 100);
+    });
+  }
+</script>
+
+  </article>
+  <aside class="toc-sidebar">
+    <div class="toc-sticky">
+      <p class="toc-title">On this page</p><nav id="TableOfContents">
+  <ul>
+    <li><a href="#what-is-a-hypervisor">What is a hypervisor?</a></li>
+    <li><a href="#vmware-esxi">VMware ESXi</a></li>
+    <li><a href="#microsoft-hyper-v">Microsoft Hyper-V</a></li>
+    <li><a href="#proxmox-ve">Proxmox VE</a></li>
+    <li><a href="#the-one-downside-worth-mentioning">The one downside worth mentioning</a></li>
+    <li><a href="#my-verdict">My verdict</a></li>
+  </ul>
+</nav>
+    </div>
+  </aside>
+</div>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">BeyondLab</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

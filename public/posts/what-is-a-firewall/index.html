@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>What is a firewall and why your home network needs one | BeyondLab</title>
+<meta name="keywords" content="networking, firewall, opnsense, security, beginners">
+<meta name="description" content="Most home networks rely on a basic router with no real firewall. Here&#39;s what a firewall actually does, why it matters, and why I run OPNsense.">
+<meta name="author" content="Ward">
+<link rel="canonical" href="http://localhost:1313/posts/what-is-a-firewall/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.ab52b39f20557d68984d3d8aa6ebcd7860b24cfacbc0377abbca0e608cad38fa.css" integrity="sha256-q1KznyBVfWiYTT2KpuvNeGCyTPrLwDd6u8oOYIytOPo=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/what-is-a-firewall/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<script
+  defer
+  src="https://static.cloudflareinsights.com/beacon.min.js"
+  data-cf-beacon='{"token": "9388cd689b894f6b94e5ebfef3be7a1e"}'
+></script>
+
+
+
+
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="BeyondLab (Alt + H)">BeyondLab</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="http://localhost:1313/posts" title="Blog">
+                    <span>Blog</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+<div class="post-with-toc">
+  <article class="post-single">
+    <header class="post-header">
+      <nav class="breadcrumbs" role="navigation" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+            <a href="/posts/">Posts</a>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+        <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+</nav>
+      <h1 class="post-title entry-hint-parent">
+        What is a firewall and why your home network needs one
+      </h1>
+      <div class="post-description">Most home networks rely on a basic router with no real firewall. Here&#39;s what a firewall actually does, why it matters, and why I run OPNsense.</div>
+      <div class="post-meta">
+
+<span title='2026-05-25 00:00:00 +0000 UTC'>May 25, 2026</span>&nbsp;·&nbsp;<span>4 min</span>&nbsp;·&nbsp;<span>Ward</span>
+
+</div>
+    </header> 
+    <div class="post-content md-content"><p>Most people&rsquo;s home network looks like this: an ISP-provided router sitting in
+the corner, doing everything — routing, DHCP, DNS, NAT, and whatever passes for
+a firewall in consumer networking gear.</p>
+<p>It works. Until it doesn&rsquo;t.</p>
+<p>If you&rsquo;re running a homelab, self-hosting services, or just care about what&rsquo;s
+happening on your network, a proper firewall is one of the most valuable things
+you can add to your setup. And with tools like OPNsense, it&rsquo;s more accessible
+than ever.</p>
+<h2 id="what-does-a-firewall-actually-do">What does a firewall actually do?<a hidden class="anchor" aria-hidden="true" href="#what-does-a-firewall-actually-do">#</a></h2>
+<p>At its core, a firewall inspects network traffic and decides what to allow and
+what to block — based on rules you define.</p>
+<p>Your ISP router has a basic firewall built in. It blocks unsolicited inbound
+connections from the internet (which is why you need to set up port forwarding
+to expose services). But that&rsquo;s about where it stops. It doesn&rsquo;t:</p>
+<ul>
+<li>Inspect traffic between devices on your network</li>
+<li>Let you segment devices into isolated groups (VLANs)</li>
+<li>Give you visibility into what&rsquo;s happening on your network</li>
+<li>Block outbound connections from compromised devices</li>
+<li>Let you control DNS at a network level</li>
+</ul>
+<p>A proper firewall does all of this and more.</p>
+<h2 id="why-your-home-network-needs-one">Why your home network needs one<a hidden class="anchor" aria-hidden="true" href="#why-your-home-network-needs-one">#</a></h2>
+<p><strong>Device segmentation</strong> — do you have IoT devices on your network? Smart bulbs,
+cameras, thermostats? These devices are notoriously poorly secured. A firewall
+lets you put them on a separate VLAN with no access to your main network. If one
+gets compromised, it can&rsquo;t touch your NAS or your PCs.</p>
+<p><strong>Visibility</strong> — most people have no idea what their devices are doing on the
+network. A firewall with logging shows you every connection — which devices are
+phoning home, what DNS queries are being made, where traffic is going.</p>
+<p><strong>DNS control</strong> — run your DNS resolver through the firewall and you can block
+ads, trackers, and malicious domains for every device on your network, without
+installing anything on individual devices.</p>
+<p><strong>Controlled exposure</strong> — if you&rsquo;re self-hosting services, a firewall lets you
+control exactly what&rsquo;s accessible from where. Expose specific services on specific
+ports to specific sources. Everything else gets dropped.</p>
+<p><strong>Learning</strong> — understanding how firewall rules work, how VLANs are configured,
+and how traffic flows through a network is knowledge that transfers directly to
+enterprise environments. Your homelab firewall is essentially the same technology
+running in corporate networks, just at a smaller scale.</p>
+<h2 id="isp-router-vs-dedicated-firewall">ISP router vs dedicated firewall<a hidden class="anchor" aria-hidden="true" href="#isp-router-vs-dedicated-firewall">#</a></h2>
+<p>Your ISP router is designed for simplicity, not control. It&rsquo;s a consumer device
+with a simplified interface that hides most of what&rsquo;s happening underneath.</p>
+<p>A dedicated firewall running something like OPNsense gives you:</p>
+<table>
+  <thead>
+      <tr>
+          <th>Feature</th>
+          <th>ISP Router</th>
+          <th>OPNsense</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Stateful packet inspection</td>
+          <td>Basic</td>
+          <td>Full</td>
+      </tr>
+      <tr>
+          <td>VLAN support</td>
+          <td>Rarely</td>
+          <td>Yes</td>
+      </tr>
+      <tr>
+          <td>DNS resolver</td>
+          <td>Basic</td>
+          <td>Full (Unbound)</td>
+      </tr>
+      <tr>
+          <td>Traffic visibility</td>
+          <td>Minimal</td>
+          <td>Detailed logging</td>
+      </tr>
+      <tr>
+          <td>Intrusion detection</td>
+          <td>No</td>
+          <td>Yes (Suricata)</td>
+      </tr>
+      <tr>
+          <td>VPN server</td>
+          <td>Sometimes</td>
+          <td>Yes (WireGuard, OpenVPN)</td>
+      </tr>
+      <tr>
+          <td>Granular rules</td>
+          <td>No</td>
+          <td>Yes</td>
+      </tr>
+      <tr>
+          <td>Updates</td>
+          <td>ISP controlled</td>
+          <td>You control</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="why-i-chose-opnsense">Why I chose OPNsense<a hidden class="anchor" aria-hidden="true" href="#why-i-chose-opnsense">#</a></h2>
+<p>OPNsense is a free, open-source firewall and router platform based on FreeBSD.
+It&rsquo;s what I run as a VM on Proxmox, and it handles all the routing and firewalling
+for my network.</p>
+<p>The alternatives worth knowing about:</p>
+<p><strong>pfSense</strong> — OPNsense&rsquo;s predecessor and the most well-known open-source firewall
+platform. OPNsense was forked from pfSense in 2015. Both are excellent; OPNsense
+has a more modern interface and more frequent security updates.</p>
+<p><strong>VyOS</strong> — more focused on routing than firewalling, better suited if you have
+complex routing requirements.</p>
+<p><strong>Mikrotik RouterOS</strong> — commercial but cheap, very powerful, steep learning curve.</p>
+<p>For a homelab, OPNsense is the most approachable option with the best combination
+of features, community support, and documentation.</p>
+<h2 id="running-opnsense-as-a-vm">Running OPNsense as a VM<a hidden class="anchor" aria-hidden="true" href="#running-opnsense-as-a-vm">#</a></h2>
+<p>One of the things I like most about my setup is that OPNsense runs as a virtual
+machine inside Proxmox. This means:</p>
+<ul>
+<li>Easy snapshots before making risky config changes</li>
+<li>Simple backup and restore</li>
+<li>No dedicated hardware needed</li>
+<li>Can be migrated if I change hardware</li>
+</ul>
+<p>The one consideration is that the network interfaces need to be passed through
+correctly — OPNsense needs to see the physical NICs or virtual bridges to route
+traffic properly. It&rsquo;s a bit more complex to set up than a dedicated appliance,
+but the flexibility is worth it.</p>
+<h2 id="where-to-start">Where to start<a hidden class="anchor" aria-hidden="true" href="#where-to-start">#</a></h2>
+<p>If you&rsquo;re new to firewalls and networking, OPNsense can feel overwhelming at
+first. The interface has a lot of options.</p>
+<p>The good news is you don&rsquo;t need to configure everything at once. A basic setup —
+WAN interface, LAN interface, default rules — gets you a working firewall in
+under an hour. You can add complexity gradually as you learn.</p>
+<p>My next post walks through setting up OPNsense in a Proxmox VM from scratch —
+including the network configuration that trips most people up the first time.</p>
+<hr>
+<p><em>Next up: Running OPNsense in a Proxmox VM — full setup guide.</em></p>
+
+
+    </div>
+
+    <footer class="post-footer">
+      <ul class="post-tags">
+        <li><a href="http://localhost:1313/tags/networking/">Networking</a></li>
+        <li><a href="http://localhost:1313/tags/firewall/">Firewall</a></li>
+        <li><a href="http://localhost:1313/tags/opnsense/">Opnsense</a></li>
+        <li><a href="http://localhost:1313/tags/security/">Security</a></li>
+        <li><a href="http://localhost:1313/tags/beginners/">Beginners</a></li>
+      </ul>
+<nav class="paginav">
+  <a class="next" href="http://localhost:1313/posts/sourcing-enterprise-hardware-cheap/">
+    <span class="title">Next »</span>
+    <span>How I sourced enterprise hardware for cheap</span>
+  </a>
+</nav>
+
+    </footer><div class="giscus-container">
+  <script
+    src="https://giscus.app/client.js"
+    data-repo="wardseg/beyondlab"
+    data-repo-id="R_kgDOSfzEHQ"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOSfzEHc4C9Z8n"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="1"
+    data-input-position="bottom"
+    data-theme="transparent_dark"
+    data-lang="en"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+<script>
+  function setGiscusTheme(theme) {
+    const iframe = document.querySelector("iframe.giscus-frame");
+    if (!iframe) return;
+    iframe.contentWindow.postMessage(
+      { giscus: { setConfig: { theme: theme } } },
+      "https://giscus.app",
+    );
+  }
+
+  function getPreferredTheme() {
+    const stored = localStorage.getItem("pref-theme");
+    if (stored === "light") return "light";
+    if (stored === "dark") return "transparent_dark";
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "transparent_dark"
+      : "light";
+  }
+
+  window.addEventListener(
+    "message",
+    function (e) {
+      if (e.origin !== "https://giscus.app") return;
+      if (
+        e.data?.giscus?.discussion !== undefined ||
+        e.data?.giscus?.error !== undefined
+      )
+        return;
+      setGiscusTheme(getPreferredTheme());
+    },
+    { once: true },
+  );
+
+  const themeToggle = document.getElementById("theme-toggle");
+  if (themeToggle) {
+    themeToggle.addEventListener("click", function () {
+      setTimeout(() => setGiscusTheme(getPreferredTheme()), 100);
+    });
+  }
+</script>
+
+  </article>
+  <aside class="toc-sidebar">
+    <div class="toc-sticky">
+      <p class="toc-title">On this page</p><nav id="TableOfContents">
+  <ul>
+    <li><a href="#what-does-a-firewall-actually-do">What does a firewall actually do?</a></li>
+    <li><a href="#why-your-home-network-needs-one">Why your home network needs one</a></li>
+    <li><a href="#isp-router-vs-dedicated-firewall">ISP router vs dedicated firewall</a></li>
+    <li><a href="#why-i-chose-opnsense">Why I chose OPNsense</a></li>
+    <li><a href="#running-opnsense-as-a-vm">Running OPNsense as a VM</a></li>
+    <li><a href="#where-to-start">Where to start</a></li>
+  </ul>
+</nav>
+    </div>
+  </aside>
+</div>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">BeyondLab</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

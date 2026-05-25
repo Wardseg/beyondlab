@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Installing Proxmox from scratch — step by step | BeyondLab</title>
+<meta name="keywords" content="homelab, proxmox, virtualisation, guide, beginners">
+<meta name="description" content="A complete walkthrough for installing Proxmox VE on bare metal — from downloading the ISO to logging into the web interface for the first time.">
+<meta name="author" content="Ward">
+<link rel="canonical" href="http://localhost:1313/posts/installing-proxmox-from-scratch/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.ab52b39f20557d68984d3d8aa6ebcd7860b24cfacbc0377abbca0e608cad38fa.css" integrity="sha256-q1KznyBVfWiYTT2KpuvNeGCyTPrLwDd6u8oOYIytOPo=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/installing-proxmox-from-scratch/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<script
+  defer
+  src="https://static.cloudflareinsights.com/beacon.min.js"
+  data-cf-beacon='{"token": "9388cd689b894f6b94e5ebfef3be7a1e"}'
+></script>
+
+
+
+
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="BeyondLab (Alt + H)">BeyondLab</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="http://localhost:1313/posts" title="Blog">
+                    <span>Blog</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+<div class="post-with-toc">
+  <article class="post-single">
+    <header class="post-header">
+      <nav class="breadcrumbs" role="navigation" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+            <a href="/posts/">Posts</a>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+        <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+</nav>
+      <h1 class="post-title entry-hint-parent">
+        Installing Proxmox from scratch — step by step
+      </h1>
+      <div class="post-description">A complete walkthrough for installing Proxmox VE on bare metal — from downloading the ISO to logging into the web interface for the first time.</div>
+      <div class="post-meta">
+
+<span title='2026-05-23 00:00:00 +0000 UTC'>May 23, 2026</span>&nbsp;·&nbsp;<span>4 min</span>&nbsp;·&nbsp;<span>Ward</span>
+
+</div>
+    </header> 
+    <div class="post-content md-content"><p>Proxmox is one of those tools that looks more intimidating than it is. The
+installation is straightforward, the web interface is clean, and within an hour
+of starting you can have your first virtual machine running.</p>
+<p>This guide walks through the full process from scratch.</p>
+<h2 id="what-youll-need">What you&rsquo;ll need<a hidden class="anchor" aria-hidden="true" href="#what-youll-need">#</a></h2>
+<ul>
+<li>A machine to install Proxmox on (dedicated hardware or a repurposed PC)</li>
+<li>A USB drive (at least 2GB) for the installer</li>
+<li>A network connection (wired preferred for the install)</li>
+<li>A separate machine to access the web interface from</li>
+</ul>
+<p>Proxmox runs best on dedicated hardware — it&rsquo;s a Type 1 hypervisor designed to
+be the only thing running on the machine. Don&rsquo;t install it alongside another OS.</p>
+<h2 id="step-1--download-the-proxmox-iso">Step 1 — Download the Proxmox ISO<a hidden class="anchor" aria-hidden="true" href="#step-1--download-the-proxmox-iso">#</a></h2>
+<p>Go to <a href="https://www.proxmox.com/en/downloads">proxmox.com/downloads</a> and download
+the latest Proxmox VE ISO. At the time of writing that&rsquo;s Proxmox VE 9.x.</p>
+<h2 id="step-2--create-a-bootable-usb-drive">Step 2 — Create a bootable USB drive<a hidden class="anchor" aria-hidden="true" href="#step-2--create-a-bootable-usb-drive">#</a></h2>
+<p>You&rsquo;ll need to write the ISO to a USB drive. The best tool for this is
+<a href="https://rufus.ie">Rufus</a> on Windows or <a href="https://etcher.balena.io">Balena Etcher</a>
+on any platform.</p>
+<p>In Rufus:</p>
+<ol>
+<li>Select your USB drive</li>
+<li>Select the Proxmox ISO</li>
+<li>Leave everything else as default</li>
+<li>Click Start</li>
+</ol>
+<p>This will erase everything on the USB drive, so make sure there&rsquo;s nothing
+important on it.</p>
+<h2 id="step-3--boot-from-usb">Step 3 — Boot from USB<a hidden class="anchor" aria-hidden="true" href="#step-3--boot-from-usb">#</a></h2>
+<p>Insert the USB drive into your server and boot from it. You may need to press
+F11, F12, or Delete during startup to access the boot menu — this varies by
+motherboard.</p>
+<p>Select the USB drive from the boot menu.</p>
+<h2 id="step-4--run-the-proxmox-installer">Step 4 — Run the Proxmox installer<a hidden class="anchor" aria-hidden="true" href="#step-4--run-the-proxmox-installer">#</a></h2>
+<p>The Proxmox installer boots into a graphical interface. Work through the steps:</p>
+<p><strong>License agreement</strong> — accept it and continue.</p>
+<p><strong>Target disk</strong> — select the drive you want to install Proxmox on. This will be
+wiped completely. If you have multiple drives, choose carefully.</p>
+<p><strong>Location and timezone</strong> — set your country and timezone.</p>
+<p><strong>Password and email</strong> — set the root password for the Proxmox host. Use
+something strong and store it in your password manager. The email is used for
+system alerts.</p>
+<p><strong>Network configuration</strong> — this is the most important step:</p>
+<ul>
+<li>Select your network interface (usually the wired one)</li>
+<li>Set a static IP address for the Proxmox host — something like <code>192.168.1.10</code></li>
+<li>Set the correct gateway (your router&rsquo;s IP, usually <code>192.168.1.1</code>)</li>
+<li>Set DNS — you can use <code>1.1.1.1</code> for now</li>
+<li>Set the hostname — something like <code>pve.yourdomain.local</code></li>
+</ul>
+<p><strong>Review and install</strong> — check everything looks correct and click Install.</p>
+<p>The installation takes 5-10 minutes. The machine will reboot when it&rsquo;s done.</p>
+<h2 id="step-5--access-the-web-interface">Step 5 — Access the web interface<a hidden class="anchor" aria-hidden="true" href="#step-5--access-the-web-interface">#</a></h2>
+<p>Once the machine has rebooted, open a browser on another machine on the same
+network and go to:</p>
+<p>https://YOUR_PROXMOX_IP:8006</p>
+<p>For example: <code>https://192.168.1.10:8006</code></p>
+<p>You&rsquo;ll get a certificate warning — this is expected since Proxmox uses a
+self-signed certificate by default. Accept it and continue.</p>
+<p>Log in with:</p>
+<ul>
+<li>Username: <code>root</code></li>
+<li>Password: the password you set during installation</li>
+<li>Realm: <code>Linux PAM standard authentication</code></li>
+</ul>
+<p>You&rsquo;re in.</p>
+<h2 id="step-6--remove-the-subscription-nag-optional">Step 6 — Remove the subscription nag (optional)<a hidden class="anchor" aria-hidden="true" href="#step-6--remove-the-subscription-nag-optional">#</a></h2>
+<p>Proxmox shows a popup on login reminding you to subscribe. It doesn&rsquo;t affect
+functionality but it&rsquo;s annoying. To remove it, open the Shell from the
+Proxmox web interface and run:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sed -Ezi.bak <span style="color:#e6db74">&#34;s/(Ext.Msg.show\(\{[[:space:]]+title: gettext\(&#39;No valid sub)/void\(\{ \/\/\1/g&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  systemctl restart pveproxy.service
+</span></span></code></pre></div><p>Refresh the browser and the nag is gone.</p>
+<h2 id="step-7--add-the-community-repository">Step 7 — Add the community repository<a hidden class="anchor" aria-hidden="true" href="#step-7--add-the-community-repository">#</a></h2>
+<p>By default Proxmox points to its enterprise repository which requires a
+subscription. Switch to the community repository so you can update freely:</p>
+<p>In the web interface go to:
+<strong>Node → Repositories → Add → No-Subscription</strong></p>
+<p>Then disable the enterprise repository by selecting it and clicking Disable.</p>
+<p>Now run an update:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>apt update <span style="color:#f92672">&amp;&amp;</span> apt dist-upgrade -y
+</span></span></code></pre></div><h2 id="step-8--create-your-first-vm">Step 8 — Create your first VM<a hidden class="anchor" aria-hidden="true" href="#step-8--create-your-first-vm">#</a></h2>
+<p>Click <strong>Create VM</strong> in the top right of the web interface.</p>
+<p>Work through the wizard:</p>
+<ul>
+<li><strong>General</strong> — give it a name</li>
+<li><strong>OS</strong> — upload or select an ISO (you&rsquo;ll need to upload one first via
+Storage → local → ISO Images → Upload)</li>
+<li><strong>System</strong> — leave defaults for most use cases</li>
+<li><strong>Disks</strong> — set the disk size you need</li>
+<li><strong>CPU</strong> — start with 2 cores</li>
+<li><strong>Memory</strong> — depends on the OS; 2GB is fine for most Linux VMs</li>
+<li><strong>Network</strong> — leave as default (vmbr0)</li>
+</ul>
+<p>Click Finish, then Start.</p>
+<h2 id="whats-next">What&rsquo;s next<a hidden class="anchor" aria-hidden="true" href="#whats-next">#</a></h2>
+<p>With Proxmox running you have the foundation for everything else. Your next
+steps are typically:</p>
+<ul>
+<li>Set up a network bridge for VM networking</li>
+<li>Create a few LXC containers for lightweight services</li>
+<li>Configure storage — add your NAS or additional drives</li>
+<li>Set up Proxmox Backup Server for snapshots and backups</li>
+</ul>
+<hr>
+<p><em>Next up: How I sourced enterprise hardware for cheap.</em></p>
+
+
+    </div>
+
+    <footer class="post-footer">
+      <ul class="post-tags">
+        <li><a href="http://localhost:1313/tags/homelab/">Homelab</a></li>
+        <li><a href="http://localhost:1313/tags/proxmox/">Proxmox</a></li>
+        <li><a href="http://localhost:1313/tags/virtualisation/">Virtualisation</a></li>
+        <li><a href="http://localhost:1313/tags/guide/">Guide</a></li>
+        <li><a href="http://localhost:1313/tags/beginners/">Beginners</a></li>
+      </ul>
+<nav class="paginav">
+  <a class="prev" href="http://localhost:1313/posts/sourcing-enterprise-hardware-cheap/">
+    <span class="title">« Prev</span>
+    <span>How I sourced enterprise hardware for cheap</span>
+  </a>
+  <a class="next" href="http://localhost:1313/posts/why-i-chose-proxmox/">
+    <span class="title">Next »</span>
+    <span>Why I chose Proxmox over ESXi and Hyper-V</span>
+  </a>
+</nav>
+
+    </footer><div class="giscus-container">
+  <script
+    src="https://giscus.app/client.js"
+    data-repo="wardseg/beyondlab"
+    data-repo-id="R_kgDOSfzEHQ"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOSfzEHc4C9Z8n"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="1"
+    data-input-position="bottom"
+    data-theme="transparent_dark"
+    data-lang="en"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+<script>
+  function setGiscusTheme(theme) {
+    const iframe = document.querySelector("iframe.giscus-frame");
+    if (!iframe) return;
+    iframe.contentWindow.postMessage(
+      { giscus: { setConfig: { theme: theme } } },
+      "https://giscus.app",
+    );
+  }
+
+  function getPreferredTheme() {
+    const stored = localStorage.getItem("pref-theme");
+    if (stored === "light") return "light";
+    if (stored === "dark") return "transparent_dark";
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "transparent_dark"
+      : "light";
+  }
+
+  window.addEventListener(
+    "message",
+    function (e) {
+      if (e.origin !== "https://giscus.app") return;
+      if (
+        e.data?.giscus?.discussion !== undefined ||
+        e.data?.giscus?.error !== undefined
+      )
+        return;
+      setGiscusTheme(getPreferredTheme());
+    },
+    { once: true },
+  );
+
+  const themeToggle = document.getElementById("theme-toggle");
+  if (themeToggle) {
+    themeToggle.addEventListener("click", function () {
+      setTimeout(() => setGiscusTheme(getPreferredTheme()), 100);
+    });
+  }
+</script>
+
+  </article>
+  <aside class="toc-sidebar">
+    <div class="toc-sticky">
+      <p class="toc-title">On this page</p><nav id="TableOfContents">
+  <ul>
+    <li><a href="#what-youll-need">What you&rsquo;ll need</a></li>
+    <li><a href="#step-1--download-the-proxmox-iso">Step 1 — Download the Proxmox ISO</a></li>
+    <li><a href="#step-2--create-a-bootable-usb-drive">Step 2 — Create a bootable USB drive</a></li>
+    <li><a href="#step-3--boot-from-usb">Step 3 — Boot from USB</a></li>
+    <li><a href="#step-4--run-the-proxmox-installer">Step 4 — Run the Proxmox installer</a></li>
+    <li><a href="#step-5--access-the-web-interface">Step 5 — Access the web interface</a></li>
+    <li><a href="#step-6--remove-the-subscription-nag-optional">Step 6 — Remove the subscription nag (optional)</a></li>
+    <li><a href="#step-7--add-the-community-repository">Step 7 — Add the community repository</a></li>
+    <li><a href="#step-8--create-your-first-vm">Step 8 — Create your first VM</a></li>
+    <li><a href="#whats-next">What&rsquo;s next</a></li>
+  </ul>
+</nav>
+    </div>
+  </aside>
+</div>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">BeyondLab</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
