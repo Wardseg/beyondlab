@@ -6,8 +6,15 @@
     <description>Recent content on BeyondLab</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 25 May 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 26 May 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Running OPNsense in a Proxmox VM - full setup guide</title>
+      <link>http://localhost:1313/posts/opnsense-in-proxmox-vm/</link>
+      <pubDate>Tue, 26 May 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/opnsense-in-proxmox-vm/</guid>
+      <description>A complete walkthrough for setting up OPNsense as a virtual machine inside Proxmox — including network configuration, initial setup, and first rules.</description>
+    </item>
     <item>
       <title>What is a firewall and why your home network needs one</title>
       <link>http://localhost:1313/posts/what-is-a-firewall/</link>

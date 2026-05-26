@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="noindex, nofollow">
-<title>What is a firewall and why your home network needs one | BeyondLab</title>
-<meta name="keywords" content="networking, firewall, opnsense, security, beginners">
-<meta name="description" content="Most home networks rely on a basic router with no real firewall. Here&#39;s what a firewall actually does, why it matters, and why I run OPNsense.">
+<title>Running OPNsense in a Proxmox VM - full setup guide | BeyondLab</title>
+<meta name="keywords" content="networking, opnsense, proxmox, firewall, guide">
+<meta name="description" content="A complete walkthrough for setting up OPNsense as a virtual machine inside Proxmox — including network configuration, initial setup, and first rules.">
 <meta name="author" content="Ward">
-<link rel="canonical" href="http://localhost:1313/posts/what-is-a-firewall/">
+<link rel="canonical" href="http://localhost:1313/posts/opnsense-in-proxmox-vm/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.ab52b39f20557d68984d3d8aa6ebcd7860b24cfacbc0377abbca0e608cad38fa.css" integrity="sha256-q1KznyBVfWiYTT2KpuvNeGCyTPrLwDd6u8oOYIytOPo=" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://localhost:1313/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
@@ -18,7 +18,7 @@
 <link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/what-is-a-firewall/">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/opnsense-in-proxmox-vm/">
 <noscript>
     <style>
         #theme-toggle,
@@ -139,146 +139,198 @@
     </svg>
 </nav>
       <h1 class="post-title entry-hint-parent">
-        What is a firewall and why your home network needs one
+        Running OPNsense in a Proxmox VM - full setup guide
       </h1>
-      <div class="post-description">Most home networks rely on a basic router with no real firewall. Here&#39;s what a firewall actually does, why it matters, and why I run OPNsense.</div>
+      <div class="post-description">A complete walkthrough for setting up OPNsense as a virtual machine inside Proxmox — including network configuration, initial setup, and first rules.</div>
       <div class="post-meta">
 
-<span title='2026-05-25 00:00:00 +0000 UTC'>May 25, 2026</span>&nbsp;·&nbsp;<span>4 min</span>&nbsp;·&nbsp;<span>Ward</span>
+<span title='2026-05-26 00:00:00 +0000 UTC'>May 26, 2026</span>&nbsp;·&nbsp;<span>5 min</span>&nbsp;·&nbsp;<span>Ward</span>
 
 </div>
     </header> 
-    <div class="post-content md-content"><p>Most people&rsquo;s home network looks like this: an ISP-provided router sitting in
-the corner, doing everything — routing, DHCP, DNS, NAT, and whatever passes for
-a firewall in consumer networking gear.</p>
-<p>It works. Until it doesn&rsquo;t.</p>
-<p>If you&rsquo;re running a homelab, self-hosting services, or just care about what&rsquo;s
-happening on your network, a proper firewall is one of the most valuable things
-you can add to your setup. And with tools like OPNsense, it&rsquo;s more accessible
-than ever.</p>
-<h2 id="what-does-a-firewall-actually-do">What does a firewall actually do?<a hidden class="anchor" aria-hidden="true" href="#what-does-a-firewall-actually-do">#</a></h2>
-<p>At its core, a firewall inspects network traffic and decides what to allow and
-what to block — based on rules you define.</p>
-<p>Your ISP router has a basic firewall built in. It blocks unsolicited inbound
-connections from the internet (which is why you need to set up port forwarding
-to expose services). But that&rsquo;s about where it stops. It doesn&rsquo;t:</p>
+    <div class="post-content md-content"><p>Running OPNsense as a VM inside Proxmox is one of the best decisions I made
+when building my homelab. You get a full-featured firewall with the added
+benefits of snapshots, easy backups, and no dedicated hardware required.</p>
+<p>The setup is a bit more involved than installing on bare metal — mostly because
+of how network interfaces need to be configured in Proxmox. But once you
+understand the network topology, it clicks quickly.</p>
+<p>This guide walks through the full process.</p>
+<h2 id="the-network-topology">The network topology<a hidden class="anchor" aria-hidden="true" href="#the-network-topology">#</a></h2>
+<p>Before touching anything, understand what we&rsquo;re building:</p>
+<p>Internet → Physical NIC (WAN) → OPNsense VM → Virtual Bridge (LAN) → Your devices</p>
+<p>Proxmox needs two network interfaces for OPNsense:</p>
 <ul>
-<li>Inspect traffic between devices on your network</li>
-<li>Let you segment devices into isolated groups (VLANs)</li>
-<li>Give you visibility into what&rsquo;s happening on your network</li>
-<li>Block outbound connections from compromised devices</li>
-<li>Let you control DNS at a network level</li>
+<li><strong>WAN interface</strong> — connected to your physical NIC that faces your ISP router
+or modem. OPNsense will get its upstream IP here.</li>
+<li><strong>LAN interface</strong> — a virtual bridge (vmbr) that your other VMs and LXC
+containers connect to. OPNsense acts as the gateway for this network.</li>
 </ul>
-<p>A proper firewall does all of this and more.</p>
-<h2 id="why-your-home-network-needs-one">Why your home network needs one<a hidden class="anchor" aria-hidden="true" href="#why-your-home-network-needs-one">#</a></h2>
-<p><strong>Device segmentation</strong> — do you have IoT devices on your network? Smart bulbs,
-cameras, thermostats? These devices are notoriously poorly secured. A firewall
-lets you put them on a separate VLAN with no access to your main network. If one
-gets compromised, it can&rsquo;t touch your NAS or your PCs.</p>
-<p><strong>Visibility</strong> — most people have no idea what their devices are doing on the
-network. A firewall with logging shows you every connection — which devices are
-phoning home, what DNS queries are being made, where traffic is going.</p>
-<p><strong>DNS control</strong> — run your DNS resolver through the firewall and you can block
-ads, trackers, and malicious domains for every device on your network, without
-installing anything on individual devices.</p>
-<p><strong>Controlled exposure</strong> — if you&rsquo;re self-hosting services, a firewall lets you
-control exactly what&rsquo;s accessible from where. Expose specific services on specific
-ports to specific sources. Everything else gets dropped.</p>
-<p><strong>Learning</strong> — understanding how firewall rules work, how VLANs are configured,
-and how traffic flows through a network is knowledge that transfers directly to
-enterprise environments. Your homelab firewall is essentially the same technology
-running in corporate networks, just at a smaller scale.</p>
-<h2 id="isp-router-vs-dedicated-firewall">ISP router vs dedicated firewall<a hidden class="anchor" aria-hidden="true" href="#isp-router-vs-dedicated-firewall">#</a></h2>
-<p>Your ISP router is designed for simplicity, not control. It&rsquo;s a consumer device
-with a simplified interface that hides most of what&rsquo;s happening underneath.</p>
-<p>A dedicated firewall running something like OPNsense gives you:</p>
-<table>
-  <thead>
-      <tr>
-          <th>Feature</th>
-          <th>ISP Router</th>
-          <th>OPNsense</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>Stateful packet inspection</td>
-          <td>Basic</td>
-          <td>Full</td>
-      </tr>
-      <tr>
-          <td>VLAN support</td>
-          <td>Rarely</td>
-          <td>Yes</td>
-      </tr>
-      <tr>
-          <td>DNS resolver</td>
-          <td>Basic</td>
-          <td>Full (Unbound)</td>
-      </tr>
-      <tr>
-          <td>Traffic visibility</td>
-          <td>Minimal</td>
-          <td>Detailed logging</td>
-      </tr>
-      <tr>
-          <td>Intrusion detection</td>
-          <td>No</td>
-          <td>Yes (Suricata)</td>
-      </tr>
-      <tr>
-          <td>VPN server</td>
-          <td>Sometimes</td>
-          <td>Yes (WireGuard, OpenVPN)</td>
-      </tr>
-      <tr>
-          <td>Granular rules</td>
-          <td>No</td>
-          <td>Yes</td>
-      </tr>
-      <tr>
-          <td>Updates</td>
-          <td>ISP controlled</td>
-          <td>You control</td>
-      </tr>
-  </tbody>
-</table>
-<h2 id="why-i-chose-opnsense">Why I chose OPNsense<a hidden class="anchor" aria-hidden="true" href="#why-i-chose-opnsense">#</a></h2>
-<p>OPNsense is a free, open-source firewall and router platform based on FreeBSD.
-It&rsquo;s what I run as a VM on Proxmox, and it handles all the routing and firewalling
-for my network.</p>
-<p>The alternatives worth knowing about:</p>
-<p><strong>pfSense</strong> — OPNsense&rsquo;s predecessor and the most well-known open-source firewall
-platform. OPNsense was forked from pfSense in 2015. Both are excellent; OPNsense
-has a more modern interface and more frequent security updates.</p>
-<p><strong>VyOS</strong> — more focused on routing than firewalling, better suited if you have
-complex routing requirements.</p>
-<p><strong>Mikrotik RouterOS</strong> — commercial but cheap, very powerful, steep learning curve.</p>
-<p>For a homelab, OPNsense is the most approachable option with the best combination
-of features, community support, and documentation.</p>
-<h2 id="running-opnsense-as-a-vm">Running OPNsense as a VM<a hidden class="anchor" aria-hidden="true" href="#running-opnsense-as-a-vm">#</a></h2>
-<p>One of the things I like most about my setup is that OPNsense runs as a virtual
-machine inside Proxmox. This means:</p>
+<p>If you only have one physical NIC, you can use VLANs to separate WAN and LAN
+traffic — but two NICs is simpler and recommended for a first setup.</p>
+<h2 id="step-1--configure-network-bridges-in-proxmox">Step 1 — Configure network bridges in Proxmox<a hidden class="anchor" aria-hidden="true" href="#step-1--configure-network-bridges-in-proxmox">#</a></h2>
+<p>In the Proxmox web interface go to:
+<strong>Node → Network → Create → Linux Bridge</strong></p>
+<p>Create two bridges:</p>
+<p><strong>vmbr0 — WAN bridge</strong></p>
 <ul>
-<li>Easy snapshots before making risky config changes</li>
-<li>Simple backup and restore</li>
-<li>No dedicated hardware needed</li>
-<li>Can be migrated if I change hardware</li>
+<li>Bridge ports: your physical WAN NIC (e.g. <code>enp1s0</code>)</li>
+<li>Leave CIDR and gateway empty — OPNsense will handle this</li>
 </ul>
-<p>The one consideration is that the network interfaces need to be passed through
-correctly — OPNsense needs to see the physical NICs or virtual bridges to route
-traffic properly. It&rsquo;s a bit more complex to set up than a dedicated appliance,
-but the flexibility is worth it.</p>
-<h2 id="where-to-start">Where to start<a hidden class="anchor" aria-hidden="true" href="#where-to-start">#</a></h2>
-<p>If you&rsquo;re new to firewalls and networking, OPNsense can feel overwhelming at
-first. The interface has a lot of options.</p>
-<p>The good news is you don&rsquo;t need to configure everything at once. A basic setup —
-WAN interface, LAN interface, default rules — gets you a working firewall in
-under an hour. You can add complexity gradually as you learn.</p>
-<p>My next post walks through setting up OPNsense in a Proxmox VM from scratch —
-including the network configuration that trips most people up the first time.</p>
+<p><strong>vmbr1 — LAN bridge</strong></p>
+<ul>
+<li>Bridge ports: leave empty (this is an internal virtual bridge)</li>
+<li>Set a CIDR if you want Proxmox itself on this network (e.g. <code>192.168.1.1/24</code>)</li>
+</ul>
+<p>Click Apply Configuration when done.</p>
+<h2 id="step-2--download-the-opnsense-iso">Step 2 — Download the OPNsense ISO<a hidden class="anchor" aria-hidden="true" href="#step-2--download-the-opnsense-iso">#</a></h2>
+<p>Go to <a href="https://opnsense.org/download/">opnsense.org/download</a> and download
+the latest DVD ISO image. At the time of writing that&rsquo;s OPNsense 24.x.</p>
+<p>Upload it to Proxmox:
+<strong>Storage → local → ISO Images → Upload</strong></p>
+<h2 id="step-3--create-the-opnsense-vm">Step 3 — Create the OPNsense VM<a hidden class="anchor" aria-hidden="true" href="#step-3--create-the-opnsense-vm">#</a></h2>
+<p>Click <strong>Create VM</strong> in the Proxmox web interface and work through the wizard:</p>
+<p><strong>General</strong></p>
+<ul>
+<li>Name: <code>opnsense</code></li>
+<li>VM ID: leave as default</li>
+</ul>
+<p><strong>OS</strong></p>
+<ul>
+<li>Select the OPNsense ISO you uploaded</li>
+<li>Guest OS type: Other</li>
+</ul>
+<p><strong>System</strong></p>
+<ul>
+<li>Leave defaults</li>
+</ul>
+<p><strong>Disks</strong></p>
+<ul>
+<li>Bus: VirtIO SCSI</li>
+<li>Disk size: 16GB is plenty for OPNsense itself</li>
+</ul>
+<p><strong>CPU</strong></p>
+<ul>
+<li>Cores: 2</li>
+<li>Type: host (better performance)</li>
+</ul>
+<p><strong>Memory</strong></p>
+<ul>
+<li>2048MB (2GB) minimum — 4GB recommended if you plan to run IDS/IPS</li>
+</ul>
+<p><strong>Network — first interface (WAN)</strong></p>
+<ul>
+<li>Bridge: vmbr0</li>
+<li>Model: VirtIO</li>
+</ul>
+<p>Click <strong>Add</strong> to add a second network interface:</p>
+<p><strong>Network — second interface (LAN)</strong></p>
+<ul>
+<li>Bridge: vmbr1</li>
+<li>Model: VirtIO</li>
+</ul>
+<p>Click Finish. Don&rsquo;t start the VM yet.</p>
+<h2 id="step-4--install-opnsense">Step 4 — Install OPNsense<a hidden class="anchor" aria-hidden="true" href="#step-4--install-opnsense">#</a></h2>
+<p>Start the VM and open the Console in Proxmox.</p>
+<p>The OPNsense installer boots. When prompted:</p>
+<ul>
+<li>Log in with username <code>installer</code> and password <code>opnsense</code></li>
+<li>Select <strong>Install (ZFS)</strong> or <strong>Install (UFS)</strong> — UFS is simpler for a VM</li>
+<li>Select your virtual disk</li>
+<li>Confirm and proceed</li>
+</ul>
+<p>The installation takes a few minutes. When complete, remove the ISO
+(VM → Hardware → CD/DVD → Edit → No media) and reboot.</p>
+<h2 id="step-5--initial-console-configuration">Step 5 — Initial console configuration<a hidden class="anchor" aria-hidden="true" href="#step-5--initial-console-configuration">#</a></h2>
+<p>After reboot OPNsense boots to a console menu. You need to assign interfaces
+before you can access the web interface.</p>
+<p><strong>Option 1 — Assign interfaces</strong></p>
+<p>Select option <code>1</code> from the menu.</p>
+<ul>
+<li>Do you want to configure LAGGs? → No</li>
+<li>Do you want to configure VLANs? → No (for now)</li>
+<li>WAN interface → select the interface connected to vmbr0 (usually <code>vtnet0</code>)</li>
+<li>LAN interface → select the interface connected to vmbr1 (usually <code>vtnet1</code>)</li>
+<li>Confirm the assignment</li>
+</ul>
+<p><strong>Option 2 — Set interface IP addresses</strong></p>
+<p>Select option <code>2</code> from the menu.</p>
+<p>Configure LAN:</p>
+<ul>
+<li>Select LAN interface</li>
+<li>IPv4: <code>192.168.1.1</code></li>
+<li>Subnet: <code>24</code></li>
+<li>No IPv6 for now</li>
+<li>Enable DHCP server on LAN: Yes</li>
+<li>DHCP range: <code>192.168.1.100</code> to <code>192.168.1.200</code></li>
+</ul>
+<h2 id="step-6--access-the-web-interface">Step 6 — Access the web interface<a hidden class="anchor" aria-hidden="true" href="#step-6--access-the-web-interface">#</a></h2>
+<p>From a machine connected to your LAN (or from a VM on vmbr1), open a browser
+and go to:</p>
+<p><code>https://192.168.1.1</code></p>
+<p>Log in with:</p>
+<ul>
+<li>Username: <code>root</code></li>
+<li>Password: <code>opnsense</code></li>
+</ul>
+<p>You&rsquo;re in. The setup wizard will walk you through basic configuration.</p>
+<h2 id="step-7--run-the-setup-wizard">Step 7 — Run the setup wizard<a hidden class="anchor" aria-hidden="true" href="#step-7--run-the-setup-wizard">#</a></h2>
+<p>The setup wizard covers:</p>
+<p><strong>General information</strong></p>
+<ul>
+<li>Hostname: <code>opnsense</code></li>
+<li>Domain: <code>home.arpa</code> or your local domain</li>
+<li>Primary DNS: <code>1.1.1.1</code> (you can change this later to Unbound)</li>
+</ul>
+<p><strong>Time server</strong></p>
+<ul>
+<li>Leave defaults</li>
+</ul>
+<p><strong>WAN interface</strong></p>
+<ul>
+<li>If your ISP uses DHCP (most do): select DHCP</li>
+<li>If you&rsquo;re using a static IP: configure accordingly</li>
+</ul>
+<p><strong>LAN interface</strong></p>
+<ul>
+<li>Confirm the IP you set earlier (<code>192.168.1.1</code>)</li>
+</ul>
+<p><strong>Set root password</strong></p>
+<ul>
+<li>Change from the default immediately</li>
+</ul>
+<p>Click Reload when done.</p>
+<h2 id="step-8--essential-first-steps-after-setup">Step 8 — Essential first steps after setup<a hidden class="anchor" aria-hidden="true" href="#step-8--essential-first-steps-after-setup">#</a></h2>
+<p><strong>Update OPNsense</strong></p>
+<p>Go to <strong>System → Firmware → Updates</strong> and install all available updates.
+Always do this before anything else.</p>
+<p><strong>Enable SSH (optional)</strong></p>
+<p>Go to <strong>System → Settings → Administration</strong> and enable SSH if you want
+terminal access. Restrict it to LAN only.</p>
+<p><strong>Review firewall rules</strong></p>
+<p>Go to <strong>Firewall → Rules → LAN</strong>. By default OPNsense allows all outbound
+traffic from LAN — this is fine to start with. You&rsquo;ll tighten rules as you
+learn more.</p>
+<p><strong>Set up DNS with Unbound</strong></p>
+<p>Go to <strong>Services → Unbound DNS → General</strong> and enable Unbound. This gives
+you a local DNS resolver with DNSSEC support — much better than forwarding
+everything to your ISP&rsquo;s DNS.</p>
+<h2 id="snapshot-before-you-go-further">Snapshot before you go further<a hidden class="anchor" aria-hidden="true" href="#snapshot-before-you-go-further">#</a></h2>
+<p>Now that you have a working OPNsense installation, take a snapshot in Proxmox
+before making any further changes:</p>
+<p>In Proxmox: <strong>opnsense VM → Snapshots → Take Snapshot</strong></p>
+<p>Name it <code>fresh-install</code>. This gives you a clean restore point if anything
+goes wrong while experimenting with rules and settings.</p>
+<h2 id="whats-next">What&rsquo;s next<a hidden class="anchor" aria-hidden="true" href="#whats-next">#</a></h2>
+<p>With OPNsense running you have the foundation for a properly segmented,
+controlled network. The next steps are:</p>
+<ul>
+<li>Set up VLANs to separate IoT, trusted, and lab traffic</li>
+<li>Configure DNS-over-TLS with Unbound and Cloudflare</li>
+<li>Set up Kea DHCP for proper IP management</li>
+<li>Add an IDS/IPS with Suricata</li>
+</ul>
 <hr>
-<p><em>Next up: Running OPNsense in a Proxmox VM — full setup guide.</em></p>
+<p><em>Next up: VLANs explained simply — and why I use them.</em></p>
 
 
     </div>
@@ -286,19 +338,15 @@ including the network configuration that trips most people up the first time.</p
     <footer class="post-footer">
       <ul class="post-tags">
         <li><a href="http://localhost:1313/tags/networking/">Networking</a></li>
-        <li><a href="http://localhost:1313/tags/firewall/">Firewall</a></li>
         <li><a href="http://localhost:1313/tags/opnsense/">Opnsense</a></li>
-        <li><a href="http://localhost:1313/tags/security/">Security</a></li>
-        <li><a href="http://localhost:1313/tags/beginners/">Beginners</a></li>
+        <li><a href="http://localhost:1313/tags/proxmox/">Proxmox</a></li>
+        <li><a href="http://localhost:1313/tags/firewall/">Firewall</a></li>
+        <li><a href="http://localhost:1313/tags/guide/">Guide</a></li>
       </ul>
 <nav class="paginav">
-  <a class="prev" href="http://localhost:1313/posts/opnsense-in-proxmox-vm/">
-    <span class="title">« Prev</span>
-    <span>Running OPNsense in a Proxmox VM - full setup guide</span>
-  </a>
-  <a class="next" href="http://localhost:1313/posts/sourcing-enterprise-hardware-cheap/">
+  <a class="next" href="http://localhost:1313/posts/what-is-a-firewall/">
     <span class="title">Next »</span>
-    <span>How I sourced enterprise hardware for cheap</span>
+    <span>What is a firewall and why your home network needs one</span>
   </a>
 </nav>
 
@@ -367,12 +415,17 @@ including the network configuration that trips most people up the first time.</p
     <div class="toc-sticky">
       <p class="toc-title">On this page</p><nav id="TableOfContents">
   <ul>
-    <li><a href="#what-does-a-firewall-actually-do">What does a firewall actually do?</a></li>
-    <li><a href="#why-your-home-network-needs-one">Why your home network needs one</a></li>
-    <li><a href="#isp-router-vs-dedicated-firewall">ISP router vs dedicated firewall</a></li>
-    <li><a href="#why-i-chose-opnsense">Why I chose OPNsense</a></li>
-    <li><a href="#running-opnsense-as-a-vm">Running OPNsense as a VM</a></li>
-    <li><a href="#where-to-start">Where to start</a></li>
+    <li><a href="#the-network-topology">The network topology</a></li>
+    <li><a href="#step-1--configure-network-bridges-in-proxmox">Step 1 — Configure network bridges in Proxmox</a></li>
+    <li><a href="#step-2--download-the-opnsense-iso">Step 2 — Download the OPNsense ISO</a></li>
+    <li><a href="#step-3--create-the-opnsense-vm">Step 3 — Create the OPNsense VM</a></li>
+    <li><a href="#step-4--install-opnsense">Step 4 — Install OPNsense</a></li>
+    <li><a href="#step-5--initial-console-configuration">Step 5 — Initial console configuration</a></li>
+    <li><a href="#step-6--access-the-web-interface">Step 6 — Access the web interface</a></li>
+    <li><a href="#step-7--run-the-setup-wizard">Step 7 — Run the setup wizard</a></li>
+    <li><a href="#step-8--essential-first-steps-after-setup">Step 8 — Essential first steps after setup</a></li>
+    <li><a href="#snapshot-before-you-go-further">Snapshot before you go further</a></li>
+    <li><a href="#whats-next">What&rsquo;s next</a></li>
   </ul>
 </nav>
     </div>
