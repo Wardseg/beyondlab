@@ -3,24 +3,84 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>http://localhost:1313/tags/beginner/</loc>
-    <lastmod>2026-05-21T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/beginners/</loc>
-    <lastmod>2026-05-21T00:00:00+00:00</lastmod>
+    <lastmod>2026-05-31T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/</loc>
-    <lastmod>2026-05-21T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/budget/</loc>
-    <lastmod>2026-05-21T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/get-started/</loc>
-    <lastmod>2026-05-21T00:00:00+00:00</lastmod>
+    <lastmod>2026-05-31T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/hardware/</loc>
-    <lastmod>2026-05-21T00:00:00+00:00</lastmod>
+    <lastmod>2026-05-31T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/homelab/</loc>
+    <lastmod>2026-05-31T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/how-to-start-a-homelab-in-2026/</loc>
+    <lastmod>2026-05-31T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/</loc>
+    <lastmod>2026-05-31T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/proxmox/</loc>
+    <lastmod>2026-05-31T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/self-hosting/</loc>
+    <lastmod>2026-05-31T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/</loc>
+    <lastmod>2026-05-31T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/firewall/</loc>
+    <lastmod>2026-05-26T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/guide/</loc>
+    <lastmod>2026-05-26T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/networking/</loc>
+    <lastmod>2026-05-26T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/opnsense/</loc>
+    <lastmod>2026-05-26T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/opnsense-in-proxmox-vm/</loc>
+    <lastmod>2026-05-26T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/beginners/</loc>
+    <lastmod>2026-05-25T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/security/</loc>
+    <lastmod>2026-05-25T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/what-is-a-firewall/</loc>
+    <lastmod>2026-05-25T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/budget/</loc>
+    <lastmod>2026-05-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/sourcing-enterprise-hardware-cheap/</loc>
+    <lastmod>2026-05-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/second-hand/</loc>
+    <lastmod>2026-05-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/server/</loc>
+    <lastmod>2026-05-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/installing-proxmox-from-scratch/</loc>
+    <lastmod>2026-05-23T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/virtualisation/</loc>
+    <lastmod>2026-05-23T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/esxi/</loc>
+    <lastmod>2026-05-22T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/hyper-v/</loc>
+    <lastmod>2026-05-22T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/why-i-chose-proxmox/</loc>
+    <lastmod>2026-05-22T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/get-started/</loc>
     <lastmod>2026-05-21T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/posts/how-to-research-and-source-homelab-hardware/</loc>
@@ -32,9 +92,6 @@
     <loc>http://localhost:1313/posts/planning-your-self-hosted-services/</loc>
     <lastmod>2026-05-21T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/</loc>
-    <lastmod>2026-05-21T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>http://localhost:1313/tags/self-hosted/</loc>
     <lastmod>2026-05-21T00:00:00+00:00</lastmod>
   </url><url>
@@ -44,26 +101,11 @@
     <loc>http://localhost:1313/tags/subscriptions/</loc>
     <lastmod>2026-05-21T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/</loc>
-    <lastmod>2026-05-21T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>http://localhost:1313/tags/dl380/</loc>
     <lastmod>2026-05-20T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/posts/my-homelab-hardware-breakdown/</loc>
     <lastmod>2026-05-20T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/proxmox/</loc>
-    <lastmod>2026-05-20T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/server/</loc>
-    <lastmod>2026-05-20T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/networking/</loc>
-    <lastmod>2026-05-19T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/opnsense/</loc>
-    <lastmod>2026-05-19T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/posts/what-is-a-homelab-and-why-you-need-one/</loc>
     <lastmod>2026-05-19T00:00:00+00:00</lastmod>
@@ -79,6 +121,8 @@
   </url><url>
     <loc>http://localhost:1313/posts/welcome-to-beyondlab/</loc>
     <lastmod>2026-05-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/self-host-first-5-services-docker-compose/</loc>
   </url><url>
     <loc>http://localhost:1313/categories/</loc>
   </url>

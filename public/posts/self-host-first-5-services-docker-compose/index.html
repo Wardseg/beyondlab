@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Self-Host Your First 5 Services with Docker Compose | BeyondLab</title>
+<meta name="keywords" content="docker, self-hosting, homelab, beginner, privacy, how-to">
+<meta name="description" content="Stop paying for services you can run yourself. Here are 5 genuinely useful self-hosted apps you can get running in an afternoon with Docker Compose.">
+<meta name="author" content="Ward">
+<link rel="canonical" href="http://localhost:1313/posts/self-host-first-5-services-docker-compose/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.ab52b39f20557d68984d3d8aa6ebcd7860b24cfacbc0377abbca0e608cad38fa.css" integrity="sha256-q1KznyBVfWiYTT2KpuvNeGCyTPrLwDd6u8oOYIytOPo=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/self-host-first-5-services-docker-compose/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<script
+  defer
+  src="https://static.cloudflareinsights.com/beacon.min.js"
+  data-cf-beacon='{"token": "9388cd689b894f6b94e5ebfef3be7a1e"}'
+></script>
+
+
+
+
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="BeyondLab (Alt + H)">BeyondLab</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="http://localhost:1313/posts" title="Blog">
+                    <span>Blog</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+<div class="post-with-toc">
+  <article class="post-single">
+    <header class="post-header">
+      <nav class="breadcrumbs" role="navigation" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+            <a href="/posts/">Posts</a>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+        <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+</nav>
+      <h1 class="post-title entry-hint-parent">
+        Self-Host Your First 5 Services with Docker Compose
+      </h1>
+      <div class="post-description">Stop paying for services you can run yourself. Here are 5 genuinely useful self-hosted apps you can get running in an afternoon with Docker Compose.</div>
+      <div class="post-meta">
+
+<span title='2026-05-31 00:00:00 +0000 UTC'>May 31, 2026</span>&nbsp;·&nbsp;<span>5 min</span>&nbsp;·&nbsp;<span>Ward</span>
+
+</div>
+    </header> 
+    <div class="post-content md-content"><p>Every month you&rsquo;re probably paying for at least one service you could run yourself - a password manager, cloud storage, a notes app, a photo backup tool. Self-hosting these isn&rsquo;t just cheaper; it means your data lives on hardware you control.</p>
+<p>Docker Compose makes this accessible to anyone comfortable with a terminal. You don&rsquo;t need to be a developer. You just need a machine that stays on, a basic Linux install, and this guide.</p>
+<hr>
+<h2 id="before-you-start">Before You Start<a hidden class="anchor" aria-hidden="true" href="#before-you-start">#</a></h2>
+<p><strong>What you need:</strong></p>
+<ul>
+<li>A Linux machine (a VM in Proxmox, an old PC, a mini PC - anything works)</li>
+<li>Docker and Docker Compose installed</li>
+<li>Basic comfort with SSH and a text editor</li>
+</ul>
+<p><strong>Install Docker on Ubuntu/Debian:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -fsSL https://get.docker.com | sh
+</span></span><span style="display:flex;"><span>sudo usermod -aG docker $USER
+</span></span><span style="display:flex;"><span>newgrp docker
+</span></span></code></pre></div><p>Verify it&rsquo;s working:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker run hello-world
+</span></span></code></pre></div><p><strong>File structure to keep things tidy:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cmd" data-lang="cmd"><span style="display:flex;"><span>~/homelab/
+</span></span><span style="display:flex;"><span>|--- vaultwarden/
+</span></span><span style="display:flex;"><span>|------- docker-compose.yml
+</span></span><span style="display:flex;"><span>|--- uptime-kuma/
+</span></span><span style="display:flex;"><span>|------ docker-compose.yml
+</span></span><span style="display:flex;"><span>|--- nextcloud/
+</span></span><span style="display:flex;"><span>|------- docker-compose.yml
+</span></span><span style="display:flex;"><span>...
+</span></span></code></pre></div><p>Each service gets its own folder. When something breaks, you know exactly where to look.</p>
+<hr>
+<h2 id="service-1-vaultwarden---your-own-password-manager">Service 1: Vaultwarden - Your Own Password Manager<a hidden class="anchor" aria-hidden="true" href="#service-1-vaultwarden---your-own-password-manager">#</a></h2>
+<p><strong>What it is:</strong> A lightweight, self-hosted Bitwarden-compatible server. You use the official Bitwarden apps on all your devices - just pointed at your own server instead of Bitwarden&rsquo;s cloud.</p>
+<p><strong>Why it matters:</strong> Your passwords live on your hardware. No subscription needed.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#75715e"># ~/homelab/vaultwarden/docker-compose.yml</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">services</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">vaultwarden</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">vaultwarden/server:latest</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">vaultwarden</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">./data:/data</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">ports</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;8080:80&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">environment</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">SIGNUPS_ALLOWED=true</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">unless-stopped</span>
+</span></span></code></pre></div><p>Run it:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cd ~/homelab/vaultwarden
+</span></span><span style="display:flex;"><span>docker compose up -d
+</span></span></code></pre></div><p>Open <code>http://your-server-ip:8080</code>, create your account, then set <code>SIGNUPS_ALLOWED=false</code> in the environment to lock it down.</p>
+<p><strong>Next step:</strong> Once it&rsquo;s running, set up a reverse proxy with HTTPS (more on that below) - Vaultwarden requires HTTPS for the browser extension to work properly.</p>
+<hr>
+<h2 id="service-2-uptime-kuma---monitor-everything-you-run">Service 2: Uptime Kuma - Monitor Everything You Run<a hidden class="anchor" aria-hidden="true" href="#service-2-uptime-kuma---monitor-everything-you-run">#</a></h2>
+<p><strong>What it is:</strong> A slick, self-hosted uptime monitoring dashboard. Add your services, set check intervals, get notified when something goes down.</p>
+<p><strong>Why it matters:</strong> Once you&rsquo;re running multiple containers, you need to know when one silently dies.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#75715e"># ~/homelab/uptime-kuma/docker-compose.yml</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">services</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">uptime-kuma</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">louislam/uptime-kuma:1</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">uptime-kuma</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">./data:/app/data</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">ports</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;3001:3001&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">unless-stopped</span>
+</span></span></code></pre></div><p>Open <code>http://your-server-ip:3001</code>, create your admin account, and start adding monitors. Point it at all your other services. You can set up notifications via Telegram, Discord, email, or a dozen other methods.</p>
+<p>This should be the second thing you install, right after Docker itself.</p>
+<hr>
+<h2 id="service-3-nextcloud---your-own-google-drive">Service 3: Nextcloud - Your Own Google Drive<a hidden class="anchor" aria-hidden="true" href="#service-3-nextcloud---your-own-google-drive">#</a></h2>
+<p><strong>What it is:</strong> A full self-hosted cloud storage and productivity suite. File sync, calendar, contacts, notes, and more - all running on your hardware.</p>
+<p><strong>Why it matters:</strong> Stop paying for Google One or iCloud storage for files you own.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#75715e"># ~/homelab/nextcloud/docker-compose.yml</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">services</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">nextcloud-db</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">mariadb:10.11</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">nextcloud-db</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">environment</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">MYSQL_ROOT_PASSWORD=changeme</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">MYSQL_DATABASE=nextcloud</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">MYSQL_USER=nextcloud</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">MYSQL_PASSWORD=changeme</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">./db:/var/lib/mysql</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">unless-stopped</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">nextcloud</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">nextcloud:latest</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">nextcloud</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">ports</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;8081:80&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">environment</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">MYSQL_HOST=nextcloud-db</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">MYSQL_DATABASE=nextcloud</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">MYSQL_USER=nextcloud</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">MYSQL_PASSWORD=changeme</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">./data:/var/www/html</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">depends_on</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">nextcloud-db</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">unless-stopped</span>
+</span></span></code></pre></div><blockquote>
+<p><strong>Change the passwords</strong> before running this. Yes, even in a homelab.</p></blockquote>
+<p>Open <code>http://your-server-ip:8081</code> and complete the setup wizard. Install the Nextcloud desktop and mobile apps and point them at your server - file sync works exactly like Dropbox from that point.</p>
+<hr>
+<h2 id="service-4-jellyfin---your-own-netflix">Service 4: Jellyfin - Your Own Netflix<a hidden class="anchor" aria-hidden="true" href="#service-4-jellyfin---your-own-netflix">#</a></h2>
+<p><strong>What it is:</strong> A free, open-source media server. Point it at your movie and TV show folders and get a full streaming interface accessible from any browser, TV app, or mobile device.</p>
+<p><strong>Why it matters:</strong> Own your media library, stream it anywhere on your network (or remotely), no subscriptions.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#75715e"># ~/homelab/jellyfin/docker-compose.yml</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">services</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">jellyfin</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">jellyfin/jellyfin:latest</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">jellyfin</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">./config:/config</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">./cache:/cache</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">/path/to/your/media:/media:ro</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">ports</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;8096:8096&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">unless-stopped</span>
+</span></span></code></pre></div><p>Replace <code>/path/to/your/media</code> with wherever your films and shows are stored. Open <code>http://your-server-ip:8096</code>, run through the setup wizard, and add your media libraries.</p>
+<p>Jellyfin handles hardware transcoding if your server has a compatible GPU or Intel QuickSync - check the Jellyfin docs for the extra config lines needed to enable it.</p>
+<hr>
+<h2 id="service-5-homepage---a-dashboard-for-everything">Service 5: Homepage - A Dashboard for Everything<a hidden class="anchor" aria-hidden="true" href="#service-5-homepage---a-dashboard-for-everything">#</a></h2>
+<p><strong>What it is:</strong> A clean, customisable dashboard that shows all your self-hosted services in one place, with live status indicators, service info, and widgets.</p>
+<p><strong>Why it matters:</strong> Once you&rsquo;re running five or more services, you need a single place to see them all. Homepage is the best-looking option right now.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#75715e"># ~/homelab/homepage/docker-compose.yml</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">services</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">homepage</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">ghcr.io/gethomepage/homepage:latest</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">homepage</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">ports</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;3000:3000&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">./config:/app/config</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">/var/run/docker.sock:/var/run/docker.sock:ro</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">unless-stopped</span>
+</span></span></code></pre></div><p>The <code>docker.sock</code> mount lets Homepage auto-detect running containers and show their status. Edit the YAML files in <code>./config</code> to add your services, bookmarks, and widgets.</p>
+<hr>
+<h2 id="making-it-all-accessible-nginx-proxy-manager">Making It All Accessible: Nginx Proxy Manager<a hidden class="anchor" aria-hidden="true" href="#making-it-all-accessible-nginx-proxy-manager">#</a></h2>
+<p>Visiting <code>192.168.1.100:8080</code>, <code>192.168.1.100:3001</code>, <code>192.168.1.100:8081</code> gets old fast. Nginx Proxy Manager gives you proper domain names and HTTPS for every service.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#75715e"># ~/homelab/nginx-proxy-manager/docker-compose.yml</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">services</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">npm</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">jc21/nginx-proxy-manager:latest</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">nginx-proxy-manager</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">ports</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;80:80&#34;</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;443:443&#34;</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;81:81&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">./data:/data</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">./letsencrypt:/etc/letsencrypt</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">unless-stopped</span>
+</span></span></code></pre></div><p>Open <code>http://your-server-ip:81</code>, log in with the default credentials (<code>admin@example.com</code> / <code>changeme</code> - change these immediately), and add proxy hosts.</p>
+<p>With a domain pointing at your server, you can set up:</p>
+<ul>
+<li><code>vault.yourdomain.com</code> - Vaultwarden</li>
+<li><code>cloud.yourdomain.com</code> - Nextcloud</li>
+<li><code>media.yourdomain.com</code> - Jellyfin</li>
+</ul>
+<p>Nginx Proxy Manager handles Let&rsquo;s Encrypt SSL certificates automatically.</p>
+<hr>
+<h2 id="keeping-things-running">Keeping Things Running<a hidden class="anchor" aria-hidden="true" href="#keeping-things-running">#</a></h2>
+<p>A few habits that will save you headaches:</p>
+<p><strong>Update regularly.</strong> Pull updated images monthly:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker compose pull
+</span></span><span style="display:flex;"><span>docker compose up -d
+</span></span></code></pre></div><p><strong>Back up your data folders.</strong> Each service stores its data in the <code>./data</code> volume mount. Back those folders up to a NAS or external drive regularly.</p>
+<p><strong>Check your logs when something breaks:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker logs container-name --tail <span style="color:#ae81ff">50</span>
+</span></span></code></pre></div><p><strong>Don&rsquo;t expose everything to the internet.</strong> Use a VPN (Tailscale is excellent) or a Cloudflare Tunnel for remote access rather than opening ports on your router.</p>
+<hr>
+<h2 id="whats-next">What&rsquo;s Next?<a hidden class="anchor" aria-hidden="true" href="#whats-next">#</a></h2>
+<p>Once you&rsquo;ve got these five running, you&rsquo;re ready to explore:</p>
+<ul>
+<li><strong>Authentik</strong> - SSO for all your services with a single login</li>
+<li><strong>Grafana + Prometheus</strong> - metrics and dashboards for your whole stack</li>
+<li><strong>Immich</strong> - self-hosted Google Photos replacement with mobile backup</li>
+<li><strong>Gitea</strong> - your own private GitHub</li>
+</ul>
+<p>The pattern is always the same: find a service, grab the <code>docker-compose.yml</code>, adapt it, and run it. The whole self-hosting ecosystem runs this way.</p>
+<p>Your data, your hardware, your rules.</p>
+<hr>
+<p><em>Questions about any of these setups? Leave a comment - happy to help troubleshoot.</em></p>
+
+
+    </div>
+
+    <footer class="post-footer">
+      <ul class="post-tags">
+        <li><a href="http://localhost:1313/tags/docker/">Docker</a></li>
+        <li><a href="http://localhost:1313/tags/self-hosting/">Self-Hosting</a></li>
+        <li><a href="http://localhost:1313/tags/homelab/">Homelab</a></li>
+        <li><a href="http://localhost:1313/tags/beginner/">Beginner</a></li>
+        <li><a href="http://localhost:1313/tags/privacy/">Privacy</a></li>
+        <li><a href="http://localhost:1313/tags/how-to/">How-To</a></li>
+      </ul>
+<nav class="paginav">
+  <a class="prev" href="http://localhost:1313/posts/how-to-start-a-homelab-in-2026/">
+    <span class="title">« Prev</span>
+    <span>How to Start a Homelab in 2026 (Without Spending a Fortune)</span>
+  </a>
+  <a class="next" href="http://localhost:1313/posts/opnsense-in-proxmox-vm/">
+    <span class="title">Next »</span>
+    <span>Running OPNsense in a Proxmox VM - full setup guide</span>
+  </a>
+</nav>
+
+    </footer><div class="giscus-container">
+  <script
+    src="https://giscus.app/client.js"
+    data-repo="wardseg/beyondlab"
+    data-repo-id="R_kgDOSfzEHQ"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOSfzEHc4C9Z8n"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="1"
+    data-input-position="bottom"
+    data-theme="transparent_dark"
+    data-lang="en"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+<script>
+  function setGiscusTheme(theme) {
+    const iframe = document.querySelector("iframe.giscus-frame");
+    if (!iframe) return;
+    iframe.contentWindow.postMessage(
+      { giscus: { setConfig: { theme: theme } } },
+      "https://giscus.app",
+    );
+  }
+
+  function getPreferredTheme() {
+    const stored = localStorage.getItem("pref-theme");
+    if (stored === "light") return "light";
+    if (stored === "dark") return "transparent_dark";
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "transparent_dark"
+      : "light";
+  }
+
+  window.addEventListener(
+    "message",
+    function (e) {
+      if (e.origin !== "https://giscus.app") return;
+      if (
+        e.data?.giscus?.discussion !== undefined ||
+        e.data?.giscus?.error !== undefined
+      )
+        return;
+      setGiscusTheme(getPreferredTheme());
+    },
+    { once: true },
+  );
+
+  const themeToggle = document.getElementById("theme-toggle");
+  if (themeToggle) {
+    themeToggle.addEventListener("click", function () {
+      setTimeout(() => setGiscusTheme(getPreferredTheme()), 100);
+    });
+  }
+</script>
+
+  </article>
+  <aside class="toc-sidebar">
+    <div class="toc-sticky">
+      <p class="toc-title">On this page</p><nav id="TableOfContents">
+  <ul>
+    <li><a href="#before-you-start">Before You Start</a></li>
+    <li><a href="#service-1-vaultwarden---your-own-password-manager">Service 1: Vaultwarden - Your Own Password Manager</a></li>
+    <li><a href="#service-2-uptime-kuma---monitor-everything-you-run">Service 2: Uptime Kuma - Monitor Everything You Run</a></li>
+    <li><a href="#service-3-nextcloud---your-own-google-drive">Service 3: Nextcloud - Your Own Google Drive</a></li>
+    <li><a href="#service-4-jellyfin---your-own-netflix">Service 4: Jellyfin - Your Own Netflix</a></li>
+    <li><a href="#service-5-homepage---a-dashboard-for-everything">Service 5: Homepage - A Dashboard for Everything</a></li>
+    <li><a href="#making-it-all-accessible-nginx-proxy-manager">Making It All Accessible: Nginx Proxy Manager</a></li>
+    <li><a href="#keeping-things-running">Keeping Things Running</a></li>
+    <li><a href="#whats-next">What&rsquo;s Next?</a></li>
+  </ul>
+</nav>
+    </div>
+  </aside>
+</div>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">BeyondLab</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

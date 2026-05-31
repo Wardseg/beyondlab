@@ -6,8 +6,15 @@
     <description>Recent content in Virtualisation on BeyondLab</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 22 May 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 23 May 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/virtualisation/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Installing Proxmox from scratch — step by step</title>
+      <link>http://localhost:1313/posts/installing-proxmox-from-scratch/</link>
+      <pubDate>Sat, 23 May 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/installing-proxmox-from-scratch/</guid>
+      <description>A complete walkthrough for installing Proxmox VE on bare metal — from downloading the ISO to logging into the web interface for the first time.</description>
+    </item>
     <item>
       <title>Why I chose Proxmox over ESXi and Hyper-V</title>
       <link>http://localhost:1313/posts/why-i-chose-proxmox/</link>

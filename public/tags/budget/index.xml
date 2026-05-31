@@ -6,8 +6,15 @@
     <description>Recent content in Budget on BeyondLab</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 21 May 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 24 May 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/budget/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How I sourced enterprise hardware for cheap</title>
+      <link>http://localhost:1313/posts/sourcing-enterprise-hardware-cheap/</link>
+      <pubDate>Sun, 24 May 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/sourcing-enterprise-hardware-cheap/</guid>
+      <description>Enterprise hardware is surprisingly affordable if you know where to look and what to check. Here&amp;#39;s how to find great deals without getting burned.</description>
+    </item>
     <item>
       <title>How to research and source homelab hardware without breaking the bank</title>
       <link>http://localhost:1313/posts/how-to-research-and-source-homelab-hardware/</link>

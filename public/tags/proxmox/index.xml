@@ -6,8 +6,36 @@
     <description>Recent content in Proxmox on BeyondLab</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 20 May 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 31 May 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/proxmox/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to Start a Homelab in 2026 (Without Spending a Fortune)</title>
+      <link>http://localhost:1313/posts/how-to-start-a-homelab-in-2026/</link>
+      <pubDate>Sun, 31 May 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/how-to-start-a-homelab-in-2026/</guid>
+      <description>A practical guide to building your first homelab in 2026 - what hardware to buy, what to skip, and how to get running without blowing your budget.</description>
+    </item>
+    <item>
+      <title>Running OPNsense in a Proxmox VM - full setup guide</title>
+      <link>http://localhost:1313/posts/opnsense-in-proxmox-vm/</link>
+      <pubDate>Tue, 26 May 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/opnsense-in-proxmox-vm/</guid>
+      <description>A complete walkthrough for setting up OPNsense as a virtual machine inside Proxmox — including network configuration, initial setup, and first rules.</description>
+    </item>
+    <item>
+      <title>Installing Proxmox from scratch — step by step</title>
+      <link>http://localhost:1313/posts/installing-proxmox-from-scratch/</link>
+      <pubDate>Sat, 23 May 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/installing-proxmox-from-scratch/</guid>
+      <description>A complete walkthrough for installing Proxmox VE on bare metal — from downloading the ISO to logging into the web interface for the first time.</description>
+    </item>
+    <item>
+      <title>Why I chose Proxmox over ESXi and Hyper-V</title>
+      <link>http://localhost:1313/posts/why-i-chose-proxmox/</link>
+      <pubDate>Fri, 22 May 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/why-i-chose-proxmox/</guid>
+      <description>There are several hypervisors to choose from when building a homelab. Here&amp;#39;s why I landed on Proxmox — and why I haven&amp;#39;t looked back.</description>
+    </item>
     <item>
       <title>My homelab hardware: the HP DL380 G6 breakdown</title>
       <link>http://localhost:1313/posts/my-homelab-hardware-breakdown/</link>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Self-Hosting on BeyondLab</title>
+    <link>http://localhost:1313/tags/self-hosting/</link>
+    <description>Recent content in Self-Hosting on BeyondLab</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 31 May 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/self-hosting/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to Start a Homelab in 2026 (Without Spending a Fortune)</title>
+      <link>http://localhost:1313/posts/how-to-start-a-homelab-in-2026/</link>
+      <pubDate>Sun, 31 May 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/how-to-start-a-homelab-in-2026/</guid>
+      <description>A practical guide to building your first homelab in 2026 - what hardware to buy, what to skip, and how to get running without blowing your budget.</description>
+    </item>
+  </channel>
+</rss>

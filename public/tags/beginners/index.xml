@@ -6,8 +6,22 @@
     <description>Recent content in Beginners on BeyondLab</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 21 May 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 25 May 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/beginners/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>What is a firewall and why your home network needs one</title>
+      <link>http://localhost:1313/posts/what-is-a-firewall/</link>
+      <pubDate>Mon, 25 May 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/what-is-a-firewall/</guid>
+      <description>Most home networks rely on a basic router with no real firewall. Here&amp;#39;s what a firewall actually does, why it matters, and why I run OPNsense.</description>
+    </item>
+    <item>
+      <title>Installing Proxmox from scratch — step by step</title>
+      <link>http://localhost:1313/posts/installing-proxmox-from-scratch/</link>
+      <pubDate>Sat, 23 May 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/installing-proxmox-from-scratch/</guid>
+      <description>A complete walkthrough for installing Proxmox VE on bare metal — from downloading the ISO to logging into the web interface for the first time.</description>
+    </item>
     <item>
       <title>How to research and source homelab hardware without breaking the bank</title>
       <link>http://localhost:1313/posts/how-to-research-and-source-homelab-hardware/</link>
