@@ -2,7 +2,7 @@
 title: "How to Start a Homelab in 2026 (Without Spending a Fortune)"
 date: 2026-05-31
 draft: false
-tags: ["homelab", "proxmox", "beginner", "hardware", "self-hosting"]
+tags: ["homelab", "proxmox", "beginner", "hardware", "self-hosting", "how-to"]
 description: "A practical guide to building your first homelab in 2026 - what hardware to buy, what to skip, and how to get running without blowing your budget."
 ---
 
