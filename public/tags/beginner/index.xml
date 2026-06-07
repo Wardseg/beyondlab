@@ -16,6 +16,13 @@
       <description>A practical guide to building your first homelab in 2026 - what hardware to buy, what to skip, and how to get running without blowing your budget.</description>
     </item>
     <item>
+      <title>Self-Host Your First 5 Services with Docker Compose</title>
+      <link>http://localhost:1313/posts/self-host-first-5-services-docker-compose/</link>
+      <pubDate>Sun, 31 May 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/self-host-first-5-services-docker-compose/</guid>
+      <description>Stop paying for services you can run yourself. Here are 5 genuinely useful self-hosted apps you can get running in an afternoon with Docker Compose.</description>
+    </item>
+    <item>
       <title>Planning your self-hosted services — what to run and why</title>
       <link>http://localhost:1313/posts/planning-your-self-hosted-services/</link>
       <pubDate>Thu, 21 May 2026 00:00:00 +0000</pubDate>

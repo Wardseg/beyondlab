@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Uptime Kuma: Self-Hosted Monitoring That Actually Looks Good | BeyondLab</title>
+<meta name="keywords" content="uptime-kuma, monitoring, self-hosting, docker, how-to">
+<meta name="description" content="Uptime Kuma is the easiest way to monitor your self-hosted services and get notified when something goes down. Here&#39;s how to set it up in Docker and make it useful.">
+<meta name="author" content="Ward">
+<link rel="canonical" href="http://localhost:1313/posts/uptime-kuma/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.b4fdc9b2dfc5bd9c26dccb368fd42ec65a506a7c7a5dd6c3a7034d205dbf1272.css" integrity="sha256-tP3Jst/FvZwm3Ms2j9QuxlpQanx6XdbDpwNNIF2/EnI=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/uptime-kuma/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<script
+  defer
+  src="https://static.cloudflareinsights.com/beacon.min.js"
+  data-cf-beacon='{"token": "9388cd689b894f6b94e5ebfef3be7a1e"}'
+></script>
+
+
+
+
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="BeyondLab (Alt + H)">BeyondLab</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="http://localhost:1313/posts" title="Blog">
+                    <span>Blog</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+<div class="post-with-toc">
+  <article class="post-single">
+    <header class="post-header">
+      <nav class="breadcrumbs" role="navigation" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+            <a href="/posts/">Posts</a>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+        <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+</nav>
+      <h1 class="post-title entry-hint-parent">
+        Uptime Kuma: Self-Hosted Monitoring That Actually Looks Good
+      </h1>
+      <div class="post-description">Uptime Kuma is the easiest way to monitor your self-hosted services and get notified when something goes down. Here&#39;s how to set it up in Docker and make it useful.</div>
+      <div class="post-meta">
+
+<span title='2026-06-05 00:00:00 +0000 UTC'>June 5, 2026</span>&nbsp;·&nbsp;<span>6 min</span>&nbsp;·&nbsp;<span>Ward</span>
+
+</div>
+    </header> 
+    <div class="post-content md-content"><p>Every homelab eventually has the same problem: services go down and you don&rsquo;t find out until you try to use them. You open Jellyfin on the TV and it won&rsquo;t load. You go to check Vaultwarden from your phone and it times out. You spent twenty minutes wondering if it&rsquo;s your phone, your network, or the service — and it was the service, and it&rsquo;s been down for three hours.</p>
+<p>Uptime Kuma fixes that. It monitors your services, builds a status page, and notifies you the moment something stops responding. It&rsquo;s open source, self-hosted, and takes about five minutes to get running.</p>
+<hr>
+<h2 id="what-uptime-kuma-does">What Uptime Kuma does<a hidden class="anchor" aria-hidden="true" href="#what-uptime-kuma-does">#</a></h2>
+<p>At its core, Uptime Kuma pings your services on a schedule and records whether they responded. If something stops responding, it sends you a notification. You get a dashboard showing uptime history for every service you&rsquo;re watching.</p>
+<p>It supports more than simple HTTP checks. You can monitor:</p>
+<ul>
+<li>HTTP/HTTPS endpoints (checks status code and optionally response content)</li>
+<li>TCP ports</li>
+<li>Ping (ICMP)</li>
+<li>DNS records</li>
+<li>Docker containers</li>
+<li>Databases (MySQL, PostgreSQL, Redis, MongoDB)</li>
+<li>Steam game servers</li>
+<li>Custom keywords in HTTP responses</li>
+</ul>
+<p>The notification integrations are extensive — Telegram, Discord, Slack, email, Gotify, ntfy, PagerDuty, and about sixty others. If you have a preferred way to get alerts, it probably works.</p>
+<p>The status page feature deserves special mention. You can build a public-facing page that shows uptime for whichever services you choose, without exposing your dashboard. I use mine at a public URL via <a href="/posts/cloudflare-tunnels-self-host-without-opening-a-port/">Cloudflare Tunnel</a>.</p>
+<hr>
+<h2 id="installation-with-docker">Installation with Docker<a hidden class="anchor" aria-hidden="true" href="#installation-with-docker">#</a></h2>
+<p>Docker is the cleanest way to run Uptime Kuma. The image is small, updates are easy, and it keeps everything contained.</p>
+<p>Create a directory for persistent data:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mkdir -p ~/docker/uptime-kuma
+</span></span></code></pre></div><p>Start the container:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker run -d <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --name uptime-kuma <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --restart unless-stopped <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -p 3001:3001 <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -v ~/docker/uptime-kuma:/app/data <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  louislam/uptime-kuma:latest
+</span></span></code></pre></div><p>That&rsquo;s it. Navigate to <code>http://your-server-ip:3001</code> and you&rsquo;ll see the first-time setup asking you to create an admin account.</p>
+<h3 id="docker-compose-version">Docker Compose version<a hidden class="anchor" aria-hidden="true" href="#docker-compose-version">#</a></h3>
+<p>If you prefer Compose (I do), create <code>~/docker/uptime-kuma/docker-compose.yml</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">services</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">uptime-kuma</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">louislam/uptime-kuma:latest</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">uptime-kuma</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">unless-stopped</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">ports</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;3001:3001&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">./data:/app/data</span>
+</span></span></code></pre></div><p>Then:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cd ~/docker/uptime-kuma
+</span></span><span style="display:flex;"><span>docker compose up -d
+</span></span></code></pre></div><p>The <code>./data</code> directory will be created automatically and holds the SQLite database where Uptime Kuma stores everything.</p>
+<hr>
+<h2 id="first-time-setup">First-time setup<a hidden class="anchor" aria-hidden="true" href="#first-time-setup">#</a></h2>
+<p>After creating your admin account, you land on the dashboard. Click <strong>Add New Monitor</strong> to add your first service.</p>
+<p><strong>Monitor type:</strong> Start with HTTP(s) for web services. TCP Port for services that aren&rsquo;t HTTP. Ping for basic reachability.</p>
+<p><strong>Heartbeat interval:</strong> How often Uptime Kuma checks the service. The default is 60 seconds. I drop this to 30 seconds for critical services and leave it at 60 for everything else. Don&rsquo;t go too low — some services will interpret rapid repeated requests as an attack.</p>
+<p><strong>Retries before unhealthy:</strong> How many consecutive failures before Uptime Kuma sends an alert. I set this to 2 — one failed check could be a blip, two in a row is a real problem.</p>
+<p><strong>Accepted status codes:</strong> By default, 2xx responses are &ldquo;up.&rdquo; If your service returns something different (some return 3xx redirects), adjust this.</p>
+<hr>
+<h2 id="setting-up-notifications">Setting up notifications<a hidden class="anchor" aria-hidden="true" href="#setting-up-notifications">#</a></h2>
+<p>Go to <strong>Settings → Notifications</strong> and add your preferred method.</p>
+<p>The Telegram setup is the one I&rsquo;d recommend for most people — it&rsquo;s instant, works on your phone, and the bot setup takes two minutes:</p>
+<ol>
+<li>Message <code>@BotFather</code> on Telegram, create a bot, copy the token</li>
+<li>Start a conversation with your bot, then get your chat ID from <code>https://api.telegram.org/bot&lt;token&gt;/getUpdates</code></li>
+<li>In Uptime Kuma, add a Telegram notification with your token and chat ID</li>
+</ol>
+<p>For a simpler option, <strong>ntfy</strong> is excellent if you self-host it (or use the public server). Install the ntfy app, subscribe to a topic, configure Uptime Kuma to push to that topic. Instant push notifications, no accounts required.</p>
+<p>Once you&rsquo;ve configured a notification method, go back to each monitor and enable it under the notification settings for that monitor.</p>
+<hr>
+<h2 id="building-a-status-page">Building a status page<a hidden class="anchor" aria-hidden="true" href="#building-a-status-page">#</a></h2>
+<p><strong>Dashboard → Status Page</strong> — create a page, give it a name, and add the monitors you want to display publicly.</p>
+<p>The status page shows:</p>
+<ul>
+<li>Current status (up/down/degraded)</li>
+<li>Uptime percentage over the last 24h/7d/30d/1y</li>
+<li>A ping graph</li>
+<li>Incident history if you&rsquo;ve added any</li>
+</ul>
+<p>You can make the page public (anyone can view it) or add a password. The page lives at <code>/status/your-page-slug</code> on whatever URL you&rsquo;re running Uptime Kuma on.</p>
+<p>To make it accessible from outside your home, point a Cloudflare Tunnel at port 3001 and set up a public domain for it. If you want the dashboard itself to remain private but the status page to be public, that requires a bit more setup — either two separate hostnames, or NGINX in front doing path-based routing.</p>
+<hr>
+<h2 id="monitoring-tips">Monitoring tips<a hidden class="anchor" aria-hidden="true" href="#monitoring-tips">#</a></h2>
+<p><strong>Monitor the thing users actually hit, not the internal service.</strong> If you&rsquo;re running a reverse proxy in front of Jellyfin, monitor the reverse proxy URL — that&rsquo;s what fails when something goes wrong, and it tests the full stack.</p>
+<p><strong>Use keyword monitoring for services that return 200 even when broken.</strong> Some services return HTTP 200 with an error page. Add a keyword check to confirm specific content appears in the response.</p>
+<p><strong>Group monitors with tags.</strong> Uptime Kuma lets you add tags to monitors. Makes it easier to filter when you have twenty services.</p>
+<p><strong>Don&rsquo;t monitor from the same machine if you can help it.</strong> Uptime Kuma running on the same box as your services will report everything as down if that box goes down — which is exactly when you need it to work. Ideally run it on a separate machine. If that&rsquo;s not practical, consider a secondary monitoring setup on a cloud VPS, or use Uptime Kuma&rsquo;s push heartbeat feature alongside an external cron job.</p>
+<hr>
+<h2 id="updating">Updating<a hidden class="anchor" aria-hidden="true" href="#updating">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker compose pull
+</span></span><span style="display:flex;"><span>docker compose up -d
+</span></span></code></pre></div><p>Uptime Kuma updates frequently. The changelog is worth checking before major version jumps — it&rsquo;s an active project and the API occasionally changes between versions.</p>
+<hr>
+<h2 id="what-my-setup-looks-like">What my setup looks like<a hidden class="anchor" aria-hidden="true" href="#what-my-setup-looks-like">#</a></h2>
+<p>I run Uptime Kuma in an LXC container on Proxmox, separate from most of my other services. It monitors:</p>
+<ul>
+<li>All my publicly accessible services (via their Cloudflare Tunnel URLs)</li>
+<li>Internal services via their LAN IPs</li>
+<li>My OPNsense firewall via ping</li>
+<li>A few external services I care about</li>
+</ul>
+<p>Notifications go to Telegram. If I&rsquo;m away from home and something goes down, I know within two minutes.</p>
+<p>The status page is public — if you&rsquo;re trying to reach something I host and it&rsquo;s down, you can check there before wondering if it&rsquo;s your connection.</p>
+<hr>
+<p>There are fancier monitoring solutions out there — Prometheus, Grafana, Zabbix. For a homelab, they&rsquo;re overkill. Uptime Kuma does what matters: it tells you when something broke, and it does it in a package that takes ten minutes to set up and zero minutes to maintain.</p>
+<p>Start simple. Add more monitors than you think you need. You&rsquo;ll be surprised how often you&rsquo;re glad it&rsquo;s running.</p>
+
+
+    </div>
+
+    <footer class="post-footer">
+      <ul class="post-tags">
+        <li><a href="http://localhost:1313/tags/uptime-kuma/">Uptime-Kuma</a></li>
+        <li><a href="http://localhost:1313/tags/monitoring/">Monitoring</a></li>
+        <li><a href="http://localhost:1313/tags/self-hosting/">Self-Hosting</a></li>
+        <li><a href="http://localhost:1313/tags/docker/">Docker</a></li>
+        <li><a href="http://localhost:1313/tags/how-to/">How-To</a></li>
+      </ul>
+<nav class="paginav">
+  <a class="prev" href="http://localhost:1313/posts/cloudflare-tunnels-self-host-without-opening-a-port/">
+    <span class="title">« Prev</span>
+    <span>Cloudflare Tunnels: Self-Host Without Opening a Single Port</span>
+  </a>
+  <a class="next" href="http://localhost:1313/posts/nas-for-your-homelab/">
+    <span class="title">Next »</span>
+    <span>NAS for Your Homelab: Which Storage Setup Actually Makes Sense</span>
+  </a>
+</nav>
+
+    </footer><div class="giscus-container">
+  <script
+    src="https://giscus.app/client.js"
+    data-repo="wardseg/beyondlab"
+    data-repo-id="R_kgDOSfzEHQ"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOSfzEHc4C9Z8n"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="1"
+    data-input-position="bottom"
+    data-theme="transparent_dark"
+    data-lang="en"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+<script>
+  function setGiscusTheme(theme) {
+    const iframe = document.querySelector("iframe.giscus-frame");
+    if (!iframe) return;
+    iframe.contentWindow.postMessage(
+      { giscus: { setConfig: { theme: theme } } },
+      "https://giscus.app",
+    );
+  }
+
+  function getPreferredTheme() {
+    const stored = localStorage.getItem("pref-theme");
+    if (stored === "light") return "light";
+    if (stored === "dark") return "transparent_dark";
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "transparent_dark"
+      : "light";
+  }
+
+  window.addEventListener(
+    "message",
+    function (e) {
+      if (e.origin !== "https://giscus.app") return;
+      if (
+        e.data?.giscus?.discussion !== undefined ||
+        e.data?.giscus?.error !== undefined
+      )
+        return;
+      setGiscusTheme(getPreferredTheme());
+    },
+    { once: true },
+  );
+
+  const themeToggle = document.getElementById("theme-toggle");
+  if (themeToggle) {
+    themeToggle.addEventListener("click", function () {
+      setTimeout(() => setGiscusTheme(getPreferredTheme()), 100);
+    });
+  }
+</script>
+
+  </article>
+  <aside class="toc-sidebar">
+    <div class="toc-sticky">
+      <p class="toc-title">On this page</p><nav id="TableOfContents">
+  <ul>
+    <li><a href="#what-uptime-kuma-does">What Uptime Kuma does</a></li>
+    <li><a href="#installation-with-docker">Installation with Docker</a>
+      <ul>
+        <li><a href="#docker-compose-version">Docker Compose version</a></li>
+      </ul>
+    </li>
+    <li><a href="#first-time-setup">First-time setup</a></li>
+    <li><a href="#setting-up-notifications">Setting up notifications</a></li>
+    <li><a href="#building-a-status-page">Building a status page</a></li>
+    <li><a href="#monitoring-tips">Monitoring tips</a></li>
+    <li><a href="#updating">Updating</a></li>
+    <li><a href="#what-my-setup-looks-like">What my setup looks like</a></li>
+  </ul>
+</nav>
+    </div>
+  </aside>
+</div>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">BeyondLab</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

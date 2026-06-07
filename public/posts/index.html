@@ -10,7 +10,7 @@
 <meta name="description" content="Posts - BeyondLab">
 <meta name="author" content="Ward">
 <link rel="canonical" href="http://localhost:1313/posts/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.ab52b39f20557d68984d3d8aa6ebcd7860b24cfacbc0377abbca0e608cad38fa.css" integrity="sha256-q1KznyBVfWiYTT2KpuvNeGCyTPrLwDd6u8oOYIytOPo=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.513bfed9bd8991178026f18110bdccfbf14978b2b7a5537ad813a9d6f3adb938.css" integrity="sha256-UTv&#43;2b2JkReAJvGBEL3M&#43;/FJeLK3pVN62BOp1vOtuTg=" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://localhost:1313/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
@@ -138,6 +138,53 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Cloudflare Tunnels: Self-Host Without Opening a Single Port
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Port forwarding has a bad reputation, and honestly, most of it is deserved. You open a hole in your router, expose your home IP to the internet, and spend the next week watching fail2ban block login attempts from IP ranges you’ve never heard of. There’s a better way.
+Cloudflare Tunnels let you expose self-hosted services to the internet without opening a single port on your router. Your home IP stays hidden. The traffic goes through Cloudflare’s network. And setup takes about fifteen minutes.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-06 00:00:00 +0000 UTC'>June 6, 2026</span>&nbsp;·&nbsp;<span>6 min</span>&nbsp;·&nbsp;<span>Ward</span></footer>
+  <a class="entry-link" aria-label="post link to Cloudflare Tunnels: Self-Host Without Opening a Single Port" href="http://localhost:1313/posts/cloudflare-tunnels-self-host-without-opening-a-port/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Uptime Kuma: Self-Hosted Monitoring That Actually Looks Good
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Every homelab eventually has the same problem: services go down and you don’t find out until you try to use them. You open Jellyfin on the TV and it won’t load. You go to check Vaultwarden from your phone and it times out. You spent twenty minutes wondering if it’s your phone, your network, or the service — and it was the service, and it’s been down for three hours.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-05 00:00:00 +0000 UTC'>June 5, 2026</span>&nbsp;·&nbsp;<span>6 min</span>&nbsp;·&nbsp;<span>Ward</span></footer>
+  <a class="entry-link" aria-label="post link to Uptime Kuma: Self-Hosted Monitoring That Actually Looks Good" href="http://localhost:1313/posts/uptime-kuma/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">NAS for Your Homelab: Which Storage Setup Actually Makes Sense
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Storage is the part of a homelab that people tend to figure out twice. Once when they set it up, and once after something goes wrong.
+I’m running a Synology RS814 with 16TB attached to my Proxmox host over NFS. It works well — DSM is polished, the NFS share just appears in Proxmox’s storage pool, and the drives have been running without complaint for years. But it’s also a 2013 rackmount unit I got as part of a package deal, not something I’d necessarily recommend buying new in 2026.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-04 00:00:00 +0000 UTC'>June 4, 2026</span>&nbsp;·&nbsp;<span>8 min</span>&nbsp;·&nbsp;<span>Ward</span></footer>
+  <a class="entry-link" aria-label="post link to NAS for Your Homelab: Which Storage Setup Actually Makes Sense" href="http://localhost:1313/posts/nas-for-your-homelab/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">How to Start a Homelab in 2026 (Without Spending a Fortune)
     </h2>
   </header>
@@ -150,6 +197,22 @@ This guide is for people who want a useful homelab, not a showpiece.
 
 <span title='2026-05-31 00:00:00 +0000 UTC'>May 31, 2026</span>&nbsp;·&nbsp;<span>5 min</span>&nbsp;·&nbsp;<span>Ward</span></footer>
   <a class="entry-link" aria-label="post link to How to Start a Homelab in 2026 (Without Spending a Fortune)" href="http://localhost:1313/posts/how-to-start-a-homelab-in-2026/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Self-Host Your First 5 Services with Docker Compose
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Every month you’re probably paying for at least one service you could run yourself - a password manager, cloud storage, a notes app, a photo backup tool. Self-hosting these isn’t just cheaper; it means your data lives on hardware you control.
+Docker Compose makes this accessible to anyone comfortable with a terminal. You don’t need to be a developer. You just need a machine that stays on, a basic Linux install, and this guide.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-05-31 00:00:00 +0000 UTC'>May 31, 2026</span>&nbsp;·&nbsp;<span>5 min</span>&nbsp;·&nbsp;<span>Ward</span></footer>
+  <a class="entry-link" aria-label="post link to Self-Host Your First 5 Services with Docker Compose" href="http://localhost:1313/posts/self-host-first-5-services-docker-compose/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -233,75 +296,6 @@ I evaluated three options seriously: VMware ESXi, Microsoft Hyper-V, and Proxmox
 
 <span title='2026-05-22 00:00:00 +0000 UTC'>May 22, 2026</span>&nbsp;·&nbsp;<span>4 min</span>&nbsp;·&nbsp;<span>Ward</span></footer>
   <a class="entry-link" aria-label="post link to Why I chose Proxmox over ESXi and Hyper-V" href="http://localhost:1313/posts/why-i-chose-proxmox/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">How to research and source homelab hardware without breaking the bank
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>One of the biggest myths about homelabs is that they’re expensive. They don’t have to be. With a bit of patience and the right approach, you can build a capable setup for a fraction of the cost of buying new.
-Here’s how I do it.
-Start with what you actually need Before you buy anything, get clear on what you want to run. This sounds obvious but it’s where most people go wrong — they buy hardware first and figure out the use case later.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-05-21 00:00:00 +0000 UTC'>May 21, 2026</span>&nbsp;·&nbsp;<span>5 min</span>&nbsp;·&nbsp;<span>Ward</span></footer>
-  <a class="entry-link" aria-label="post link to How to research and source homelab hardware without breaking the bank" href="http://localhost:1313/posts/how-to-research-and-source-homelab-hardware/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Planning your self-hosted services — what to run and why
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>I’ll be honest — I didn’t plan my self-hosted stack.
-I started with one service, liked the feeling of owning my own data, and just kept adding things. Vaultwarden, then MkDocs, then more. Recently I added Karakeep. Before that something else. Each one solving a problem, replacing a subscription, or just satisfying curiosity.
-It works — but looking back, a bit of upfront planning would have saved me time, avoided some redundancy, and helped me think more clearly about what I actually needed versus what just seemed interesting at the time.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-05-21 00:00:00 +0000 UTC'>May 21, 2026</span>&nbsp;·&nbsp;<span>4 min</span>&nbsp;·&nbsp;<span>Ward</span></footer>
-  <a class="entry-link" aria-label="post link to Planning your self-hosted services — what to run and why" href="http://localhost:1313/posts/planning-your-self-hosted-services/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">My homelab hardware: the HP DL380 G6 breakdown
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Every homelab starts somewhere. Mine started with a conversation with a friend in bar who had a server sitting in his garage collecting dust and no interest in running it anymore.
-“You want it?”
-That’s how I ended up with an HP DL380 G6 — and honestly, it’s been both one of the best and most humbling pieces of kit I’ve ever worked with.
-The specs This is what’s running everything:
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-05-20 00:00:00 +0000 UTC'>May 20, 2026</span>&nbsp;·&nbsp;<span>4 min</span>&nbsp;·&nbsp;<span>Ward</span></footer>
-  <a class="entry-link" aria-label="post link to My homelab hardware: the HP DL380 G6 breakdown" href="http://localhost:1313/posts/my-homelab-hardware-breakdown/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">What is a homelab and why you need one
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>If you’ve spent any time in IT circles online, you’ve probably heard the word “homelab” thrown around. But what actually is a homelab, and why do so many IT professionals swear by them?
-This post breaks down - and makes the case for why you should consider building one yourself.
-What is a homelab? A homelab is a personal computing environment you run at home for learning, experimenting, and building skills. It can be as simple as an old PC running a couple of virtual machines, or as complex as a rack full of enterprise-grade servers with a fully segmented network.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-05-19 00:00:00 +0000 UTC'>May 19, 2026</span>&nbsp;·&nbsp;<span>5 min</span>&nbsp;·&nbsp;<span>Ward</span></footer>
-  <a class="entry-link" aria-label="post link to What is a homelab and why you need one" href="http://localhost:1313/posts/what-is-a-homelab-and-why-you-need-one/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

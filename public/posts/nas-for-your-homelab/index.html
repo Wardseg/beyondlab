@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>NAS for Your Homelab: Which Storage Setup Actually Makes Sense | BeyondLab</title>
+<meta name="keywords" content="nas, hardware, storage, homelab, proxmox, how-to">
+<meta name="description" content="Dedicated NAS appliance, DIY TrueNAS box, or a second-hand enterprise unit? A practical breakdown of homelab storage options — and what I actually run.">
+<meta name="author" content="Ward">
+<link rel="canonical" href="http://localhost:1313/posts/nas-for-your-homelab/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.513bfed9bd8991178026f18110bdccfbf14978b2b7a5537ad813a9d6f3adb938.css" integrity="sha256-UTv&#43;2b2JkReAJvGBEL3M&#43;/FJeLK3pVN62BOp1vOtuTg=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/nas-for-your-homelab/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<script
+  defer
+  src="https://static.cloudflareinsights.com/beacon.min.js"
+  data-cf-beacon='{"token": "9388cd689b894f6b94e5ebfef3be7a1e"}'
+></script>
+
+
+
+
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="BeyondLab (Alt + H)">BeyondLab</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="http://localhost:1313/posts" title="Blog">
+                    <span>Blog</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+<div class="post-with-toc">
+  <article class="post-single">
+    <header class="post-header">
+      <nav class="breadcrumbs" role="navigation" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+            <a href="/posts/">Posts</a>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+        <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+</nav>
+      <h1 class="post-title entry-hint-parent">
+        NAS for Your Homelab: Which Storage Setup Actually Makes Sense
+      </h1>
+      <div class="post-description">Dedicated NAS appliance, DIY TrueNAS box, or a second-hand enterprise unit? A practical breakdown of homelab storage options — and what I actually run.</div>
+      <div class="post-meta">
+
+<span title='2026-06-04 00:00:00 +0000 UTC'>June 4, 2026</span>&nbsp;·&nbsp;<span>8 min</span>&nbsp;·&nbsp;<span>Ward</span>
+
+</div>
+    </header> 
+    <div class="post-content md-content"><p>Storage is the part of a homelab that people tend to figure out twice. Once when they set it up, and once after something goes wrong.</p>
+<p>I&rsquo;m running a <a href="/posts/my-homelab-hardware-hp-dl380-g6-breakdown/">Synology RS814</a> with 16TB attached to my Proxmox host over NFS. It works well — DSM is polished, the NFS share just appears in Proxmox&rsquo;s storage pool, and the drives have been running without complaint for years. But it&rsquo;s also a 2013 rackmount unit I got as part of a package deal, not something I&rsquo;d necessarily recommend buying new in 2026.</p>
+<p>So let&rsquo;s talk about what actually makes sense for homelab storage today.</p>
+<hr>
+<h2 id="what-a-homelab-nas-needs-to-do">What a homelab NAS needs to do<a hidden class="anchor" aria-hidden="true" href="#what-a-homelab-nas-needs-to-do">#</a></h2>
+<p>Home NAS and homelab NAS are not the same thing. A home NAS sits in a cupboard and serves files to your TV and phone. A homelab NAS does that <em>and</em>:</p>
+<ul>
+<li>Acts as a storage backend for Proxmox VM disks (via NFS or iSCSI)</li>
+<li>Stores VM backups from Proxmox Backup Server or similar</li>
+<li>Runs containers or services of its own (if you want)</li>
+<li>Handles potentially heavy concurrent I/O from multiple VMs</li>
+<li>Ideally connects at 2.5GbE or faster, not 1GbE</li>
+</ul>
+<p>The NFS/iSCSI angle is the big one. If you&rsquo;re running Proxmox and want shared storage — for live migration, for keeping VM disks off the main host, for centralizing backups — your NAS needs to handle that reliably under load. That rules out some of the cheaper ARM-based units and changes which specs actually matter.</p>
+<hr>
+<h2 id="three-paths-each-with-real-tradeoffs">Three paths, each with real tradeoffs<a hidden class="anchor" aria-hidden="true" href="#three-paths-each-with-real-tradeoffs">#</a></h2>
+<h3 id="path-1-nas-appliance-synology--qnap">Path 1: NAS appliance (Synology / QNAP)<a hidden class="anchor" aria-hidden="true" href="#path-1-nas-appliance-synology--qnap">#</a></h3>
+<p>The appliance route means buying a purpose-built NAS box, dropping drives in, and using the vendor&rsquo;s OS. It&rsquo;s the lowest-friction approach and there&rsquo;s nothing wrong with it — I&rsquo;m doing this, after all.</p>
+<p><strong>Synology</strong> remains the most polished experience. DSM&rsquo;s NFS and iSCSI support is solid, the web UI is genuinely good, and it integrates cleanly with Proxmox. The negative: newer Synology models have started pushing Synology-branded drives more aggressively, with DSM showing warnings when you use third-party drives. Not a dealbreaker, but worth knowing.</p>
+<p>For a homelab specifically, the <a href="https://www.amazon.com/dp/B0BQ5TWCL8/?tag=beyondlab-20">QNAP TS-464</a> is the more interesting pick. Intel Celeron N5105, 8GB RAM standard (upgradeable to 16GB), dual 2.5GbE, M.2 slots for SSD cache, and a PCIe Gen 3 slot you can use for a 10GbE card later. That PCIe slot matters — it&rsquo;s the difference between hitting a networking ceiling at 300MB/s and being able to push closer to 1GB/s when you need it. QNAP&rsquo;s QTS software is more cluttered than DSM but it&rsquo;s capable, and the container support (via Container Station) is genuinely useful if you want to run services on the NAS itself.</p>
+<p>For rackmount, QNAP also makes the <a href="https://www.amazon.com/dp/B0B992N9LL/?tag=beyondlab-20">TS-464U</a> — same internals as the TS-464 but 1U form factor. If you&rsquo;re already running rack-mounted gear like I am, keeping the NAS in the rack as well is cleaner than having a desktop unit sitting somewhere else.</p>
+<p><strong>When appliances make sense:</strong> You want something that works without configuration overhead. You&rsquo;re not looking to learn ZFS internals. You value long-term support and a polished management interface over maximum flexibility.</p>
+<h3 id="path-2-diy-nas-running-truenas-scale-or-unraid">Path 2: DIY NAS running TrueNAS Scale or Unraid<a hidden class="anchor" aria-hidden="true" href="#path-2-diy-nas-running-truenas-scale-or-unraid">#</a></h3>
+<p>This is where the homelab community tends to land eventually. You take a machine — often repurposed desktop hardware or a Mini-ITX build — and run TrueNAS Scale or Unraid on it.</p>
+<p>The appeal is real: you get ZFS natively, more control over the storage stack, and you can reuse hardware you already have. TrueNAS Scale in particular integrates tightly with Proxmox — you can run it as a VM on Proxmox and pass HBA cards through to it, or run it on dedicated hardware and present storage via NFS/iSCSI/SMB.</p>
+<p>The tradeoffs:</p>
+<ul>
+<li><strong>ZFS wants ECC RAM.</strong> Not strictly required, but the argument for it is strong — ZFS uses RAM aggressively for caching (ARC), and bit-flips in memory can cause data corruption that ZFS can&rsquo;t detect. ECC RAM costs more and limits your platform options.</li>
+<li><strong>ZFS wants RAM, period.</strong> 16GB minimum is a comfortable starting point; 32GB+ if you&rsquo;re doing serious caching. This isn&rsquo;t a platform you spin up on 4GB.</li>
+<li><strong>Unraid is simpler but costs money.</strong> Unraid&rsquo;s license model (one-time fee, ~$60–$130 depending on tier) is reasonable but it&rsquo;s not free. TrueNAS Scale is free.</li>
+</ul>
+<p>For the hardware, a used workstation or server with an HBA card is a common approach. An <a href="https://www.amazon.com/dp/B00HAQU28M/?tag=beyondlab-20">LSI HBA in IT mode</a> passes drives directly through to TrueNAS without the controller interfering, which is what you want for ZFS. Pair it with a machine that has ECC support — used Xeon workstations like the HP Z440 or Dell Precision T5810 are popular choices and go for reasonable money on the secondhand market.</p>
+<p><strong>When DIY makes sense:</strong> You want to learn storage properly. You already have hardware to repurpose. You want ZFS features (snapshots, send/receive replication, scrubbing) and are willing to invest time in the setup.</p>
+<h3 id="path-3-enterprise-secondhand">Path 3: Enterprise secondhand<a hidden class="anchor" aria-hidden="true" href="#path-3-enterprise-secondhand">#</a></h3>
+<p>This is how I ended up with the RS814 — it came alongside the server rather than as a deliberate purchase — but buying enterprise NAS hardware used is a legitimate strategy.</p>
+<p>Used Synology rackmount units (RS1221+, RS1621xs+) show up secondhand at prices well below retail. Same with QNAP&rsquo;s enterprise line. The caveat is support: enterprise NAS units often run older versions of their respective OS, and you need to verify that the firmware is still receiving updates before committing.</p>
+<p>The honest version of this advice: secondhand enterprise NAS is great if you know what you&rsquo;re getting. If you&rsquo;re not sure, stick to a new appliance or a DIY build where you control the components.</p>
+<hr>
+<h2 id="the-drives-question">The drives question<a hidden class="anchor" aria-hidden="true" href="#the-drives-question">#</a></h2>
+<p>Regardless of which box you buy, the drives matter more than most people expect.</p>
+<p><strong>Don&rsquo;t use desktop drives in a NAS.</strong> Desktop drives use aggressive error recovery routines that can cause a RAID controller to drop the drive from the array while it tries to recover a sector. NAS drives are tuned differently — they time out faster and let the RAID/ZFS layer handle the recovery instead.</p>
+<p>The two NAS drive families worth buying:</p>
+<p><strong>Seagate IronWolf</strong> — <a href="https://www.amazon.com/dp/B07H289S79/?tag=beyondlab-20">4TB</a> is a solid entry point, <a href="https://www.amazon.com/dp/B084ZV4DXB/?tag=beyondlab-20">8TB</a> if you want more capacity per bay. CMR recording (not SMR), NAS-rated workload, and IronWolf Health Management integrates with Synology DSM and QNAP QTS directly. Five-year warranty on the Pro variant if you want that.</p>
+<p><strong>WD Red Plus</strong> — the direct alternative to IronWolf. Make sure it&rsquo;s the <em>Plus</em> variant; the regular WD Red went through a period of using SMR recording which caused real problems in RAID arrays. The Plus line is CMR and fine.</p>
+<p>For a homelab specifically, I&rsquo;d size up on drives rather than bay count if you can — 2× 8TB in a 2-bay unit is more useful than 4× 2TB in a 4-bay unit, and you leave yourself expansion room.</p>
+<hr>
+<h2 id="connecting-your-nas-to-proxmox">Connecting your NAS to Proxmox<a hidden class="anchor" aria-hidden="true" href="#connecting-your-nas-to-proxmox">#</a></h2>
+<p>Once you have a NAS running, adding it to Proxmox as storage takes about five minutes.</p>
+<p>In Proxmox, go to <strong>Datacenter → Storage → Add → NFS</strong>:</p>
+<ul>
+<li><strong>ID:</strong> pick a name (e.g., <code>nas-nfs</code>)</li>
+<li><strong>Server:</strong> your NAS IP</li>
+<li><strong>Export:</strong> the NFS share path from your NAS config</li>
+<li><strong>Content:</strong> tick what you want — Disk image, Container, Backup, ISO, etc.</li>
+</ul>
+<p>For better performance, enable the NFS async option on the NAS side (check your NFS export settings in DSM or QTS). Also make sure the connection between your Proxmox host and NAS is on a dedicated VLAN or at minimum a dedicated NIC — mixing NAS traffic with VM traffic on the same interface causes latency spikes.</p>
+<p>If you&rsquo;re using iSCSI instead of NFS, the setup is slightly more involved but gives you better performance for VM disk I/O because iSCSI presents a block device rather than a file system.</p>
+<hr>
+<h2 id="what-id-actually-buy-today">What I&rsquo;d actually buy today<a hidden class="anchor" aria-hidden="true" href="#what-id-actually-buy-today">#</a></h2>
+<p>If I were setting up a fresh homelab with a budget for dedicated NAS hardware:</p>
+<p>For a <strong>desktop/tower homelab</strong>, the <a href="https://www.amazon.com/dp/B0BQ5TWCL8/?tag=beyondlab-20">QNAP TS-464</a> with 2–4× <a href="https://www.amazon.com/dp/B084ZV4DXB/?tag=beyondlab-20">Seagate IronWolf 8TB</a> drives. PCIe slot for 10GbE later, dual 2.5GbE today, Intel Quick Sync for transcoding if needed, enough RAM to run containers alongside storage duties.</p>
+<p>For a <strong>rack-mounted homelab</strong>, the <a href="https://www.amazon.com/dp/B0B992N9LL/?tag=beyondlab-20">QNAP TS-464U</a> with the same drive pairing. Same internals as the desktop version, 1U form factor, fits cleanly in the rack alongside the server.</p>
+<p>For <strong>maximum control and ZFS</strong>, a DIY build running TrueNAS Scale on repurposed Xeon workstation hardware with an LSI HBA. More setup time, more learning, more reward.</p>
+<p>My RS814 will keep doing its job until something breaks or I run out of capacity. When that day comes, I&rsquo;ll probably go DIY — the ZFS pull is real and the hardware cost is lower than it used to be. But if you want something solid without the configuration overhead, the QNAP appliance route is where I&rsquo;d point you.</p>
+<hr>
+<h2 id="one-thing-that-doesnt-get-said-enough">One thing that doesn&rsquo;t get said enough<a hidden class="anchor" aria-hidden="true" href="#one-thing-that-doesnt-get-said-enough">#</a></h2>
+<p>Your NAS backup situation needs to exist from day one, not &ldquo;once I get around to it.&rdquo;</p>
+<p>A NAS running RAID is not a backup. RAID protects you from a single drive failure. It does not protect you from ransomware, accidental deletion, fire, flood, or a misconfigured <code>rm -rf</code>. The 3-2-1 rule applies: 3 copies of your data, on 2 different media, with 1 offsite.</p>
+<p>Synology&rsquo;s Hyper Backup and QNAP&rsquo;s Hybrid Backup Sync can both push encrypted snapshots to Backblaze B2 or similar object storage for a few dollars a month. Set it up before you put anything on the NAS that you care about.</p>
+<hr>
+<p><em>Disclosure: Some links in this post are affiliate links. If you buy through them, I get a small commission at no extra cost to you.</em></p>
+
+
+    </div>
+
+    <footer class="post-footer">
+      <ul class="post-tags">
+        <li><a href="http://localhost:1313/tags/nas/">Nas</a></li>
+        <li><a href="http://localhost:1313/tags/hardware/">Hardware</a></li>
+        <li><a href="http://localhost:1313/tags/storage/">Storage</a></li>
+        <li><a href="http://localhost:1313/tags/homelab/">Homelab</a></li>
+        <li><a href="http://localhost:1313/tags/proxmox/">Proxmox</a></li>
+        <li><a href="http://localhost:1313/tags/how-to/">How-To</a></li>
+      </ul>
+<nav class="paginav">
+  <a class="prev" href="http://localhost:1313/posts/uptime-kuma/">
+    <span class="title">« Prev</span>
+    <span>Uptime Kuma: Self-Hosted Monitoring That Actually Looks Good</span>
+  </a>
+  <a class="next" href="http://localhost:1313/posts/how-to-start-a-homelab-in-2026/">
+    <span class="title">Next »</span>
+    <span>How to Start a Homelab in 2026 (Without Spending a Fortune)</span>
+  </a>
+</nav>
+
+    </footer><div class="giscus-container">
+  <script
+    src="https://giscus.app/client.js"
+    data-repo="wardseg/beyondlab"
+    data-repo-id="R_kgDOSfzEHQ"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOSfzEHc4C9Z8n"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="1"
+    data-input-position="bottom"
+    data-theme="transparent_dark"
+    data-lang="en"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+<script>
+  function setGiscusTheme(theme) {
+    const iframe = document.querySelector("iframe.giscus-frame");
+    if (!iframe) return;
+    iframe.contentWindow.postMessage(
+      { giscus: { setConfig: { theme: theme } } },
+      "https://giscus.app",
+    );
+  }
+
+  function getPreferredTheme() {
+    const stored = localStorage.getItem("pref-theme");
+    if (stored === "light") return "light";
+    if (stored === "dark") return "transparent_dark";
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "transparent_dark"
+      : "light";
+  }
+
+  window.addEventListener(
+    "message",
+    function (e) {
+      if (e.origin !== "https://giscus.app") return;
+      if (
+        e.data?.giscus?.discussion !== undefined ||
+        e.data?.giscus?.error !== undefined
+      )
+        return;
+      setGiscusTheme(getPreferredTheme());
+    },
+    { once: true },
+  );
+
+  const themeToggle = document.getElementById("theme-toggle");
+  if (themeToggle) {
+    themeToggle.addEventListener("click", function () {
+      setTimeout(() => setGiscusTheme(getPreferredTheme()), 100);
+    });
+  }
+</script>
+
+  </article>
+  <aside class="toc-sidebar">
+    <div class="toc-sticky">
+      <p class="toc-title">On this page</p><nav id="TableOfContents">
+  <ul>
+    <li><a href="#what-a-homelab-nas-needs-to-do">What a homelab NAS needs to do</a></li>
+    <li><a href="#three-paths-each-with-real-tradeoffs">Three paths, each with real tradeoffs</a>
+      <ul>
+        <li><a href="#path-1-nas-appliance-synology--qnap">Path 1: NAS appliance (Synology / QNAP)</a></li>
+        <li><a href="#path-2-diy-nas-running-truenas-scale-or-unraid">Path 2: DIY NAS running TrueNAS Scale or Unraid</a></li>
+        <li><a href="#path-3-enterprise-secondhand">Path 3: Enterprise secondhand</a></li>
+      </ul>
+    </li>
+    <li><a href="#the-drives-question">The drives question</a></li>
+    <li><a href="#connecting-your-nas-to-proxmox">Connecting your NAS to Proxmox</a></li>
+    <li><a href="#what-id-actually-buy-today">What I&rsquo;d actually buy today</a></li>
+    <li><a href="#one-thing-that-doesnt-get-said-enough">One thing that doesn&rsquo;t get said enough</a></li>
+  </ul>
+</nav>
+    </div>
+  </aside>
+</div>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">BeyondLab</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

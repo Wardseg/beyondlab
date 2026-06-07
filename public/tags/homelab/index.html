@@ -10,7 +10,7 @@
 <meta name="description" content="Homelab, networking and IT — beyond the basics">
 <meta name="author" content="Ward">
 <link rel="canonical" href="http://localhost:1313/tags/homelab/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.ab52b39f20557d68984d3d8aa6ebcd7860b24cfacbc0377abbca0e608cad38fa.css" integrity="sha256-q1KznyBVfWiYTT2KpuvNeGCyTPrLwDd6u8oOYIytOPo=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.b4fdc9b2dfc5bd9c26dccb368fd42ec65a506a7c7a5dd6c3a7034d205dbf1272.css" integrity="sha256-tP3Jst/FvZwm3Ms2j9QuxlpQanx6XdbDpwNNIF2/EnI=" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://localhost:1313/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
@@ -143,6 +143,22 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">NAS for Your Homelab: Which Storage Setup Actually Makes Sense
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Storage is the part of a homelab that people tend to figure out twice. Once when they set it up, and once after something goes wrong.
+I’m running a Synology RS814 with 16TB attached to my Proxmox host over NFS. It works well — DSM is polished, the NFS share just appears in Proxmox’s storage pool, and the drives have been running without complaint for years. But it’s also a 2013 rackmount unit I got as part of a package deal, not something I’d necessarily recommend buying new in 2026.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-04 00:00:00 +0000 UTC'>June 4, 2026</span>&nbsp;·&nbsp;<span>8 min</span>&nbsp;·&nbsp;<span>Ward</span></footer>
+  <a class="entry-link" aria-label="post link to NAS for Your Homelab: Which Storage Setup Actually Makes Sense" href="http://localhost:1313/posts/nas-for-your-homelab/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">How to Start a Homelab in 2026 (Without Spending a Fortune)
     </h2>
   </header>
@@ -155,6 +171,22 @@ This guide is for people who want a useful homelab, not a showpiece.
 
 <span title='2026-05-31 00:00:00 +0000 UTC'>May 31, 2026</span>&nbsp;·&nbsp;<span>5 min</span>&nbsp;·&nbsp;<span>Ward</span></footer>
   <a class="entry-link" aria-label="post link to How to Start a Homelab in 2026 (Without Spending a Fortune)" href="http://localhost:1313/posts/how-to-start-a-homelab-in-2026/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Self-Host Your First 5 Services with Docker Compose
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Every month you’re probably paying for at least one service you could run yourself - a password manager, cloud storage, a notes app, a photo backup tool. Self-hosting these isn’t just cheaper; it means your data lives on hardware you control.
+Docker Compose makes this accessible to anyone comfortable with a terminal. You don’t need to be a developer. You just need a machine that stays on, a basic Linux install, and this guide.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-05-31 00:00:00 +0000 UTC'>May 31, 2026</span>&nbsp;·&nbsp;<span>5 min</span>&nbsp;·&nbsp;<span>Ward</span></footer>
+  <a class="entry-link" aria-label="post link to Self-Host Your First 5 Services with Docker Compose" href="http://localhost:1313/posts/self-host-first-5-services-docker-compose/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
@@ -275,40 +307,12 @@ What is a homelab? A homelab is a personal computing environment you run at home
 <span title='2026-05-19 00:00:00 +0000 UTC'>May 19, 2026</span>&nbsp;·&nbsp;<span>5 min</span>&nbsp;·&nbsp;<span>Ward</span></footer>
   <a class="entry-link" aria-label="post link to What is a homelab and why you need one" href="http://localhost:1313/posts/what-is-a-homelab-and-why-you-need-one/"></a>
 </article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Why I started BeyondLab
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Every blog has on origin story. This one starts with a second-hand server, a lot of curiosity, and a growing frustration with how hard it is to find honest, practical IT knowledge, without starting a conversion with some AI bot.
-A bit of background I’ve been working in IT support for the better part of a decade. In that time I’ve helped businesses of all sizes keep their infrastructure running - diagnosing Active Directory issues at 8am, chasing down Exchange mail from problems after lunch, and explaining to someone why their VPN stopped working right before an important call.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-05-18 00:00:00 +0000 UTC'>May 18, 2026</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>Ward</span></footer>
-  <a class="entry-link" aria-label="post link to Why I started BeyondLab" href="http://localhost:1313/posts/why-i-started-beyondlab/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Welcome to BeyondLab
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Welcome to BeyondLab — a place where I document everything I build, break, and learn.
-I work as an IT support engineer and have been running a homelab on an HP DL380 G6 with Proxmox, OPNsense, and a growing stack of self-hosted services.
-This blog is where that knowledge escapes the lab.
-Expect posts on:
-Proxmox and virtualisation OPNsense and networking Self-hosted services MSP and IT support tips from the field </p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-05-17 00:00:00 +0000 UTC'>May 17, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Ward</span></footer>
-  <a class="entry-link" aria-label="post link to Welcome to BeyondLab" href="http://localhost:1313/posts/welcome-to-beyondlab/"></a>
-</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="next" href="http://localhost:1313/tags/homelab/page/2/">Next&nbsp;&nbsp;»
+    </a>
+  </nav>
+</footer>
     </main>
     
 <footer class="footer">

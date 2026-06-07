@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Monitoring on BeyondLab</title>
+    <link>http://localhost:1313/tags/monitoring/</link>
+    <description>Recent content in Monitoring on BeyondLab</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 05 Jun 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/monitoring/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Uptime Kuma: Self-Hosted Monitoring That Actually Looks Good</title>
+      <link>http://localhost:1313/posts/uptime-kuma/</link>
+      <pubDate>Fri, 05 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/uptime-kuma/</guid>
+      <description>Uptime Kuma is the easiest way to monitor your self-hosted services and get notified when something goes down. Here&amp;#39;s how to set it up in Docker and make it useful.</description>
+    </item>
+  </channel>
+</rss>

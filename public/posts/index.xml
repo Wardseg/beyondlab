@@ -6,14 +6,42 @@
     <description>Recent content in Posts on BeyondLab</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 31 May 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 06 Jun 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Cloudflare Tunnels: Self-Host Without Opening a Single Port</title>
+      <link>http://localhost:1313/posts/cloudflare-tunnels-self-host-without-opening-a-port/</link>
+      <pubDate>Sat, 06 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/cloudflare-tunnels-self-host-without-opening-a-port/</guid>
+      <description>Cloudflare Tunnels let you expose self-hosted services to the internet without port forwarding, a public IP, or putting your home network at risk. Here&amp;#39;s how they work and how to set one up.</description>
+    </item>
+    <item>
+      <title>Uptime Kuma: Self-Hosted Monitoring That Actually Looks Good</title>
+      <link>http://localhost:1313/posts/uptime-kuma/</link>
+      <pubDate>Fri, 05 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/uptime-kuma/</guid>
+      <description>Uptime Kuma is the easiest way to monitor your self-hosted services and get notified when something goes down. Here&amp;#39;s how to set it up in Docker and make it useful.</description>
+    </item>
+    <item>
+      <title>NAS for Your Homelab: Which Storage Setup Actually Makes Sense</title>
+      <link>http://localhost:1313/posts/nas-for-your-homelab/</link>
+      <pubDate>Thu, 04 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/nas-for-your-homelab/</guid>
+      <description>Dedicated NAS appliance, DIY TrueNAS box, or a second-hand enterprise unit? A practical breakdown of homelab storage options — and what I actually run.</description>
+    </item>
     <item>
       <title>How to Start a Homelab in 2026 (Without Spending a Fortune)</title>
       <link>http://localhost:1313/posts/how-to-start-a-homelab-in-2026/</link>
       <pubDate>Sun, 31 May 2026 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/posts/how-to-start-a-homelab-in-2026/</guid>
       <description>A practical guide to building your first homelab in 2026 - what hardware to buy, what to skip, and how to get running without blowing your budget.</description>
+    </item>
+    <item>
+      <title>Self-Host Your First 5 Services with Docker Compose</title>
+      <link>http://localhost:1313/posts/self-host-first-5-services-docker-compose/</link>
+      <pubDate>Sun, 31 May 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/self-host-first-5-services-docker-compose/</guid>
+      <description>Stop paying for services you can run yourself. Here are 5 genuinely useful self-hosted apps you can get running in an afternoon with Docker Compose.</description>
     </item>
     <item>
       <title>Running OPNsense in a Proxmox VM - full setup guide</title>
@@ -91,19 +119,6 @@
       <pubDate>Sun, 17 May 2026 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/posts/welcome-to-beyondlab/</guid>
       <description>Why I started BeyondLab — documenting my journey from IT support engineer to homelabber.</description>
-    </item>
-    <item>
-      <title></title>
-      <link>http://localhost:1313/posts/self-host-first-5-services-docker-compose/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/self-host-first-5-services-docker-compose/</guid>
-      <description>&lt;p&gt;title: &amp;ldquo;Self-Host Your First 5 Services with Docker Compose&amp;rdquo;
-date: 2026-05-31
-draft: false
-tags: [&amp;ldquo;docker&amp;rdquo;, &amp;ldquo;self-hosting&amp;rdquo;, &amp;ldquo;homelab&amp;rdquo;, &amp;ldquo;beginner&amp;rdquo;, &amp;ldquo;privacy&amp;rdquo;, &amp;ldquo;how-to&amp;rdquo;]
-description: &amp;ldquo;Stop paying for services you can run yourself. Here are 5 genuinely useful self-hosted apps you can get running in an afternoon with Docker Compose.&amp;rdquo;&lt;/p&gt;
-&lt;hr&gt;
-&lt;p&gt;Every month you&amp;rsquo;re probably paying for at least one service you could run yourself - a password manager, cloud storage, a notes app, a photo backup tool. Self-hosting these isn&amp;rsquo;t just cheaper; it means your data lives on hardware you control.&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>
