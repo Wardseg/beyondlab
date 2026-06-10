@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="noindex, nofollow">
-<title>How I sourced enterprise hardware for cheap | BeyondLab</title>
-<meta name="keywords" content="homelab, hardware, budget, second-hand, server">
-<meta name="description" content="Enterprise hardware is surprisingly affordable if you know where to look and what to check. Here&#39;s how to find great deals without getting burned.">
+<title>Proxmox vs. ESXi vs. Hyper-V: Which Hypervisor Should You Run in Your Homelab? | BeyondLab</title>
+<meta name="keywords" content="proxmox, homelab, virtualization, how-to">
+<meta name="description" content="I&#39;ve spent time with all three major hypervisors. Here&#39;s an honest breakdown of Proxmox, ESXi, and Hyper-V for homelab use — and why I ended up on Proxmox.">
 <meta name="author" content="Ward">
-<link rel="canonical" href="http://localhost:1313/posts/sourcing-enterprise-hardware-cheap/">
+<link rel="canonical" href="http://localhost:1313/posts/proxmox-vs-esxi-vs-hyperv/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.513bfed9bd8991178026f18110bdccfbf14978b2b7a5537ad813a9d6f3adb938.css" integrity="sha256-UTv&#43;2b2JkReAJvGBEL3M&#43;/FJeLK3pVN62BOp1vOtuTg=" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://localhost:1313/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
@@ -18,7 +18,7 @@
 <link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/sourcing-enterprise-hardware-cheap/">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/proxmox-vs-esxi-vs-hyperv/">
 <noscript>
     <style>
         #theme-toggle,
@@ -139,133 +139,146 @@
     </svg>
 </nav>
       <h1 class="post-title entry-hint-parent">
-        How I sourced enterprise hardware for cheap
+        Proxmox vs. ESXi vs. Hyper-V: Which Hypervisor Should You Run in Your Homelab?
       </h1>
-      <div class="post-description">Enterprise hardware is surprisingly affordable if you know where to look and what to check. Here&#39;s how to find great deals without getting burned.</div>
+      <div class="post-description">I&#39;ve spent time with all three major hypervisors. Here&#39;s an honest breakdown of Proxmox, ESXi, and Hyper-V for homelab use — and why I ended up on Proxmox.</div>
       <div class="post-meta">
 
-<span title='2026-05-24 00:00:00 +0000 UTC'>May 24, 2026</span>&nbsp;·&nbsp;<span>5 min</span>&nbsp;·&nbsp;<span>Ward</span>
+<span title='2026-06-08 00:00:00 +0000 UTC'>June 8, 2026</span>&nbsp;·&nbsp;<span>6 min</span>&nbsp;·&nbsp;<span>Ward</span>
 
 </div>
     </header> 
-    <div class="post-content md-content"><p>One of the biggest surprises when I got into homelabbing was just how cheap
-enterprise hardware can be.</p>
-<p>Servers that cost €15,000 new, sold for €50-150 on the second-hand market a
-decade later. Network switches that ran the backbone of a company&rsquo;s infrastructure,
-available for less than a pizza. 10-gigabit networking gear that was out of reach
-for home users a few years ago, now completely affordable second-hand.</p>
-<p>The reason is simple: businesses refresh their hardware on a predictable cycle —
-typically every 3-5 years. When they do, the old gear gets sold off, donated, or
-scrapped. Most of it still has years of useful life left.</p>
-<p>Here&rsquo;s how to find it and how to evaluate it before you buy.</p>
-<h2 id="where-to-look">Where to look<a hidden class="anchor" aria-hidden="true" href="#where-to-look">#</a></h2>
-<p><strong>eBay</strong> is the most reliable global source for second-hand IT hardware. Search
-specifically — include the exact model number, generation, and any specs you need.
-Always check sold listings (filter by Completed Items) to understand real market
-value before bidding or buying.</p>
-<p><strong>Local marketplaces</strong> — Facebook Marketplace, Craigslist, Gumtree, and local
-equivalents vary by country but are worth checking regularly. Local sellers
-often price lower because they want to avoid shipping hassle. You can inspect
-before buying and walk away if something looks wrong.</p>
-<p><strong>IT liquidation auctions</strong> — companies like GovPlanet, BidSpotter, and various
-regional auction houses regularly sell off decommissioned IT equipment. The deals
-can be excellent but you&rsquo;re often buying untested gear in bulk. Good for
-experienced buyers, riskier for beginners.</p>
-<p><strong>Friends and colleagues</strong> — my DL380 G6 came from a friend who wasn&rsquo;t using it
-anymore. Never underestimate your network. IT professionals regularly have old
-gear sitting in garages or storage rooms they&rsquo;d happily give away or sell cheaply.</p>
-<h2 id="what-to-look-for">What to look for<a hidden class="anchor" aria-hidden="true" href="#what-to-look-for">#</a></h2>
-<p><strong>Server generation matters</strong> — newer generations are generally more power
-efficient. An HP DL380 G6 (2009) draws significantly more power than a G9 or G10.
-Factor running costs into your evaluation — a server that costs €80 but draws
-200W 24/7 will cost you more in electricity over a year than the hardware itself.</p>
-<p><strong>Single socket vs dual socket</strong> — dual socket servers give you more cores but
-also more power draw. For a homelab running a handful of VMs, a single socket
-machine is usually plenty.</p>
-<p><strong>RAM</strong> — enterprise servers often come with a decent amount of RAM already
-installed. Check what&rsquo;s included and what the maximum supported is. DDR3
-registered ECC RAM is extremely cheap second-hand and easy to upgrade.</p>
-<p><strong>Drive bays</strong> — check how many drive bays are included and whether caddies
-(the sleds drives sit in) are included. Missing caddies are a common gotcha —
-they&rsquo;re often sold separately and can add up in cost.</p>
-<p><strong>Rails and accessories</strong> — rack rails are frequently missing from second-hand
-servers. If you&rsquo;re rack mounting, confirm rails are included or budget for them
-separately.</p>
-<h2 id="what-to-check-before-buying">What to check before buying<a hidden class="anchor" aria-hidden="true" href="#what-to-check-before-buying">#</a></h2>
-<p><strong>Drive health</strong> — if the server comes with drives, check SMART data before
-trusting them with anything important. I use a USB dock alongside
-<a href="https://crystalmark.info/en/software/crystaldiskinfo/">CrystalDiskInfo</a> on
-Windows or <code>smartctl</code> on Linux. Key indicators:</p>
+    <div class="post-content md-content"><p>When you decide to run virtual machines in your homelab, the first real decision is which hypervisor to use. Three names come up constantly: Proxmox, VMware ESXi, and Microsoft Hyper-V. They all do the same core thing — run multiple VMs on one physical host — but they&rsquo;re built on completely different philosophies and have very different implications for a homelab setup.</p>
+<p>I&rsquo;ve run all three at various points. Here&rsquo;s my honest take.</p>
+<h2 id="quick-overview">Quick Overview<a hidden class="anchor" aria-hidden="true" href="#quick-overview">#</a></h2>
+<p>Before getting into the detail, a one-line summary of each:</p>
 <ul>
-<li>Reallocated Sectors Count should be 0</li>
-<li>Power On Hours gives you context on drive age</li>
-<li>Any pending or uncorrectable sectors are red flags</li>
+<li><strong>Proxmox VE</strong> — open-source, Debian-based, free to use without a subscription</li>
+<li><strong>VMware ESXi</strong> — enterprise hypervisor from VMware (now Broadcom), free tier removed in 2024</li>
+<li><strong>Microsoft Hyper-V</strong> — included with Windows Server, or as a free standalone Hyper-V Server</li>
 </ul>
-<p><strong>POST test</strong> — ask the seller to confirm the server POSTs (powers on and reaches
-BIOS) before you buy. A photo or video of the machine posting is a reasonable
-request for any significant purchase.</p>
-<p><strong>Noise and power draw</strong> — enterprise servers are not quiet. They&rsquo;re designed for
-data centres with proper cooling, not spare rooms. If noise is a concern, research
-the specific model before buying. Some generations are significantly louder than
-others, and some have fan mods available to reduce noise.</p>
-<p><strong>iDRAC / iLO access</strong> — most enterprise servers have a remote management
-interface (Dell calls it iDRAC, HP calls it iLO). Confirm it&rsquo;s accessible and
-ideally factory reset before buying — you don&rsquo;t want someone else&rsquo;s credentials
-on your management interface.</p>
-<h2 id="my-approach">My approach<a hidden class="anchor" aria-hidden="true" href="#my-approach">#</a></h2>
-<p>When I&rsquo;m evaluating a potential purchase I run through a simple checklist:</p>
-<ol>
-<li>What will this actually run? Does the spec match the use case?</li>
-<li>What has this model sold for recently on eBay?</li>
-<li>What&rsquo;s the estimated annual power cost at my electricity rate?</li>
-<li>Are there known issues with this model I should know about?</li>
-<li>Does it come with drives, caddies, rails?</li>
-<li>Can the seller confirm it posts?</li>
-</ol>
-<p>Most bad purchases come from skipping one of these steps.</p>
-<h2 id="the-sweet-spots-right-now">The sweet spots right now<a hidden class="anchor" aria-hidden="true" href="#the-sweet-spots-right-now">#</a></h2>
-<p>Based on current second-hand market prices, these categories offer excellent
-value:</p>
-<p><strong>HP DL360/DL380 G8/G9</strong> — a generation newer than mine, more power efficient,
-still very cheap. Great all-round homelab servers.</p>
-<p><strong>Dell PowerEdge R620/R630</strong> — similar value proposition to the HP equivalents.
-Well documented, easy to find parts for.</p>
-<p><strong>Mini PCs (refurbished)</strong> — if noise and power consumption matter, refurbished
-<a href="https://www.amazon.com/s?k=hp+elitedesk+800+g4+mini&amp;tag=beyondlab-20">HP EliteDesk</a>
-or <a href="https://www.amazon.com/s?k=dell+optiplex+7060+micro&amp;tag=beyondlab-20">Dell OptiPlex Micro</a>
-units are excellent value. Quiet, efficient, and capable of running a small
-Proxmox cluster.</p>
-<p><strong>Managed switches</strong> — Cisco Catalyst and HP ProCurve switches from enterprise
-refresh cycles are remarkably cheap and give you proper VLAN support, LACP, and
-management features you&rsquo;d pay a premium for on consumer gear.</p>
-<h2 id="the-bottom-line">The bottom line<a hidden class="anchor" aria-hidden="true" href="#the-bottom-line">#</a></h2>
-<p>The second-hand enterprise hardware market is one of the best-kept secrets in
-homelabbing. With patience, a bit of research, and a clear idea of what you
-actually need, you can build a capable lab for a fraction of the cost of buying
-new.</p>
-<p>The key is knowing what to look for, what to check, and what to walk away from.</p>
+<h2 id="proxmox-ve">Proxmox VE<a hidden class="anchor" aria-hidden="true" href="#proxmox-ve">#</a></h2>
+<p>Proxmox is what I run, and it&rsquo;s what I&rsquo;d recommend to most homelab people.</p>
+<p>It&rsquo;s built on Debian Linux and uses KVM for VM virtualization and LXC for containers. The web UI is comprehensive — you can manage VMs, containers, storage, networking, backups, and clustering all from one interface without touching the command line for most tasks.</p>
+<p><strong>What&rsquo;s good:</strong></p>
+<ul>
+<li><strong>Completely free.</strong> You can run Proxmox without paying anything. There&rsquo;s a paid subscription that gives you access to the enterprise update repository and support, but the community repository works fine for homelab use. You&rsquo;ll see a &ldquo;no valid subscription&rdquo; nag on login, which you can dismiss or remove with a one-line fix.</li>
+<li><strong>LXC containers.</strong> This is something neither ESXi nor Hyper-V has natively. LXC containers are much lighter than full VMs — they share the host kernel, boot in seconds, and use a fraction of the RAM. I run a lot of services as LXC containers rather than full VMs.</li>
+<li><strong>Active community.</strong> The Proxmox forums and the homelab subreddit are full of Proxmox users. Whatever problem you hit, someone has hit it before.</li>
+<li><strong>Great for secondhand hardware.</strong> Proxmox runs fine on older gear. My HP DL380 G6 runs Proxmox without issue.</li>
+<li><strong>Built-in backup.</strong> Proxmox Backup Server (PBS) is a separate product but integrates tightly. Scheduled VM backups, deduplication, and offsite support out of the box.</li>
+</ul>
+<p><strong>What&rsquo;s not as good:</strong></p>
+<ul>
+<li><strong>Learning curve if you&rsquo;re not Linux-comfortable.</strong> Most things can be done in the UI, but when something goes wrong, you&rsquo;re often debugging in a Linux terminal. If that sounds unfamiliar, there&rsquo;s a learning investment.</li>
+<li><strong>Enterprise features require a subscription.</strong> High-availability clustering, the enterprise repo, and official support all need a paid plan. For a homelab this rarely matters.</li>
+</ul>
+<h2 id="vmware-esxi">VMware ESXi<a hidden class="anchor" aria-hidden="true" href="#vmware-esxi">#</a></h2>
+<p>ESXi was the gold standard for homelab virtualization for years. Free licenses were available, it ran on a huge range of hardware, and learning ESXi was genuinely useful for your career if you worked in enterprise IT.</p>
+<p>Then Broadcom acquired VMware in late 2023. In early 2024 they ended the free ESXi license entirely. The standalone free version is gone. If you want ESXi now, you&rsquo;re looking at a paid subscription — and Broadcom&rsquo;s pricing restructuring has made this significantly more expensive than it used to be.</p>
+<p><strong>What&rsquo;s good:</strong></p>
+<ul>
+<li><strong>Enterprise-grade stability.</strong> ESXi is what runs in real data centers. If your homelab is specifically about learning enterprise VMware skills, there&rsquo;s no substitute.</li>
+<li><strong>vSphere ecosystem.</strong> vCenter, vMotion, DRS, HA — the full VMware stack is extremely capable. But you&rsquo;ll need a way to run vCenter (it&rsquo;s a VM itself), and licensing it legitimately costs real money.</li>
+<li><strong>Hardware compatibility.</strong> ESXi has decades of driver development and runs on a wide range of server hardware.</li>
+</ul>
+<p><strong>What&rsquo;s not as good:</strong></p>
+<ul>
+<li><strong>No free tier anymore.</strong> This is the dealbreaker for most homelab users. As of 2024, there&rsquo;s no legitimate way to run ESXi without paying.</li>
+<li><strong>Less useful for learning going forward.</strong> Broadcom&rsquo;s changes have pushed a lot of enterprises to look at alternatives. The skills are still valuable, but the homelab-to-career pipeline is less direct than it was.</li>
+<li><strong>No containers.</strong> ESXi virtualizes VMs. If you want containers, you&rsquo;re running Docker inside a VM — no native LXC equivalent.</li>
+</ul>
+<p>If you have old ESXi 7 or 8 licenses and aren&rsquo;t connected to the internet, you can still run them. But for a new homelab setup in 2026, ESXi is hard to recommend unless you have a specific enterprise training reason.</p>
+<h2 id="microsoft-hyper-v">Microsoft Hyper-V<a hidden class="anchor" aria-hidden="true" href="#microsoft-hyper-v">#</a></h2>
+<p>Hyper-V comes in two forms: the Hyper-V role inside Windows Server, and the standalone Hyper-V Server (which Microsoft quietly stopped updating after 2019 and no longer offers for download). In practice, for a homelab, you&rsquo;re looking at running Hyper-V as a role on Windows Server.</p>
+<p><strong>What&rsquo;s good:</strong></p>
+<ul>
+<li><strong>Familiar if you&rsquo;re a Windows person.</strong> If your background is Windows administration, Hyper-V makes sense. PowerShell management, Windows Admin Center, Active Directory integration — it all fits together naturally.</li>
+<li><strong>Included with Windows Server.</strong> If you have a Windows Server license (through work, MSDN, or a dev subscription), Hyper-V comes free.</li>
+<li><strong>Good Windows VM performance.</strong> Hyper-V is optimized for Windows guests. If you&rsquo;re running a lot of Windows VMs, it&rsquo;s a strong choice.</li>
+</ul>
+<p><strong>What&rsquo;s not as good:</strong></p>
+<ul>
+<li><strong>No free standalone option anymore.</strong> Hyper-V Server 2019 was the last free standalone release. Running Hyper-V today means running Windows Server, which requires a license.</li>
+<li><strong>Weaker Linux VM support.</strong> Linux VMs work fine, but the integration services and tooling are more mature on the Windows side.</li>
+<li><strong>No containers in the homelab sense.</strong> Like ESXi, no native LXC. Containers mean Docker inside a VM.</li>
+<li><strong>Resource overhead.</strong> Windows Server itself consumes RAM and CPU before you&rsquo;ve even started a VM.</li>
+</ul>
+<h2 id="how-they-compare-side-by-side">How They Compare Side by Side<a hidden class="anchor" aria-hidden="true" href="#how-they-compare-side-by-side">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th></th>
+          <th>Proxmox</th>
+          <th>ESXi</th>
+          <th>Hyper-V</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Cost</td>
+          <td>Free (community)</td>
+          <td>Paid only (post-2024)</td>
+          <td>Needs Windows Server license</td>
+      </tr>
+      <tr>
+          <td>OS</td>
+          <td>Linux (Debian)</td>
+          <td>Purpose-built</td>
+          <td>Windows</td>
+      </tr>
+      <tr>
+          <td>Containers</td>
+          <td>LXC native</td>
+          <td>None native</td>
+          <td>None native</td>
+      </tr>
+      <tr>
+          <td>UI</td>
+          <td>Web-based</td>
+          <td>Web-based</td>
+          <td>Windows Admin Center / Failover Cluster Manager</td>
+      </tr>
+      <tr>
+          <td>Community</td>
+          <td>Large, active</td>
+          <td>Shrinking post-Broadcom</td>
+          <td>Moderate</td>
+      </tr>
+      <tr>
+          <td>Best for</td>
+          <td>Homelab, mixed workloads</td>
+          <td>Enterprise VMware training</td>
+          <td>Windows-heavy environments</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="what-i-use-and-why">What I Use and Why<a hidden class="anchor" aria-hidden="true" href="#what-i-use-and-why">#</a></h2>
+<p>I run Proxmox on the DL380 G6, and I wouldn&rsquo;t change it. The combination of full VMs and LXC containers covers every use case I have. OPNsense runs as a VM for my firewall, my NAS integration goes through an NFS share from the Synology RS814, and a bunch of lightweight services (internal docs, monitoring, small apps) run as LXC containers that barely register on the resource usage graphs.</p>
+<p>The fact that it&rsquo;s free matters too. I don&rsquo;t want to be beholden to a vendor&rsquo;s pricing decisions for something running in my home.</p>
+<p>If your goal is to learn VMware for enterprise work, spinning up a trial environment is still possible — but I&rsquo;d be thoughtful about how much time you invest in a platform that&rsquo;s becoming more expensive and less accessible. The industry is moving.</p>
+<p>For most homelab purposes: <strong>Proxmox is the answer in 2026.</strong></p>
 <hr>
-<p><em>Next up: What is a firewall and why your home network needs one.</em></p>
+<p><em>Already running one of these hypervisors? I&rsquo;d be curious what drove the choice — let me know in the comments.</em></p>
 
 
     </div>
 
     <footer class="post-footer">
       <ul class="post-tags">
+        <li><a href="http://localhost:1313/tags/proxmox/">Proxmox</a></li>
         <li><a href="http://localhost:1313/tags/homelab/">Homelab</a></li>
-        <li><a href="http://localhost:1313/tags/hardware/">Hardware</a></li>
-        <li><a href="http://localhost:1313/tags/budget/">Budget</a></li>
-        <li><a href="http://localhost:1313/tags/second-hand/">Second-Hand</a></li>
-        <li><a href="http://localhost:1313/tags/server/">Server</a></li>
+        <li><a href="http://localhost:1313/tags/virtualization/">Virtualization</a></li>
+        <li><a href="http://localhost:1313/tags/how-to/">How-To</a></li>
       </ul>
 <nav class="paginav">
-  <a class="prev" href="http://localhost:1313/posts/what-is-a-firewall/">
+  <a class="prev" href="http://localhost:1313/posts/lxc-vs-docker-vs-vms-proxmox/">
     <span class="title">« Prev</span>
-    <span>What is a firewall and why your home network needs one</span>
+    <span>LXC Containers vs. Docker vs. Full VMs in Proxmox: What I Actually Use and Why</span>
   </a>
-  <a class="next" href="http://localhost:1313/posts/installing-proxmox-from-scratch/">
+  <a class="next" href="http://localhost:1313/posts/opnsense-proxmox-vm-setup/">
     <span class="title">Next »</span>
-    <span>Installing Proxmox from scratch — step by step</span>
+    <span>How I Set Up OPNsense as a VM in Proxmox (And Why You Should Too)</span>
   </a>
 </nav>
 
@@ -334,12 +347,12 @@ new.</p>
     <div class="toc-sticky">
       <p class="toc-title">On this page</p><nav id="TableOfContents">
   <ul>
-    <li><a href="#where-to-look">Where to look</a></li>
-    <li><a href="#what-to-look-for">What to look for</a></li>
-    <li><a href="#what-to-check-before-buying">What to check before buying</a></li>
-    <li><a href="#my-approach">My approach</a></li>
-    <li><a href="#the-sweet-spots-right-now">The sweet spots right now</a></li>
-    <li><a href="#the-bottom-line">The bottom line</a></li>
+    <li><a href="#quick-overview">Quick Overview</a></li>
+    <li><a href="#proxmox-ve">Proxmox VE</a></li>
+    <li><a href="#vmware-esxi">VMware ESXi</a></li>
+    <li><a href="#microsoft-hyper-v">Microsoft Hyper-V</a></li>
+    <li><a href="#how-they-compare-side-by-side">How They Compare Side by Side</a></li>
+    <li><a href="#what-i-use-and-why">What I Use and Why</a></li>
   </ul>
 </nav>
     </div>

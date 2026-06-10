@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="noindex, nofollow">
-<title>How I sourced enterprise hardware for cheap | BeyondLab</title>
-<meta name="keywords" content="homelab, hardware, budget, second-hand, server">
-<meta name="description" content="Enterprise hardware is surprisingly affordable if you know where to look and what to check. Here&#39;s how to find great deals without getting burned.">
+<title>How I Set Up OPNsense as a VM in Proxmox (And Why You Should Too) | BeyondLab</title>
+<meta name="keywords" content="how-to, proxmox, opnsense, networking, firewall">
+<meta name="description" content="Running OPNsense as a Proxmox VM gave me full firewall control without extra hardware. Here&#39;s exactly how I set it up and why it was worth every minute.">
 <meta name="author" content="Ward">
-<link rel="canonical" href="http://localhost:1313/posts/sourcing-enterprise-hardware-cheap/">
+<link rel="canonical" href="http://localhost:1313/posts/opnsense-proxmox-vm-setup/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.513bfed9bd8991178026f18110bdccfbf14978b2b7a5537ad813a9d6f3adb938.css" integrity="sha256-UTv&#43;2b2JkReAJvGBEL3M&#43;/FJeLK3pVN62BOp1vOtuTg=" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://localhost:1313/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
@@ -18,7 +18,7 @@
 <link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/sourcing-enterprise-hardware-cheap/">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/opnsense-proxmox-vm-setup/">
 <noscript>
     <style>
         #theme-toggle,
@@ -139,133 +139,115 @@
     </svg>
 </nav>
       <h1 class="post-title entry-hint-parent">
-        How I sourced enterprise hardware for cheap
+        How I Set Up OPNsense as a VM in Proxmox (And Why You Should Too)
       </h1>
-      <div class="post-description">Enterprise hardware is surprisingly affordable if you know where to look and what to check. Here&#39;s how to find great deals without getting burned.</div>
+      <div class="post-description">Running OPNsense as a Proxmox VM gave me full firewall control without extra hardware. Here&#39;s exactly how I set it up and why it was worth every minute.</div>
       <div class="post-meta">
 
-<span title='2026-05-24 00:00:00 +0000 UTC'>May 24, 2026</span>&nbsp;·&nbsp;<span>5 min</span>&nbsp;·&nbsp;<span>Ward</span>
+<span title='2026-06-07 00:00:00 +0000 UTC'>June 7, 2026</span>&nbsp;·&nbsp;<span>6 min</span>&nbsp;·&nbsp;<span>Ward</span>
 
 </div>
     </header> 
-    <div class="post-content md-content"><p>One of the biggest surprises when I got into homelabbing was just how cheap
-enterprise hardware can be.</p>
-<p>Servers that cost €15,000 new, sold for €50-150 on the second-hand market a
-decade later. Network switches that ran the backbone of a company&rsquo;s infrastructure,
-available for less than a pizza. 10-gigabit networking gear that was out of reach
-for home users a few years ago, now completely affordable second-hand.</p>
-<p>The reason is simple: businesses refresh their hardware on a predictable cycle —
-typically every 3-5 years. When they do, the old gear gets sold off, donated, or
-scrapped. Most of it still has years of useful life left.</p>
-<p>Here&rsquo;s how to find it and how to evaluate it before you buy.</p>
-<h2 id="where-to-look">Where to look<a hidden class="anchor" aria-hidden="true" href="#where-to-look">#</a></h2>
-<p><strong>eBay</strong> is the most reliable global source for second-hand IT hardware. Search
-specifically — include the exact model number, generation, and any specs you need.
-Always check sold listings (filter by Completed Items) to understand real market
-value before bidding or buying.</p>
-<p><strong>Local marketplaces</strong> — Facebook Marketplace, Craigslist, Gumtree, and local
-equivalents vary by country but are worth checking regularly. Local sellers
-often price lower because they want to avoid shipping hassle. You can inspect
-before buying and walk away if something looks wrong.</p>
-<p><strong>IT liquidation auctions</strong> — companies like GovPlanet, BidSpotter, and various
-regional auction houses regularly sell off decommissioned IT equipment. The deals
-can be excellent but you&rsquo;re often buying untested gear in bulk. Good for
-experienced buyers, riskier for beginners.</p>
-<p><strong>Friends and colleagues</strong> — my DL380 G6 came from a friend who wasn&rsquo;t using it
-anymore. Never underestimate your network. IT professionals regularly have old
-gear sitting in garages or storage rooms they&rsquo;d happily give away or sell cheaply.</p>
-<h2 id="what-to-look-for">What to look for<a hidden class="anchor" aria-hidden="true" href="#what-to-look-for">#</a></h2>
-<p><strong>Server generation matters</strong> — newer generations are generally more power
-efficient. An HP DL380 G6 (2009) draws significantly more power than a G9 or G10.
-Factor running costs into your evaluation — a server that costs €80 but draws
-200W 24/7 will cost you more in electricity over a year than the hardware itself.</p>
-<p><strong>Single socket vs dual socket</strong> — dual socket servers give you more cores but
-also more power draw. For a homelab running a handful of VMs, a single socket
-machine is usually plenty.</p>
-<p><strong>RAM</strong> — enterprise servers often come with a decent amount of RAM already
-installed. Check what&rsquo;s included and what the maximum supported is. DDR3
-registered ECC RAM is extremely cheap second-hand and easy to upgrade.</p>
-<p><strong>Drive bays</strong> — check how many drive bays are included and whether caddies
-(the sleds drives sit in) are included. Missing caddies are a common gotcha —
-they&rsquo;re often sold separately and can add up in cost.</p>
-<p><strong>Rails and accessories</strong> — rack rails are frequently missing from second-hand
-servers. If you&rsquo;re rack mounting, confirm rails are included or budget for them
-separately.</p>
-<h2 id="what-to-check-before-buying">What to check before buying<a hidden class="anchor" aria-hidden="true" href="#what-to-check-before-buying">#</a></h2>
-<p><strong>Drive health</strong> — if the server comes with drives, check SMART data before
-trusting them with anything important. I use a USB dock alongside
-<a href="https://crystalmark.info/en/software/crystaldiskinfo/">CrystalDiskInfo</a> on
-Windows or <code>smartctl</code> on Linux. Key indicators:</p>
+    <div class="post-content md-content"><p>My home network used to be whatever my ISP router decided it should be. No VLANs, no proper firewall rules, no visibility into what was actually happening. When I started running Proxmox on the HP DL380 G6, one of the first things I wanted to fix was the network layer — and OPNsense running as a VM turned out to be exactly the right move.</p>
+<p>This post covers why I went down this route, what you need to make it work, and a step-by-step walkthrough of the setup.</p>
+<h2 id="why-run-a-firewall-as-a-vm">Why Run a Firewall as a VM?<a hidden class="anchor" aria-hidden="true" href="#why-run-a-firewall-as-a-vm">#</a></h2>
+<p>The obvious question: isn&rsquo;t it a bit weird to run your firewall <em>inside</em> the network it&rsquo;s supposed to be protecting?</p>
+<p>Sort of — but in practice it works well, as long as you understand the trade-off. If Proxmox goes down, so does your firewall. For a homelab, that&rsquo;s usually fine. You&rsquo;re not running production infrastructure. And the benefits are real:</p>
 <ul>
-<li>Reallocated Sectors Count should be 0</li>
-<li>Power On Hours gives you context on drive age</li>
-<li>Any pending or uncorrectable sectors are red flags</li>
+<li><strong>No extra hardware.</strong> A dedicated firewall appliance costs money and takes up a slot. OPNsense in a VM uses resources you&rsquo;re already paying for.</li>
+<li><strong>Snapshots.</strong> Before a major OPNsense upgrade, take a snapshot. If something breaks, you&rsquo;re back in 30 seconds.</li>
+<li><strong>Flexibility.</strong> You can run multiple virtual NICs, experiment with VLANs, and reconfigure the network without touching a single cable.</li>
 </ul>
-<p><strong>POST test</strong> — ask the seller to confirm the server POSTs (powers on and reaches
-BIOS) before you buy. A photo or video of the machine posting is a reasonable
-request for any significant purchase.</p>
-<p><strong>Noise and power draw</strong> — enterprise servers are not quiet. They&rsquo;re designed for
-data centres with proper cooling, not spare rooms. If noise is a concern, research
-the specific model before buying. Some generations are significantly louder than
-others, and some have fan mods available to reduce noise.</p>
-<p><strong>iDRAC / iLO access</strong> — most enterprise servers have a remote management
-interface (Dell calls it iDRAC, HP calls it iLO). Confirm it&rsquo;s accessible and
-ideally factory reset before buying — you don&rsquo;t want someone else&rsquo;s credentials
-on your management interface.</p>
-<h2 id="my-approach">My approach<a hidden class="anchor" aria-hidden="true" href="#my-approach">#</a></h2>
-<p>When I&rsquo;m evaluating a potential purchase I run through a simple checklist:</p>
+<p>The key hardware requirement is having at least two physical NICs — one for WAN (your modem/ISP connection) and one for LAN. You&rsquo;ll pass these through to the OPNsense VM.</p>
+<h2 id="what-you-need">What You Need<a hidden class="anchor" aria-hidden="true" href="#what-you-need">#</a></h2>
+<ul>
+<li>A Proxmox VE host with two physical network interfaces</li>
+<li>The OPNsense ISO (download from <a href="https://opnsense.org/download/">opnsense.org</a>)</li>
+<li>At least 2GB RAM and 2 vCPUs allocated to the VM (I use 4GB and 2 vCPUs)</li>
+<li>About 16GB of disk space for the VM</li>
+</ul>
+<h2 id="step-1-upload-the-opnsense-iso">Step 1: Upload the OPNsense ISO<a hidden class="anchor" aria-hidden="true" href="#step-1-upload-the-opnsense-iso">#</a></h2>
+<p>In the Proxmox web UI, go to your storage (I use <code>local</code>) → <strong>ISO Images</strong> → <strong>Upload</strong>. Upload the OPNsense <code>.iso</code> file you downloaded.</p>
+<p>Alternatively, if your Proxmox host has internet access, you can use the <strong>Download from URL</strong> option and paste the direct link.</p>
+<h2 id="step-2-create-the-vm">Step 2: Create the VM<a hidden class="anchor" aria-hidden="true" href="#step-2-create-the-vm">#</a></h2>
+<p>Click <strong>Create VM</strong> in the top right. Walk through the wizard:</p>
+<ul>
+<li><strong>General</strong>: Give it a name like <code>opnsense-fw</code> and a VM ID (I use 100 to keep it easy to remember)</li>
+<li><strong>OS</strong>: Select your uploaded ISO; Guest OS type is <strong>Other</strong></li>
+<li><strong>System</strong>: Leave defaults (SeaBIOS is fine for OPNsense)</li>
+<li><strong>Disks</strong>: 16GB is plenty; VirtIO SCSI controller recommended</li>
+<li><strong>CPU</strong>: 2 cores minimum</li>
+<li><strong>Memory</strong>: 2048 MB minimum, I use 4096 MB</li>
+<li><strong>Network</strong>: Add your <strong>LAN</strong> NIC here (VirtIO driver); we&rsquo;ll add WAN after</li>
+</ul>
+<p>After creating the VM, go to its <strong>Hardware</strong> tab and click <strong>Add → Network Device</strong>. Add your second NIC (the WAN-facing one). Now the VM has two network interfaces.</p>
+<h2 id="step-3-configure-nic-passthrough-or-linux-bridge">Step 3: Configure NIC Passthrough (or Linux Bridge)<a hidden class="anchor" aria-hidden="true" href="#step-3-configure-nic-passthrough-or-linux-bridge">#</a></h2>
+<p>There are two approaches here:</p>
+<p><strong>PCIe Passthrough</strong> gives OPNsense direct access to the physical NIC — best performance, but requires IOMMU enabled in your BIOS and Proxmox config. On the DL380 G6 this works well once you enable VT-d in the BIOS.</p>
+<p><strong>Linux Bridge</strong> (the simpler option) creates a virtual bridge in Proxmox that connects the physical NIC to the VM. Less overhead than you&rsquo;d think, and much easier to set up. This is what I&rsquo;d recommend starting with.</p>
+<p>For the Linux bridge approach, go to <strong>Proxmox node → Network → Create → Linux Bridge</strong>:</p>
+<ul>
+<li>Bridge port: your WAN physical NIC (e.g., <code>eno1</code>)</li>
+<li>No IP address on this bridge — OPNsense will handle it</li>
+</ul>
+<p>Do the same for your LAN NIC.</p>
+<p>Then make sure your OPNsense VM&rsquo;s two network devices are attached to these two bridges respectively.</p>
+<h2 id="step-4-install-opnsense">Step 4: Install OPNsense<a hidden class="anchor" aria-hidden="true" href="#step-4-install-opnsense">#</a></h2>
+<p>Start the VM and open the console. OPNsense boots from the ISO. Log in with <code>installer</code> / <code>opnsense</code> and follow the prompts. It&rsquo;s a straightforward install — select your target disk, choose the default options, and let it run.</p>
+<p>When it reboots, it&rsquo;ll ask you to assign interfaces. This is important:</p>
+<ul>
+<li>The <strong>WAN</strong> interface should be the one connected to your modem/ISP bridge</li>
+<li>The <strong>LAN</strong> interface is what everything else on your network will connect to</li>
+</ul>
+<p>OPNsense will start its DHCP server on LAN automatically. Default LAN IP is <code>192.168.1.1</code>.</p>
+<h2 id="step-5-initial-configuration">Step 5: Initial Configuration<a hidden class="anchor" aria-hidden="true" href="#step-5-initial-configuration">#</a></h2>
+<p>Connect a device to your LAN and navigate to <code>https://192.168.1.1</code>. Default credentials are <code>root</code> / <code>opnsense</code>.</p>
+<p>Run through the setup wizard:</p>
 <ol>
-<li>What will this actually run? Does the spec match the use case?</li>
-<li>What has this model sold for recently on eBay?</li>
-<li>What&rsquo;s the estimated annual power cost at my electricity rate?</li>
-<li>Are there known issues with this model I should know about?</li>
-<li>Does it come with drives, caddies, rails?</li>
-<li>Can the seller confirm it posts?</li>
+<li>Set your hostname and DNS servers (I use <code>1.1.1.1</code> and <code>9.9.9.9</code>)</li>
+<li>Configure WAN — usually DHCP if your modem handles the PPPoE, or PPPoE directly if you want OPNsense to dial out</li>
+<li>Set a new admin password</li>
 </ol>
-<p>Most bad purchases come from skipping one of these steps.</p>
-<h2 id="the-sweet-spots-right-now">The sweet spots right now<a hidden class="anchor" aria-hidden="true" href="#the-sweet-spots-right-now">#</a></h2>
-<p>Based on current second-hand market prices, these categories offer excellent
-value:</p>
-<p><strong>HP DL360/DL380 G8/G9</strong> — a generation newer than mine, more power efficient,
-still very cheap. Great all-round homelab servers.</p>
-<p><strong>Dell PowerEdge R620/R630</strong> — similar value proposition to the HP equivalents.
-Well documented, easy to find parts for.</p>
-<p><strong>Mini PCs (refurbished)</strong> — if noise and power consumption matter, refurbished
-<a href="https://www.amazon.com/s?k=hp+elitedesk+800+g4+mini&amp;tag=beyondlab-20">HP EliteDesk</a>
-or <a href="https://www.amazon.com/s?k=dell+optiplex+7060+micro&amp;tag=beyondlab-20">Dell OptiPlex Micro</a>
-units are excellent value. Quiet, efficient, and capable of running a small
-Proxmox cluster.</p>
-<p><strong>Managed switches</strong> — Cisco Catalyst and HP ProCurve switches from enterprise
-refresh cycles are remarkably cheap and give you proper VLAN support, LACP, and
-management features you&rsquo;d pay a premium for on consumer gear.</p>
-<h2 id="the-bottom-line">The bottom line<a hidden class="anchor" aria-hidden="true" href="#the-bottom-line">#</a></h2>
-<p>The second-hand enterprise hardware market is one of the best-kept secrets in
-homelabbing. With patience, a bit of research, and a clear idea of what you
-actually need, you can build a capable lab for a fraction of the cost of buying
-new.</p>
-<p>The key is knowing what to look for, what to check, and what to walk away from.</p>
+<p>At this point you have a working firewall. Everything on LAN can reach the internet; nothing from WAN can reach LAN unprompted.</p>
+<h2 id="what-i-did-next">What I Did Next<a hidden class="anchor" aria-hidden="true" href="#what-i-did-next">#</a></h2>
+<p>Once the basics were running, I went further:</p>
+<p><strong>VLANs</strong> — I created separate VLANs for trusted devices, IoT gear, and a lab/homelab segment. This keeps my Proxmox management interface isolated from the network my smart plugs are on. OPNsense handles inter-VLAN routing and firewall rules between them.</p>
+<p><strong>Unbound DNS</strong> — OPNsense has a built-in DNS resolver. I use it to block ad domains network-wide and to resolve local hostnames (so I can reach services by name instead of IP).</p>
+<p><strong>Suricata IDS</strong> — Optional, but OPNsense has Suricata built in. I have it running in detection-only mode on the WAN interface, mostly out of curiosity about what&rsquo;s hitting the edge.</p>
+<p><strong>Automatic backups</strong> — OPNsense can export its config as an XML file. I have a cron job that pulls this to a folder on my Synology RS814 weekly.</p>
+<h2 id="the-gotchas">The Gotchas<a hidden class="anchor" aria-hidden="true" href="#the-gotchas">#</a></h2>
+<p>A few things that tripped me up:</p>
+<ul>
+<li><strong>Console access matters.</strong> If you misconfigure the LAN interface, you&rsquo;ll lose web UI access. Keep the Proxmox console open so you can fix things via CLI.</li>
+<li><strong>VirtIO drivers.</strong> Use VirtIO for network adapters in the VM — the performance difference over e1000 is noticeable when you&rsquo;re moving a lot of traffic.</li>
+<li><strong>Snapshots before upgrades.</strong> OPNsense updates are usually smooth, but I&rsquo;ve had one upgrade scramble a plugin config. Always snapshot first.</li>
+<li><strong>IOMMU for passthrough.</strong> If you want true PCIe passthrough rather than Linux bridges, make sure <code>intel_iommu=on</code> (or <code>amd_iommu=on</code>) is in your Proxmox GRUB config.</li>
+</ul>
+<h2 id="is-it-worth-it">Is It Worth It?<a hidden class="anchor" aria-hidden="true" href="#is-it-worth-it">#</a></h2>
+<p>Absolutely. Running OPNsense as a Proxmox VM costs nothing extra if you already have the hardware, and it turns your homelab network into something you actually understand and control. The combination of proper firewall rules, DNS control, and VLANs makes a bigger difference than almost any other homelab upgrade I&rsquo;ve made.</p>
+<p>If you&rsquo;re already running Proxmox and your network is still &ldquo;whatever the ISP router does,&rdquo; this is the next thing to set up.</p>
 <hr>
-<p><em>Next up: What is a firewall and why your home network needs one.</em></p>
+<p><em>Have questions about the setup or want to know more about VLAN configuration? Drop a comment below.</em></p>
 
 
     </div>
 
     <footer class="post-footer">
       <ul class="post-tags">
-        <li><a href="http://localhost:1313/tags/homelab/">Homelab</a></li>
-        <li><a href="http://localhost:1313/tags/hardware/">Hardware</a></li>
-        <li><a href="http://localhost:1313/tags/budget/">Budget</a></li>
-        <li><a href="http://localhost:1313/tags/second-hand/">Second-Hand</a></li>
-        <li><a href="http://localhost:1313/tags/server/">Server</a></li>
+        <li><a href="http://localhost:1313/tags/how-to/">How-To</a></li>
+        <li><a href="http://localhost:1313/tags/proxmox/">Proxmox</a></li>
+        <li><a href="http://localhost:1313/tags/opnsense/">Opnsense</a></li>
+        <li><a href="http://localhost:1313/tags/networking/">Networking</a></li>
+        <li><a href="http://localhost:1313/tags/firewall/">Firewall</a></li>
       </ul>
 <nav class="paginav">
-  <a class="prev" href="http://localhost:1313/posts/what-is-a-firewall/">
+  <a class="prev" href="http://localhost:1313/posts/proxmox-vs-esxi-vs-hyperv/">
     <span class="title">« Prev</span>
-    <span>What is a firewall and why your home network needs one</span>
+    <span>Proxmox vs. ESXi vs. Hyper-V: Which Hypervisor Should You Run in Your Homelab?</span>
   </a>
-  <a class="next" href="http://localhost:1313/posts/installing-proxmox-from-scratch/">
+  <a class="next" href="http://localhost:1313/posts/cloudflare-tunnels-self-host-without-opening-a-port/">
     <span class="title">Next »</span>
-    <span>Installing Proxmox from scratch — step by step</span>
+    <span>Cloudflare Tunnels: Self-Host Without Opening a Single Port</span>
   </a>
 </nav>
 
@@ -334,12 +316,16 @@ new.</p>
     <div class="toc-sticky">
       <p class="toc-title">On this page</p><nav id="TableOfContents">
   <ul>
-    <li><a href="#where-to-look">Where to look</a></li>
-    <li><a href="#what-to-look-for">What to look for</a></li>
-    <li><a href="#what-to-check-before-buying">What to check before buying</a></li>
-    <li><a href="#my-approach">My approach</a></li>
-    <li><a href="#the-sweet-spots-right-now">The sweet spots right now</a></li>
-    <li><a href="#the-bottom-line">The bottom line</a></li>
+    <li><a href="#why-run-a-firewall-as-a-vm">Why Run a Firewall as a VM?</a></li>
+    <li><a href="#what-you-need">What You Need</a></li>
+    <li><a href="#step-1-upload-the-opnsense-iso">Step 1: Upload the OPNsense ISO</a></li>
+    <li><a href="#step-2-create-the-vm">Step 2: Create the VM</a></li>
+    <li><a href="#step-3-configure-nic-passthrough-or-linux-bridge">Step 3: Configure NIC Passthrough (or Linux Bridge)</a></li>
+    <li><a href="#step-4-install-opnsense">Step 4: Install OPNsense</a></li>
+    <li><a href="#step-5-initial-configuration">Step 5: Initial Configuration</a></li>
+    <li><a href="#what-i-did-next">What I Did Next</a></li>
+    <li><a href="#the-gotchas">The Gotchas</a></li>
+    <li><a href="#is-it-worth-it">Is It Worth It?</a></li>
   </ul>
 </nav>
     </div>

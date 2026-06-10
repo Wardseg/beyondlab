@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="noindex, nofollow">
-<title>How I sourced enterprise hardware for cheap | BeyondLab</title>
-<meta name="keywords" content="homelab, hardware, budget, second-hand, server">
-<meta name="description" content="Enterprise hardware is surprisingly affordable if you know where to look and what to check. Here&#39;s how to find great deals without getting burned.">
+<title>LXC Containers vs. Docker vs. Full VMs in Proxmox: What I Actually Use and Why | BeyondLab</title>
+<meta name="keywords" content="proxmox, homelab, docker, how-to, self-hosting">
+<meta name="description" content="LXC containers, Docker, full VMs — Proxmox supports all three. Here&#39;s how I decide which one to use for each service in my homelab, and why it matters.">
 <meta name="author" content="Ward">
-<link rel="canonical" href="http://localhost:1313/posts/sourcing-enterprise-hardware-cheap/">
+<link rel="canonical" href="http://localhost:1313/posts/lxc-vs-docker-vs-vms-proxmox/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.513bfed9bd8991178026f18110bdccfbf14978b2b7a5537ad813a9d6f3adb938.css" integrity="sha256-UTv&#43;2b2JkReAJvGBEL3M&#43;/FJeLK3pVN62BOp1vOtuTg=" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://localhost:1313/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
@@ -18,7 +18,7 @@
 <link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/sourcing-enterprise-hardware-cheap/">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/lxc-vs-docker-vs-vms-proxmox/">
 <noscript>
     <style>
         #theme-toggle,
@@ -139,133 +139,103 @@
     </svg>
 </nav>
       <h1 class="post-title entry-hint-parent">
-        How I sourced enterprise hardware for cheap
+        LXC Containers vs. Docker vs. Full VMs in Proxmox: What I Actually Use and Why
       </h1>
-      <div class="post-description">Enterprise hardware is surprisingly affordable if you know where to look and what to check. Here&#39;s how to find great deals without getting burned.</div>
+      <div class="post-description">LXC containers, Docker, full VMs — Proxmox supports all three. Here&#39;s how I decide which one to use for each service in my homelab, and why it matters.</div>
       <div class="post-meta">
 
-<span title='2026-05-24 00:00:00 +0000 UTC'>May 24, 2026</span>&nbsp;·&nbsp;<span>5 min</span>&nbsp;·&nbsp;<span>Ward</span>
+<span title='2026-06-09 00:00:00 +0000 UTC'>June 9, 2026</span>&nbsp;·&nbsp;<span>6 min</span>&nbsp;·&nbsp;<span>Ward</span>
 
 </div>
     </header> 
-    <div class="post-content md-content"><p>One of the biggest surprises when I got into homelabbing was just how cheap
-enterprise hardware can be.</p>
-<p>Servers that cost €15,000 new, sold for €50-150 on the second-hand market a
-decade later. Network switches that ran the backbone of a company&rsquo;s infrastructure,
-available for less than a pizza. 10-gigabit networking gear that was out of reach
-for home users a few years ago, now completely affordable second-hand.</p>
-<p>The reason is simple: businesses refresh their hardware on a predictable cycle —
-typically every 3-5 years. When they do, the old gear gets sold off, donated, or
-scrapped. Most of it still has years of useful life left.</p>
-<p>Here&rsquo;s how to find it and how to evaluate it before you buy.</p>
-<h2 id="where-to-look">Where to look<a hidden class="anchor" aria-hidden="true" href="#where-to-look">#</a></h2>
-<p><strong>eBay</strong> is the most reliable global source for second-hand IT hardware. Search
-specifically — include the exact model number, generation, and any specs you need.
-Always check sold listings (filter by Completed Items) to understand real market
-value before bidding or buying.</p>
-<p><strong>Local marketplaces</strong> — Facebook Marketplace, Craigslist, Gumtree, and local
-equivalents vary by country but are worth checking regularly. Local sellers
-often price lower because they want to avoid shipping hassle. You can inspect
-before buying and walk away if something looks wrong.</p>
-<p><strong>IT liquidation auctions</strong> — companies like GovPlanet, BidSpotter, and various
-regional auction houses regularly sell off decommissioned IT equipment. The deals
-can be excellent but you&rsquo;re often buying untested gear in bulk. Good for
-experienced buyers, riskier for beginners.</p>
-<p><strong>Friends and colleagues</strong> — my DL380 G6 came from a friend who wasn&rsquo;t using it
-anymore. Never underestimate your network. IT professionals regularly have old
-gear sitting in garages or storage rooms they&rsquo;d happily give away or sell cheaply.</p>
-<h2 id="what-to-look-for">What to look for<a hidden class="anchor" aria-hidden="true" href="#what-to-look-for">#</a></h2>
-<p><strong>Server generation matters</strong> — newer generations are generally more power
-efficient. An HP DL380 G6 (2009) draws significantly more power than a G9 or G10.
-Factor running costs into your evaluation — a server that costs €80 but draws
-200W 24/7 will cost you more in electricity over a year than the hardware itself.</p>
-<p><strong>Single socket vs dual socket</strong> — dual socket servers give you more cores but
-also more power draw. For a homelab running a handful of VMs, a single socket
-machine is usually plenty.</p>
-<p><strong>RAM</strong> — enterprise servers often come with a decent amount of RAM already
-installed. Check what&rsquo;s included and what the maximum supported is. DDR3
-registered ECC RAM is extremely cheap second-hand and easy to upgrade.</p>
-<p><strong>Drive bays</strong> — check how many drive bays are included and whether caddies
-(the sleds drives sit in) are included. Missing caddies are a common gotcha —
-they&rsquo;re often sold separately and can add up in cost.</p>
-<p><strong>Rails and accessories</strong> — rack rails are frequently missing from second-hand
-servers. If you&rsquo;re rack mounting, confirm rails are included or budget for them
-separately.</p>
-<h2 id="what-to-check-before-buying">What to check before buying<a hidden class="anchor" aria-hidden="true" href="#what-to-check-before-buying">#</a></h2>
-<p><strong>Drive health</strong> — if the server comes with drives, check SMART data before
-trusting them with anything important. I use a USB dock alongside
-<a href="https://crystalmark.info/en/software/crystaldiskinfo/">CrystalDiskInfo</a> on
-Windows or <code>smartctl</code> on Linux. Key indicators:</p>
+    <div class="post-content md-content"><p>One of the things that surprised me when I started using Proxmox seriously is that it doesn&rsquo;t just give you one way to run workloads — it gives you three: full virtual machines, LXC containers, and Docker (running inside one of the other two). Choosing between them isn&rsquo;t just a technical preference; it affects performance, maintenance overhead, and how much of your hardware you&rsquo;re burning for each service.</p>
+<p>Here&rsquo;s how I think about it, and what I actually run on each.</p>
+<h2 id="the-three-options">The Three Options<a hidden class="anchor" aria-hidden="true" href="#the-three-options">#</a></h2>
+<h3 id="full-virtual-machines">Full Virtual Machines<a hidden class="anchor" aria-hidden="true" href="#full-virtual-machines">#</a></h3>
+<p>A VM is a complete computer running on your hardware. Proxmox uses KVM (Kernel-based Virtual Machine) under the hood. The guest OS — whether that&rsquo;s Windows, Ubuntu, whatever — has no idea it&rsquo;s running inside a host. It gets virtual CPUs, virtual RAM, a virtual disk, virtual network cards.</p>
+<p>The upside is total isolation. A VM can run any OS, has its own kernel, and can&rsquo;t accidentally interfere with the host. The downside is overhead: every VM runs a full OS, which means RAM usage adds up fast, and boot times are real.</p>
+<h3 id="lxc-containers">LXC Containers<a hidden class="anchor" aria-hidden="true" href="#lxc-containers">#</a></h3>
+<p>LXC (Linux Containers) is different. Rather than virtualizing hardware, LXC containers share the host&rsquo;s Linux kernel. The container gets its own filesystem, its own network stack, its own process space — but not its own kernel. From inside the container, it looks and feels like a normal Linux system.</p>
+<p>The result is something that boots in a second or two, uses a fraction of the RAM a VM would need, and has almost no performance overhead. But there are limits: LXC containers can only run Linux, and some applications that need kernel-level access don&rsquo;t work well in containers without extra configuration.</p>
+<h3 id="docker">Docker<a hidden class="anchor" aria-hidden="true" href="#docker">#</a></h3>
+<p>Docker is an application containerization layer, not a hypervisor. In a Proxmox context, you&rsquo;re typically running Docker inside either a VM or an LXC container. Docker containers package an app and its dependencies into a portable image, which makes deploying services incredibly simple — pull an image, write a <code>docker-compose.yml</code>, run it.</p>
+<p>The massive ecosystem of Docker images is a huge practical advantage. Almost every self-hosted service you&rsquo;ll find documented online has a Docker image available.</p>
+<h2 id="how-i-decide-what-gets-what">How I Decide What Gets What<a hidden class="anchor" aria-hidden="true" href="#how-i-decide-what-gets-what">#</a></h2>
+<p>My rough mental model:</p>
+<p><strong>Full VM when:</strong></p>
 <ul>
-<li>Reallocated Sectors Count should be 0</li>
-<li>Power On Hours gives you context on drive age</li>
-<li>Any pending or uncorrectable sectors are red flags</li>
+<li>The service needs its own kernel (custom kernel modules, eBPF, etc.)</li>
+<li>I&rsquo;m running a non-Linux OS (Windows VMs for testing)</li>
+<li>I want total isolation — e.g., OPNsense as my firewall</li>
+<li>The service is sensitive enough that I want a hard boundary from everything else</li>
 </ul>
-<p><strong>POST test</strong> — ask the seller to confirm the server POSTs (powers on and reaches
-BIOS) before you buy. A photo or video of the machine posting is a reasonable
-request for any significant purchase.</p>
-<p><strong>Noise and power draw</strong> — enterprise servers are not quiet. They&rsquo;re designed for
-data centres with proper cooling, not spare rooms. If noise is a concern, research
-the specific model before buying. Some generations are significantly louder than
-others, and some have fan mods available to reduce noise.</p>
-<p><strong>iDRAC / iLO access</strong> — most enterprise servers have a remote management
-interface (Dell calls it iDRAC, HP calls it iLO). Confirm it&rsquo;s accessible and
-ideally factory reset before buying — you don&rsquo;t want someone else&rsquo;s credentials
-on your management interface.</p>
-<h2 id="my-approach">My approach<a hidden class="anchor" aria-hidden="true" href="#my-approach">#</a></h2>
-<p>When I&rsquo;m evaluating a potential purchase I run through a simple checklist:</p>
-<ol>
-<li>What will this actually run? Does the spec match the use case?</li>
-<li>What has this model sold for recently on eBay?</li>
-<li>What&rsquo;s the estimated annual power cost at my electricity rate?</li>
-<li>Are there known issues with this model I should know about?</li>
-<li>Does it come with drives, caddies, rails?</li>
-<li>Can the seller confirm it posts?</li>
-</ol>
-<p>Most bad purchases come from skipping one of these steps.</p>
-<h2 id="the-sweet-spots-right-now">The sweet spots right now<a hidden class="anchor" aria-hidden="true" href="#the-sweet-spots-right-now">#</a></h2>
-<p>Based on current second-hand market prices, these categories offer excellent
-value:</p>
-<p><strong>HP DL360/DL380 G8/G9</strong> — a generation newer than mine, more power efficient,
-still very cheap. Great all-round homelab servers.</p>
-<p><strong>Dell PowerEdge R620/R630</strong> — similar value proposition to the HP equivalents.
-Well documented, easy to find parts for.</p>
-<p><strong>Mini PCs (refurbished)</strong> — if noise and power consumption matter, refurbished
-<a href="https://www.amazon.com/s?k=hp+elitedesk+800+g4+mini&amp;tag=beyondlab-20">HP EliteDesk</a>
-or <a href="https://www.amazon.com/s?k=dell+optiplex+7060+micro&amp;tag=beyondlab-20">Dell OptiPlex Micro</a>
-units are excellent value. Quiet, efficient, and capable of running a small
-Proxmox cluster.</p>
-<p><strong>Managed switches</strong> — Cisco Catalyst and HP ProCurve switches from enterprise
-refresh cycles are remarkably cheap and give you proper VLAN support, LACP, and
-management features you&rsquo;d pay a premium for on consumer gear.</p>
-<h2 id="the-bottom-line">The bottom line<a hidden class="anchor" aria-hidden="true" href="#the-bottom-line">#</a></h2>
-<p>The second-hand enterprise hardware market is one of the best-kept secrets in
-homelabbing. With patience, a bit of research, and a clear idea of what you
-actually need, you can build a capable lab for a fraction of the cost of buying
-new.</p>
-<p>The key is knowing what to look for, what to check, and what to walk away from.</p>
+<p><strong>LXC container when:</strong></p>
+<ul>
+<li>It&rsquo;s a Linux-only service with no exotic kernel requirements</li>
+<li>I want fast startup and minimal RAM overhead</li>
+<li>I&rsquo;m running many small services and resources are tight</li>
+<li>The service is something stateless-ish that I don&rsquo;t mind rebuilding occasionally</li>
+</ul>
+<p><strong>Docker (inside LXC or VM) when:</strong></p>
+<ul>
+<li>The service has a well-maintained Docker image and I want easy updates</li>
+<li>I&rsquo;m running multiple related services together with Docker Compose</li>
+<li>I want the portability — being able to move a <code>docker-compose.yml</code> to another host trivially</li>
+</ul>
+<h2 id="what-i-actually-run">What I Actually Run<a hidden class="anchor" aria-hidden="true" href="#what-i-actually-run">#</a></h2>
+<p>To make this concrete, here&rsquo;s how my current setup breaks down:</p>
+<p><strong>Full VMs:</strong></p>
+<ul>
+<li><strong>OPNsense</strong> — this is my firewall and handles all network traffic. It needs direct access to network interfaces (via PCIe passthrough for the NICs), and I want it fully isolated. A VM with snapshots makes upgrades much safer.</li>
+<li><strong>Windows test environment</strong> — occasionally spin one up for compatibility testing. Nowhere else to run this.</li>
+</ul>
+<p><strong>LXC Containers:</strong></p>
+<ul>
+<li><strong>Internal documentation</strong> (MkDocs) — a lightweight static site server; LXC is perfect, uses maybe 50MB RAM</li>
+<li><strong>Custom monitoring dashboard</strong> — one of my personal projects; runs happily as a container</li>
+<li><strong>Various small utilities</strong> — anything that&rsquo;s a single Linux process with no special requirements</li>
+</ul>
+<p><strong>Docker inside an LXC Container:</strong></p>
+<ul>
+<li><strong>Vaultwarden</strong> (self-hosted Bitwarden) — Docker Compose, one YAML file, done</li>
+<li><strong>Uptime Kuma</strong> — monitoring for my public-facing services</li>
+<li><strong>Jellyfin</strong> — media server; the Docker image handles the complexity of libraries and dependencies</li>
+<li><strong>Homepage</strong> — my homelab dashboard</li>
+</ul>
+<p>The pattern you&rsquo;ll notice: I use Docker for anything with a well-supported image in the Docker Hub ecosystem. I use LXC for things where I want the control of a Linux system without Docker&rsquo;s abstraction. I use full VMs when isolation or OS requirements demand it.</p>
+<h2 id="the-ram-math">The RAM Math<a hidden class="anchor" aria-hidden="true" href="#the-ram-math">#</a></h2>
+<p>This is where it gets practical. My DL380 G6 has 48GB of RAM. Here&rsquo;s roughly what different approaches cost:</p>
+<p>A minimal Ubuntu Server VM uses about 500–800MB RAM just sitting idle. An LXC container running the same service might use 50–150MB. If you&rsquo;re running 10 services, that&rsquo;s potentially 5–8GB saved just by choosing LXC over VMs where possible.</p>
+<p>Docker adds its own overhead, but it&rsquo;s relatively small once the Docker daemon is running. Running five Docker containers inside a single LXC container costs less than running five separate containers or VMs.</p>
+<h2 id="the-just-use-docker-for-everything-approach">The &ldquo;Just Use Docker for Everything&rdquo; Approach<a hidden class="anchor" aria-hidden="true" href="#the-just-use-docker-for-everything-approach">#</a></h2>
+<p>A lot of homelab guides suggest this: one VM or one LXC container, Docker installed, everything running as Docker Compose stacks. It&rsquo;s simple, well-documented, and portable.</p>
+<p>The downside is that you lose Proxmox&rsquo;s granular management benefits. With individual LXC containers, you can snapshot a specific service, set specific resource limits, and see exactly what each service is consuming. When everything is in one big Docker host, it&rsquo;s harder to isolate a misbehaving service or snapshot just one application.</p>
+<p>I started with the &ldquo;one big Docker VM&rdquo; approach and gradually moved toward more granular separation as my homelab grew. Both work — it depends on how much management overhead you want to take on.</p>
+<h2 id="practical-tips">Practical Tips<a hidden class="anchor" aria-hidden="true" href="#practical-tips">#</a></h2>
+<p><strong>LXC + Docker is a valid combo.</strong> Running Docker inside an LXC container works well in Proxmox. You need to enable nesting in the LXC options (<code>features: nesting=1</code> in the config, or via the UI under Options → Features). Some guides will tell you this is unsupported — it works fine for homelab use.</p>
+<p><strong>Give VMs and containers sensible names.</strong> When you have 15 containers it becomes hard to track which is which. I prefix everything: <code>lxc-mkdocs</code>, <code>lxc-monitoring</code>, <code>vm-opnsense</code>, <code>vm-win11-test</code>.</p>
+<p><strong>Use Proxmox&rsquo;s resource limits.</strong> Every VM and container lets you set CPU and memory limits. Use them. An LXC container that goes rogue and eats all your RAM will take down everything else.</p>
+<p><strong>Start smaller than you think.</strong> You can always add resources later. Starting a new container with 4GB RAM when it only needs 256MB wastes resources you could use elsewhere.</p>
+<h2 id="the-short-version">The Short Version<a hidden class="anchor" aria-hidden="true" href="#the-short-version">#</a></h2>
+<p>If you&rsquo;re new to Proxmox and trying to figure out where to start: run Docker inside an LXC container for most self-hosted services, and save full VMs for the things that genuinely need them (your firewall, anything non-Linux, anything that needs total isolation). You&rsquo;ll get the best of both worlds without burning your hardware resources unnecessarily.</p>
 <hr>
-<p><em>Next up: What is a firewall and why your home network needs one.</em></p>
+<p><em>Curious how others split this — what&rsquo;s your Proxmox setup look like? LXC everywhere, Docker everywhere, or a mix? Let me know in the comments.</em></p>
 
 
     </div>
 
     <footer class="post-footer">
       <ul class="post-tags">
+        <li><a href="http://localhost:1313/tags/proxmox/">Proxmox</a></li>
         <li><a href="http://localhost:1313/tags/homelab/">Homelab</a></li>
-        <li><a href="http://localhost:1313/tags/hardware/">Hardware</a></li>
-        <li><a href="http://localhost:1313/tags/budget/">Budget</a></li>
-        <li><a href="http://localhost:1313/tags/second-hand/">Second-Hand</a></li>
-        <li><a href="http://localhost:1313/tags/server/">Server</a></li>
+        <li><a href="http://localhost:1313/tags/docker/">Docker</a></li>
+        <li><a href="http://localhost:1313/tags/how-to/">How-To</a></li>
+        <li><a href="http://localhost:1313/tags/self-hosting/">Self-Hosting</a></li>
       </ul>
 <nav class="paginav">
-  <a class="prev" href="http://localhost:1313/posts/what-is-a-firewall/">
-    <span class="title">« Prev</span>
-    <span>What is a firewall and why your home network needs one</span>
-  </a>
-  <a class="next" href="http://localhost:1313/posts/installing-proxmox-from-scratch/">
+  <a class="next" href="http://localhost:1313/posts/proxmox-vs-esxi-vs-hyperv/">
     <span class="title">Next »</span>
-    <span>Installing Proxmox from scratch — step by step</span>
+    <span>Proxmox vs. ESXi vs. Hyper-V: Which Hypervisor Should You Run in Your Homelab?</span>
   </a>
 </nav>
 
@@ -334,12 +304,19 @@ new.</p>
     <div class="toc-sticky">
       <p class="toc-title">On this page</p><nav id="TableOfContents">
   <ul>
-    <li><a href="#where-to-look">Where to look</a></li>
-    <li><a href="#what-to-look-for">What to look for</a></li>
-    <li><a href="#what-to-check-before-buying">What to check before buying</a></li>
-    <li><a href="#my-approach">My approach</a></li>
-    <li><a href="#the-sweet-spots-right-now">The sweet spots right now</a></li>
-    <li><a href="#the-bottom-line">The bottom line</a></li>
+    <li><a href="#the-three-options">The Three Options</a>
+      <ul>
+        <li><a href="#full-virtual-machines">Full Virtual Machines</a></li>
+        <li><a href="#lxc-containers">LXC Containers</a></li>
+        <li><a href="#docker">Docker</a></li>
+      </ul>
+    </li>
+    <li><a href="#how-i-decide-what-gets-what">How I Decide What Gets What</a></li>
+    <li><a href="#what-i-actually-run">What I Actually Run</a></li>
+    <li><a href="#the-ram-math">The RAM Math</a></li>
+    <li><a href="#the-just-use-docker-for-everything-approach">The &ldquo;Just Use Docker for Everything&rdquo; Approach</a></li>
+    <li><a href="#practical-tips">Practical Tips</a></li>
+    <li><a href="#the-short-version">The Short Version</a></li>
   </ul>
 </nav>
     </div>

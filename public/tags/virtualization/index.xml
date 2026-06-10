@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Virtualization on BeyondLab</title>
+    <link>http://localhost:1313/tags/virtualization/</link>
+    <description>Recent content in Virtualization on BeyondLab</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 08 Jun 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/virtualization/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Proxmox vs. ESXi vs. Hyper-V: Which Hypervisor Should You Run in Your Homelab?</title>
+      <link>http://localhost:1313/posts/proxmox-vs-esxi-vs-hyperv/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/proxmox-vs-esxi-vs-hyperv/</guid>
+      <description>I&amp;#39;ve spent time with all three major hypervisors. Here&amp;#39;s an honest breakdown of Proxmox, ESXi, and Hyper-V for homelab use — and why I ended up on Proxmox.</description>
+    </item>
+  </channel>
+</rss>

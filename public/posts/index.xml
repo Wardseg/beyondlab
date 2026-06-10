@@ -6,8 +6,15 @@
     <description>Recent content in Posts on BeyondLab</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 06 Jun 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 07 Jun 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How I Set Up OPNsense as a VM in Proxmox (And Why You Should Too)</title>
+      <link>http://localhost:1313/posts/opnsense-proxmox-vm-setup/</link>
+      <pubDate>Sun, 07 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/opnsense-proxmox-vm-setup/</guid>
+      <description>Running OPNsense as a Proxmox VM gave me full firewall control without extra hardware. Here&amp;#39;s exactly how I set it up and why it was worth every minute.</description>
+    </item>
     <item>
       <title>Cloudflare Tunnels: Self-Host Without Opening a Single Port</title>
       <link>http://localhost:1313/posts/cloudflare-tunnels-self-host-without-opening-a-port/</link>
