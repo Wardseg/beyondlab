@@ -6,8 +6,22 @@
     <description>Recent content in Homelab on BeyondLab</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 04 Jun 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 09 Jun 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/homelab/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>LXC Containers vs. Docker vs. Full VMs in Proxmox: What I Actually Use and Why</title>
+      <link>http://localhost:1313/posts/lxc-vs-docker-vs-vms-proxmox/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/lxc-vs-docker-vs-vms-proxmox/</guid>
+      <description>LXC containers, Docker, full VMs — Proxmox supports all three. Here&amp;#39;s how I decide which one to use for each service in my homelab, and why it matters.</description>
+    </item>
+    <item>
+      <title>Proxmox vs. ESXi vs. Hyper-V: Which Hypervisor Should You Run in Your Homelab?</title>
+      <link>http://localhost:1313/posts/proxmox-vs-esxi-vs-hyperv/</link>
+      <pubDate>Mon, 08 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/proxmox-vs-esxi-vs-hyperv/</guid>
+      <description>I&amp;#39;ve spent time with all three major hypervisors. Here&amp;#39;s an honest breakdown of Proxmox, ESXi, and Hyper-V for homelab use — and why I ended up on Proxmox.</description>
+    </item>
     <item>
       <title>NAS for Your Homelab: Which Storage Setup Actually Makes Sense</title>
       <link>http://localhost:1313/posts/nas-for-your-homelab/</link>
