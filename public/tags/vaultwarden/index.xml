@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Vaultwarden on BeyondLab</title>
+    <link>http://localhost:1313/tags/vaultwarden/</link>
+    <description>Recent content in Vaultwarden on BeyondLab</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 10 Jun 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/vaultwarden/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Self-Hosted Password Management: Why I Switched to Vaultwarden</title>
+      <link>http://localhost:1313/posts/selfhosted-vaultwarden-setup/</link>
+      <pubDate>Wed, 10 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/selfhosted-vaultwarden-setup/</guid>
+      <description>I got tired of paying for a password manager I didn&amp;#39;t fully trust. Vaultwarden gives me everything Bitwarden offers — running on my own hardware, for free.</description>
+    </item>
+  </channel>
+</rss>
