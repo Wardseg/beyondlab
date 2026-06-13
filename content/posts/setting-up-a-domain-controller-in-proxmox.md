@@ -1,7 +1,7 @@
 ---
 title: "How to Set Up a Windows Server Domain Controller in Proxmox"
 date: 2026-06-13
-draft: true
+draft: false
 tags:
   ["how-to", "windows-server", "active-directory", "proxmox", "homelab", "msp"]
 description: "A practical guide to spinning up a Windows Server 2022 VM in Proxmox and promoting it to a Domain Controller — perfect for MSP labs, helpdesk training, or learning AD from scratch."
