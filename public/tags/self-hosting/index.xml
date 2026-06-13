@@ -6,8 +6,22 @@
     <description>Recent content in Self-Hosting on BeyondLab</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 06 Jun 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 10 Jun 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/self-hosting/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Self-Hosted Password Management: Why I Switched to Vaultwarden</title>
+      <link>http://localhost:1313/posts/selfhosted-vaultwarden-setup/</link>
+      <pubDate>Wed, 10 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/selfhosted-vaultwarden-setup/</guid>
+      <description>I got tired of paying for a password manager I didn&amp;#39;t fully trust. Vaultwarden gives me everything Bitwarden offers — running on my own hardware, for free.</description>
+    </item>
+    <item>
+      <title>LXC Containers vs. Docker vs. Full VMs in Proxmox: What I Actually Use and Why</title>
+      <link>http://localhost:1313/posts/lxc-vs-docker-vs-vms-proxmox/</link>
+      <pubDate>Tue, 09 Jun 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/lxc-vs-docker-vs-vms-proxmox/</guid>
+      <description>LXC containers, Docker, full VMs — Proxmox supports all three. Here&amp;#39;s how I decide which one to use for each service in my homelab, and why it matters.</description>
+    </item>
     <item>
       <title>Cloudflare Tunnels: Self-Host Without Opening a Single Port</title>
       <link>http://localhost:1313/posts/cloudflare-tunnels-self-host-without-opening-a-port/</link>

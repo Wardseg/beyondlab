@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>How to Set Up a Windows Server Domain Controller in Proxmox | BeyondLab</title>
+<meta name="keywords" content="how-to, windows-server, active-directory, proxmox, homelab, msp">
+<meta name="description" content="A practical guide to spinning up a Windows Server 2022 VM in Proxmox and promoting it to a Domain Controller — perfect for MSP labs, helpdesk training, or learning AD from scratch.">
+<meta name="author" content="Ward">
+<link rel="canonical" href="http://localhost:1313/posts/setting-up-a-domain-controller-in-proxmox/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.513bfed9bd8991178026f18110bdccfbf14978b2b7a5537ad813a9d6f3adb938.css" integrity="sha256-UTv&#43;2b2JkReAJvGBEL3M&#43;/FJeLK3pVN62BOp1vOtuTg=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/setting-up-a-domain-controller-in-proxmox/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<script
+  defer
+  src="https://static.cloudflareinsights.com/beacon.min.js"
+  data-cf-beacon='{"token": "9388cd689b894f6b94e5ebfef3be7a1e"}'
+></script>
+
+
+
+
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="BeyondLab (Alt + H)">BeyondLab</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="http://localhost:1313/posts" title="Blog">
+                    <span>Blog</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+<div class="post-with-toc">
+  <article class="post-single">
+    <header class="post-header">
+      <nav class="breadcrumbs" role="navigation" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+            <a href="/posts/">Posts</a>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+        <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+</nav>
+      <h1 class="post-title entry-hint-parent">
+        How to Set Up a Windows Server Domain Controller in Proxmox
+        <span class="entry-hint" title="Draft">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="35"
+            viewBox="0 -960 960 960"
+            fill="currentColor"
+          >
+            <path
+              d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z"
+            />
+          </svg>
+        </span>
+      </h1>
+      <div class="post-description">A practical guide to spinning up a Windows Server 2022 VM in Proxmox and promoting it to a Domain Controller — perfect for MSP labs, helpdesk training, or learning AD from scratch.</div>
+      <div class="post-meta">
+
+<span title='2026-06-13 00:00:00 +0000 UTC'>June 13, 2026</span>&nbsp;·&nbsp;<span>7 min</span>&nbsp;·&nbsp;<span>Ward</span>
+
+</div>
+    </header> 
+    <div class="post-content md-content"><p>If you work in IT support or at an MSP, Active Directory is something you deal with every single day. But unless you have a spare Windows Server license and a test environment lying around, it&rsquo;s hard to actually practice — or break things safely. That&rsquo;s where your homelab comes in.</p>
+<p>In this guide I&rsquo;ll walk you through setting up a Windows Server 2022 VM in Proxmox and promoting it to a functioning Domain Controller. No production systems at risk. No expensive licenses needed to get started.</p>
+<p>This is Part 1 of a two-part series. Part 2 covers <a href="/posts/active-directory-user-management-guide/">AD User Management for sysadmins and helpdesk staff</a>.</p>
+<hr>
+<h2 id="what-youll-need">What you&rsquo;ll need<a hidden class="anchor" aria-hidden="true" href="#what-youll-need">#</a></h2>
+<ul>
+<li>A Proxmox host (this guide assumes Proxmox VE 8.x)</li>
+<li>The Windows Server 2022 Evaluation ISO (free, 180-day trial — more on this below)</li>
+<li>About 50GB of free storage on your Proxmox node</li>
+<li>4GB RAM to allocate to the VM (2GB works, 4GB is more comfortable)</li>
+</ul>
+<p>That&rsquo;s it. No license purchase needed for a lab environment.</p>
+<hr>
+<h2 id="step-1-get-the-windows-server-2022-iso">Step 1: Get the Windows Server 2022 ISO<a hidden class="anchor" aria-hidden="true" href="#step-1-get-the-windows-server-2022-iso">#</a></h2>
+<p>Microsoft offers fully functional evaluation editions of Windows Server, free for 180 days. No credit card, just an email address.</p>
+<p>Head to the <a href="https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-2022">Microsoft Evaluation Center</a> and download the <strong>ISO</strong> version of Windows Server 2022. Make sure you grab the <strong>Desktop Experience</strong> edition — that gives you the full GUI, which you&rsquo;ll need for Server Manager and ADUC.</p>
+<p>The ISO is around 5GB, so give it a few minutes.</p>
+<blockquote>
+<p><strong>After 180 days</strong>, the evaluation will shut down every hour unless activated. For a permanent lab, you can either renew the eval or look into MSDN/Visual Studio subscription licenses if you have access to one.</p></blockquote>
+<hr>
+<h2 id="step-2-upload-the-iso-to-proxmox">Step 2: Upload the ISO to Proxmox<a hidden class="anchor" aria-hidden="true" href="#step-2-upload-the-iso-to-proxmox">#</a></h2>
+<p>Once downloaded, log into your Proxmox web UI and upload the ISO to your local storage.</p>
+<p>Navigate to <strong>Datacenter → your node → local (or your ISO storage) → ISO Images → Upload</strong>.</p>
+<figure>
+  <img src="/img/upload_iso.png" alt="Uploading Windows Server ISO in the Proxmox web UI" loading="lazy">
+  
+  <figcaption>Upload the evaluation ISO to your Proxmox ISO storage</figcaption>
+  
+</figure>
+
+<p>Wait for the upload to complete before moving on.</p>
+<hr>
+<h2 id="step-3-create-the-vm">Step 3: Create the VM<a hidden class="anchor" aria-hidden="true" href="#step-3-create-the-vm">#</a></h2>
+<p>Click <strong>Create VM</strong> in the top-right corner of Proxmox. Work through the wizard with these settings:</p>
+<p><strong>General tab</strong></p>
+<ul>
+<li>Name: <code>win-dc01</code> (or whatever makes sense in your lab)</li>
+</ul>
+<p><strong>OS tab</strong></p>
+<ul>
+<li>ISO Image: select the Windows Server 2022 ISO you just uploaded</li>
+<li>Guest OS Type: Microsoft Windows</li>
+<li>Version: 11/2022/2025</li>
+</ul>
+<p><strong>System tab</strong></p>
+<ul>
+<li>Machine: q35</li>
+<li>BIOS: OVMF (UEFI) — recommended for Windows Server 2022</li>
+<li>Add EFI Disk: yes (Proxmox will prompt you)</li>
+<li>Add TPM: optional for a lab, but doesn&rsquo;t hurt</li>
+</ul>
+<p><strong>Disks tab</strong></p>
+<ul>
+<li>Bus: VirtIO SCSI (best performance)</li>
+<li>Disk size: 60GB minimum (Windows itself takes ~20GB, you want headroom)</li>
+</ul>
+<p><strong>CPU tab</strong></p>
+<ul>
+<li>Cores: 2–4 (2 is fine for a DC)</li>
+</ul>
+<p><strong>Memory tab</strong></p>
+<ul>
+<li>RAM: 4096 MB (4GB)</li>
+</ul>
+<p><strong>Network tab</strong></p>
+<ul>
+<li>Bridge: vmbr0 (or whichever bridge connects to your LAN)</li>
+<li>Model: VirtIO (paravirtualized — better performance than e1000)</li>
+</ul>
+<figure>
+  <img src="/img/dc_vm_summary.png" alt="VM creation summary screen in Proxmox" loading="lazy">
+  
+  <figcaption>Review your VM settings before confirming</figcaption>
+  
+</figure>
+
+<p>Confirm and create the VM. Don&rsquo;t start it yet.</p>
+<hr>
+<h2 id="step-4-add-the-virtio-drivers-iso">Step 4: Add the VirtIO drivers ISO<a hidden class="anchor" aria-hidden="true" href="#step-4-add-the-virtio-drivers-iso">#</a></h2>
+<p>Windows doesn&rsquo;t include VirtIO drivers out of the box, so if you&rsquo;re using VirtIO disk and network (recommended), you need to attach the VirtIO ISO as a second CD drive during installation.</p>
+<p>Download the latest <strong>virtio-win ISO</strong> from the <a href="https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso">Fedora People repository</a>.</p>
+<p>Upload it to Proxmox the same way you uploaded the Windows ISO, then:</p>
+<ol>
+<li>Select your VM → Hardware → Add → CD/DVD Drive</li>
+<li>Select the virtio-win ISO</li>
+</ol>
+<figure>
+  <img src="/img/virtio_cdrom.png" alt="Adding a second CD drive with VirtIO drivers in Proxmox hardware tab" loading="lazy">
+  
+  <figcaption>Attach the VirtIO ISO as a second CD/DVD drive</figcaption>
+  
+</figure>
+
+<p>Now you&rsquo;re ready to boot.</p>
+<hr>
+<h2 id="step-5-install-windows-server-2022">Step 5: Install Windows Server 2022<a hidden class="anchor" aria-hidden="true" href="#step-5-install-windows-server-2022">#</a></h2>
+<p>Start the VM and open the console in Proxmox. The Windows installer will boot. Work through it:</p>
+<ul>
+<li>Language, time, keyboard — set to your preference</li>
+<li><strong>Install now</strong></li>
+<li>Select <strong>Windows Server 2022 Standard Evaluation (Desktop Experience)</strong> — the one with the GUI</li>
+<li>Accept the license</li>
+<li>Choose <strong>Custom: Install Windows only</strong></li>
+<li>You&rsquo;ll see no drives listed at this point — this is normal with VirtIO</li>
+</ul>
+<p><strong>Loading the VirtIO storage driver:</strong></p>
+<p>Click <strong>Load driver → Browse</strong> and navigate to the VirtIO CD drive. Go to <code>vioscsi\2k22\amd64</code> and select the driver. Your disk should appear. Select it and continue.</p>
+<p><figure>
+  <img src="/img/windows_installer_load_driver.png" alt="Windows Server installer loading VirtIO storage driver" loading="lazy">
+  
+  <figcaption>Browse to the VirtIO CD and load the vioscsi driver so Windows can see your disk</figcaption>
+  
+</figure>
+
+Installation takes 10–15 minutes. The VM will reboot a couple of times.</p>
+<hr>
+<h2 id="step-6-initial-windows-setup">Step 6: Initial Windows setup<a hidden class="anchor" aria-hidden="true" href="#step-6-initial-windows-setup">#</a></h2>
+<p>After installation completes, you&rsquo;ll be prompted to set an Administrator password. Make it strong — this will become your domain&rsquo;s default Administrator account.</p>
+<p>Log in, and you&rsquo;ll land on the Server Manager dashboard.</p>
+<p><strong>Before doing anything else, install the VirtIO network driver</strong> so you have internet access:</p>
+<p>Open Device Manager (right-click Start → Device Manager). You&rsquo;ll likely see an unknown Ethernet controller. Right-click it → Update driver → Browse → point it to the VirtIO CD → <code>NetKVM\2k22\amd64</code>. Apply.</p>
+<p>Now set a static IP on the server. Domain Controllers should never use DHCP for their own address.</p>
+<p>Open <strong>Network and Sharing Center → Change adapter settings → right-click your NIC → Properties → IPv4</strong>:</p>
+<ul>
+<li>IP: something static in your LAN range (e.g. <code>192.168.1.10</code>)</li>
+<li>Subnet: <code>255.255.255.0</code></li>
+<li>Gateway: your router&rsquo;s IP</li>
+<li>Preferred DNS: <code>127.0.0.1</code> (the DC will be its own DNS server once promoted)</li>
+</ul>
+<figure>
+  <img src="/img/windows_server_static_ip.png" alt="Setting a static IP address on Windows Server" loading="lazy">
+  
+  <figcaption>Always give your DC a static IP — DHCP and domain controllers don&#39;t mix</figcaption>
+  
+</figure>
+
+<p>Also rename the server before promoting it. Go to <strong>Settings → System → About → Rename this PC</strong>. Use something like <code>DC01</code>. A reboot is required.</p>
+<hr>
+<h2 id="step-7-promote-the-server-to-a-domain-controller">Step 7: Promote the server to a Domain Controller<a hidden class="anchor" aria-hidden="true" href="#step-7-promote-the-server-to-a-domain-controller">#</a></h2>
+<p>Open <strong>Server Manager → Manage → Add Roles and Features</strong>.</p>
+<p>Work through the wizard:</p>
+<ul>
+<li>Role-based installation</li>
+<li>Select your local server</li>
+<li>Check <strong>Active Directory Domain Services</strong></li>
+<li>Accept the additional features it prompts for</li>
+<li>Click through to install</li>
+</ul>
+<p><figure>
+  <img src="/img/server_manager_add_adds_role.png" alt="Adding the Active Directory Domain Services role in Server Manager" loading="lazy">
+  
+  <figcaption>Select &#39;Active Directory Domain Services&#39; — this is the core role for a DC</figcaption>
+  
+</figure>
+
+After installation, you&rsquo;ll see a yellow warning flag in Server Manager. Click it and select <strong>Promote this server to a domain controller</strong>.</p>
+<figure>
+  <img src="/img/server_manager_promote_dc.png" alt="Promote this server to a domain controller notification in Server Manager" loading="lazy">
+  
+  <figcaption>The yellow flag appears once ADDS is installed — click it to start the promotion wizard</figcaption>
+  
+</figure>
+
+<p>In the promotion wizard:</p>
+<ul>
+<li>Select <strong>Add a new forest</strong></li>
+<li>Root domain name: use something like <code>lab.local</code> or <code>corp.internal</code> — avoid using a real public TLD</li>
+<li>Forest/Domain functional level: Windows Server 2016 (safe default)</li>
+<li>Check <strong>DNS Server</strong> (leave it checked)</li>
+<li>Set the <strong>DSRM password</strong> — this is your emergency recovery password if AD breaks, store it somewhere safe</li>
+<li>Let the NetBIOS name auto-populate (e.g. <code>LAB</code>)</li>
+<li>Leave paths at defaults</li>
+<li>Review and install</li>
+</ul>
+<figure>
+  <img src="/img/dc_promotion_wizard_domain_name.png" alt="Entering the root domain name in the DC promotion wizard" loading="lazy">
+  
+  <figcaption>Pick a domain name like lab.local — avoid real TLDs like .com in your lab</figcaption>
+  
+</figure>
+
+<p>The server will automatically reboot. When it comes back up, you&rsquo;ll log in as <code>LAB\Administrator</code> (or whatever your domain name is).</p>
+<hr>
+<h2 id="step-8-verify-everything-is-working">Step 8: Verify everything is working<a hidden class="anchor" aria-hidden="true" href="#step-8-verify-everything-is-working">#</a></h2>
+<p>Open <strong>Server Manager → Tools → Active Directory Users and Computers (ADUC)</strong>.</p>
+<p>You should see your domain in the left pane with the default OUs: Builtin, Computers, Domain Controllers, Users.</p>
+<p>Also verify DNS is working:
+<figure>
+  <img src="/img/aduc_fresh_domain.png" alt="Active Directory Users and Computers showing a fresh domain structure" loading="lazy">
+  
+  <figcaption>A freshly promoted DC — you can see the default OUs that come with every new domain</figcaption>
+  
+</figure>
+</p>
+<p>Open a command prompt and run:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cmd" data-lang="cmd"><span style="display:flex;"><span>nslookup lab.local
+</span></span></code></pre></div><p>It should resolve to your DC&rsquo;s IP. If it does, you&rsquo;re good.</p>
+<hr>
+<h2 id="whats-next">What&rsquo;s next<a hidden class="anchor" aria-hidden="true" href="#whats-next">#</a></h2>
+<p>You now have a fully functional Domain Controller running in your Proxmox homelab. In Part 2 we&rsquo;ll cover the day-to-day AD tasks every helpdesk tech and sysadmin should know: creating users, managing groups, resetting passwords, delegating control, and more.</p>
+<p>If you want to join another machine to this domain for testing, point its DNS to your DC&rsquo;s IP and use <strong>Settings → Accounts → Access work or school → Connect → Join this device to a local Active Directory domain</strong>.</p>
+<hr>
+<p><em>Running into issues during promotion? Drop a comment below — the most common gotcha is DNS misconfiguration, which usually means the server&rsquo;s own DNS wasn&rsquo;t set to 127.0.0.1 before promotion.</em></p>
+
+
+    </div>
+
+    <footer class="post-footer">
+      <ul class="post-tags">
+        <li><a href="http://localhost:1313/tags/how-to/">How-To</a></li>
+        <li><a href="http://localhost:1313/tags/windows-server/">Windows-Server</a></li>
+        <li><a href="http://localhost:1313/tags/active-directory/">Active-Directory</a></li>
+        <li><a href="http://localhost:1313/tags/proxmox/">Proxmox</a></li>
+        <li><a href="http://localhost:1313/tags/homelab/">Homelab</a></li>
+        <li><a href="http://localhost:1313/tags/msp/">Msp</a></li>
+      </ul>
+<nav class="paginav">
+  <a class="next" href="http://localhost:1313/posts/selfhosted-vaultwarden-setup/">
+    <span class="title">Next »</span>
+    <span>Self-Hosted Password Management: Why I Switched to Vaultwarden</span>
+  </a>
+</nav>
+
+    </footer><div class="giscus-container">
+  <script
+    src="https://giscus.app/client.js"
+    data-repo="wardseg/beyondlab"
+    data-repo-id="R_kgDOSfzEHQ"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOSfzEHc4C9Z8n"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="1"
+    data-input-position="bottom"
+    data-theme="transparent_dark"
+    data-lang="en"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+<script>
+  function setGiscusTheme(theme) {
+    const iframe = document.querySelector("iframe.giscus-frame");
+    if (!iframe) return;
+    iframe.contentWindow.postMessage(
+      { giscus: { setConfig: { theme: theme } } },
+      "https://giscus.app",
+    );
+  }
+
+  function getPreferredTheme() {
+    const stored = localStorage.getItem("pref-theme");
+    if (stored === "light") return "light";
+    if (stored === "dark") return "transparent_dark";
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "transparent_dark"
+      : "light";
+  }
+
+  window.addEventListener(
+    "message",
+    function (e) {
+      if (e.origin !== "https://giscus.app") return;
+      if (
+        e.data?.giscus?.discussion !== undefined ||
+        e.data?.giscus?.error !== undefined
+      )
+        return;
+      setGiscusTheme(getPreferredTheme());
+    },
+    { once: true },
+  );
+
+  const themeToggle = document.getElementById("theme-toggle");
+  if (themeToggle) {
+    themeToggle.addEventListener("click", function () {
+      setTimeout(() => setGiscusTheme(getPreferredTheme()), 100);
+    });
+  }
+</script>
+
+  </article>
+  <aside class="toc-sidebar">
+    <div class="toc-sticky">
+      <p class="toc-title">On this page</p><nav id="TableOfContents">
+  <ul>
+    <li><a href="#what-youll-need">What you&rsquo;ll need</a></li>
+    <li><a href="#step-1-get-the-windows-server-2022-iso">Step 1: Get the Windows Server 2022 ISO</a></li>
+    <li><a href="#step-2-upload-the-iso-to-proxmox">Step 2: Upload the ISO to Proxmox</a></li>
+    <li><a href="#step-3-create-the-vm">Step 3: Create the VM</a></li>
+    <li><a href="#step-4-add-the-virtio-drivers-iso">Step 4: Add the VirtIO drivers ISO</a></li>
+    <li><a href="#step-5-install-windows-server-2022">Step 5: Install Windows Server 2022</a></li>
+    <li><a href="#step-6-initial-windows-setup">Step 6: Initial Windows setup</a></li>
+    <li><a href="#step-7-promote-the-server-to-a-domain-controller">Step 7: Promote the server to a Domain Controller</a></li>
+    <li><a href="#step-8-verify-everything-is-working">Step 8: Verify everything is working</a></li>
+    <li><a href="#whats-next">What&rsquo;s next</a></li>
+  </ul>
+</nav>
+    </div>
+  </aside>
+</div>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">BeyondLab</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
